@@ -1,27 +1,55 @@
 package pl.somehost.contactmanager.domain;
 
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity(name = "user")
-@Table(name = "user")
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity(name = "User")
+@Table(name = "User")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private int id;
+
     @Column(name = "username")
-    private String userName;
+    private String username;
+
     @Column(name = "password")
     private String password;
+
+    //@JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "adressbook_id")
     private AdressBook adressBook;
 
+    //@JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "user",
+            targetEntity = Authorities.class)
+    private Set<Authorities> authorities;
 
-    public User(String password) {
-        this.password = password;
+    public User() {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Set<Authorities> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authorities> authorities) {
+        this.authorities = authorities;
     }
 
     public int getId() {
@@ -30,14 +58,6 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getPassword() {

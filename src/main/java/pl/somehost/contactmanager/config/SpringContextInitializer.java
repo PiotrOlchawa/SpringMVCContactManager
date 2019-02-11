@@ -2,20 +2,9 @@ package pl.somehost.contactmanager.config;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring4.view.ThymeleafViewResolver;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 @ComponentScan(basePackages = {"pl.somehost.contactmanager.*"})
@@ -23,6 +12,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 public class SpringContextInitializer implements ApplicationContextAware {
 
     ApplicationContext applicationContext;
+
 
     // Standard ViewResolver
 /*    @Bean
@@ -32,13 +22,34 @@ public class SpringContextInitializer implements ApplicationContextAware {
         viewResolver.setSuffix(".html");
         return viewResolver;
     }*/
+    // Standard ViewResolver
 
-/*
-    @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
+
+/*    // Thymeleaf
+    @Bean
+    public ViewResolver viewResolver() {
+        ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+        resolver.setTemplateEngine(templateEngine());
+        resolver.setCharacterEncoding("UTF8");
+        return resolver;
     }
-*/
+
+    *//*ITemplateEngine*//*
+    private TemplateEngine templateEngine() {
+        SpringTemplateEngine engine = new SpringTemplateEngine();
+        engine.setTemplateResolver(templateResolver());
+        return engine;
+    }
+
+    private ITemplateResolver templateResolver() {
+        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+        resolver.setApplicationContext(applicationContext);
+        resolver.setPrefix("/WEB-INF/html/");
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode(TemplateMode.HTML);
+        return resolver;
+    }
+    // End Thymeleaf specyfic configuration*/
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {

@@ -2,7 +2,6 @@ package pl.somehost.contactmanager.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -19,7 +18,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement                                 //Enabling Annotation-Driven Transaction Management
 @PropertySource(value = "classpath:application.properties")  // Set external properties in Enviroment
-@EnableJpaRepositories(basePackages = {"pl.somehost.contactmanager.domain"}) //Configure the base packages that are scanned when Spring Data JPA
+@EnableJpaRepositories(basePackages = {"pl.somehost.contactmanager.repository"}) //Configure the base packages that are scanned when Spring Data JPA
 public class PersistenceContext {
 
     @Autowired
@@ -31,7 +30,7 @@ public class PersistenceContext {
         dataSource.setDriverClassName(env.getRequiredProperty("db.driver"));
         dataSource.setUrl(env.getRequiredProperty("db.url"));
         dataSource.setUsername(env.getRequiredProperty("db.username"));
-        dataSource.setPassword("db.password");
+        dataSource.setPassword(env.getRequiredProperty("db.password"));
         return dataSource;
     }
 

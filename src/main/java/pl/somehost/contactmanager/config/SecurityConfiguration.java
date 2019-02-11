@@ -1,0 +1,167 @@
+package pl.somehost.contactmanager.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import pl.somehost.contactmanager.service.UserDetailsServiceImpl;
+
+//register the Spring security filter
+@EnableWebSecurity(debug = true)
+@Configuration
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    //private Logger logger= Logger.getLogger(SecurityConfiguration.class);
+
+    private static final String LOGIN_PATH = "/user/login";
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    UserDetailsServiceImpl userDetailsServiceImpl;
+    @Autowired
+    private HttpAuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    private AuthSuccessHandler authSuccessHandler;
+    @Autowired
+    private AuthFailureHandler authFailureHandler;
+    @Autowired
+    private HttpLogoutSuccessHandler logoutSuccessHandler;
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        //logger.info("INFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFO");
+        //logger.debug("DEBBBBBBBBBBBBBBBBBBUG");
+        //System.out.println("LOGGGGGGGGGGGGGGGGGGGGGGGGGGG" + Logger.getRootLogger().getName());
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    @Override
+    public UserDetailsService userDetailsServiceBean() throws Exception {
+        return super.userDetailsServiceBean();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsServiceImpl);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(authenticationProvider());
+    }
+
+    @Override
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
+
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+      /*  http.csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/admin/users").hasRole("ADMIN")
+                .anyRequest().hasAnyRole("USER","ADMIN")
+                .and()
+                .authenticationProvider(authenticationProvider())
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+                .formLogin()
+                .permitAll()
+                .loginProcessingUrl(LOGIN_PATH)
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .successHandler(authSuccessHandler)
+                .failureHandler(authFailureHandler)
+                .and()
+                .logout()
+                .permitAll()
+                .logoutRequestMatcher(new AntPathRequestMatcher(LOGIN_PATH, "DELETE"))
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .and()
+                .sessionManagement()
+                .maximumSessions(1);
+
+        http.authorizeRequests().anyRequest().authenticated();*/
+
+        http.csrf().disable()
+                .authorizeRequests()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/admin/users/**").authenticated()
+                .and()
+                .formLogin()
+                .successHandler(authSuccessHandler)
+                .failureHandler(authFailureHandler)
+                .and()
+                .httpBasic()
+                .and()
+                .logout();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+/*
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+        auth
+                .userDetailsService(userDetailsServiceImpl)
+                .passwordEncoder(passwordEncoder);
+    }*/
+
+/*    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+
+        //Enable H2 console
+        httpSecurity.authorizeRequests().antMatchers("/").permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/h2-console/**").permitAll()
+                .and()
+                .headers().frameOptions().disable()
+                .and()
+                .csrf().ignoringAntMatchers("/h2-console/**")
+                .and()
+                .cors().disable();
+
+        //httpSecurity.csrf().disable();
+        httpSecurity.headers().frameOptions().disable();
+
+        httpSecurity
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().hasAnyRole("USER","ADMIN")
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/dashboard")
+                .permitAll()
+                .and()
+                //session management prevents from concurent login
+                .sessionManagement().maximumSessions(1);
+    }*/
+}

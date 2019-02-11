@@ -1,21 +1,27 @@
 package pl.somehost.contactmanager.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity(name = "contact")
 @Table(name = "contact")
 public class Contact {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "firstName")
     private String firstName;
+    @Column(name = "lastName")
     private String lastName;
+    @Column(name = "streetAdress")
     private String streetAdress;
+    @Column(name = "zipCode")
     private String zipCode;
+    @Column(name = "aptNumber")
     private String aptNumber;
+    @Column(name = "telephone")
     private String telephone;
+    @Column(name = "email")
     private String email;
     @ManyToOne
     @JoinColumn(name = "adressbook_id")
