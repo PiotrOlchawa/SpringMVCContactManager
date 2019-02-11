@@ -1,12 +1,13 @@
 package pl.somehost.contactmanager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.repository.UserDao;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,8 @@ public class UserService {
 
     @Autowired
     UserDao userDao;
+    @Autowired
+    private ApplicationContext appContext;
 
     public UserService() {
     }
@@ -55,4 +58,9 @@ public class UserService {
         return user.getId() == authennticatedUserId;
     }
 
+    public void createUser(User user) {
+        PasswordEncoder passwordEncoder = (PasswordEncoder)appContext.getBean("passwordEncoder");
+        passwordEncoder.encode(user.getPassword());
+        userDao.save(user);
+    }
 }

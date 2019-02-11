@@ -19,4 +19,9 @@ public class UsersManagementController {
     List<User> getAllUsers(){
         return userService.getAllUsers();
     }
+
+    @PostMapping(value = "/users")
+    void createUser(@RequestBody User user){
+        userService.createUser(user);
+    }
 }

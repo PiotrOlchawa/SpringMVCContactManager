@@ -17,8 +17,9 @@ import java.util.Optional;
 public interface UserDao extends CrudRepository<User, Integer> {
 
     @Override
-    @Query("select u from User u"
-            + " left join fetch u.authorities")
+   /* @Query("select u from User u"
+            + " left join fetch u.authorities")*/
+    @Query("select distinct u from User u left join fetch u.authorities")
     List<User> findAll();
 
     Optional<User> findById(Integer id);
