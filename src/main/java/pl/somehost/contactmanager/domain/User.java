@@ -21,35 +21,27 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    //@JsonIgnore
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "adressbook_id")
     private AdressBook adressBook;
 
-    //@JsonIgnore
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             mappedBy = "user",
-            targetEntity = Authorities.class)
+            targetEntity = Authorities.class,
+            orphanRemoval = true)
     private Set<Authorities> authorities;
+
 
     public User() {
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
+    public User(String username, String password, Set<Authorities> authorities, AdressBook adresBook) {
         this.username = username;
-    }
-
-    public Set<Authorities> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<Authorities> authorities) {
+        this.password = password;
         this.authorities = authorities;
+        this.adressBook = adresBook;
     }
 
     public int getId() {
@@ -58,6 +50,14 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -75,4 +75,23 @@ public class User {
     public void setAdressBook(AdressBook adressBook) {
         this.adressBook = adressBook;
     }
+
+    public Set<Authorities> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authorities> authorities) {
+        this.authorities = authorities;
+    }
+
+/*        @Override
+    public String toString() {
+        return "User{" + "\n"+
+                "id=" + id + "\n"+
+                ", username='" + username + '\'' + "\n"+
+                ", password='" + password + '\'' + "\n"+
+                ", adressBook=" + adressBook + "\n"+
+                ", authorities=" + authorities + "\n"+
+                '}';
+    }*/
 }

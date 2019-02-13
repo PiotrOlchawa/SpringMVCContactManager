@@ -10,20 +10,25 @@ import javax.persistence.*;
 public class Authorities implements GrantedAuthority {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     @JsonIgnore
     private Long id;
 
     @Column(name = "AUTHORITY")
-    private String authority;
+    @Enumerated(EnumType.STRING)
+    private Roles authority;
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
     @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     public Authorities() {
+    }
+
+    public Authorities(Roles authority) {
+        this.authority = authority;
     }
 
     public Long getId() {
@@ -35,7 +40,7 @@ public class Authorities implements GrantedAuthority {
     }
 
     public void setAuthority(String authority) {
-        this.authority = authority;
+        this.authority = Roles.valueOf(authority);
     }
 
     public User getUser() {
@@ -48,7 +53,34 @@ public class Authorities implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return authority;
+        return authority.name();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Authorities that = (Authorities) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        return authority == that.authority;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (authority != null ? authority.hashCode() : 0);
+        return result;
+    }
+
+/*    @Override
+    public String toString() {
+        return "Authorities{" +
+                "id=" + id +
+                ", authority=" + authority +
+                ", user=" + user +
+                '}';
+    }*/
 }
 

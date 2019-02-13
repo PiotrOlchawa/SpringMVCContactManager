@@ -19,9 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pl.somehost.contactmanager.service.UserDetailsServiceImpl;
 
 import java.util.Arrays;
-import java.util.List;
 
-//register the Spring security filter
 @EnableWebSecurity(debug = true)
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -118,7 +116,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().authenticated();*/
 
         //Enable H2 console
-                 http.authorizeRequests().antMatchers("/").permitAll()
+        http.authorizeRequests().antMatchers("/").permitAll()
                 .and()
                 .authorizeRequests().antMatchers("/h2-console/**").permitAll()
                 .and()
@@ -127,8 +125,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().ignoringAntMatchers("/h2-console/**");
         //Enable H2 console
 
-                http.cors();
-                http.csrf().disable()
+        http.cors();
+        http.csrf().disable()
                 .authorizeRequests()
                 .and()
                 .exceptionHandling()
@@ -143,7 +141,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .httpBasic()
                 .and()
-                .logout();
+                .logout()
+                .permitAll()
+                .logoutSuccessHandler(logoutSuccessHandler);
     }
 
     @Bean
@@ -151,44 +151,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-/*
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        auth
-                .userDetailsService(userDetailsServiceImpl)
-                .passwordEncoder(passwordEncoder);
-    }*/
-
-/*    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-
-        //Enable H2 console
-        httpSecurity.authorizeRequests().antMatchers("/").permitAll()
-                .and()
-                .authorizeRequests().antMatchers("/h2-console/**").permitAll()
-                .and()
-                .headers().frameOptions().disable()
-                .and()
-                .csrf().ignoringAntMatchers("/h2-console/**")
-                .and()
-                .cors().disable();
-
-        //httpSecurity.csrf().disable();
-        httpSecurity.headers().frameOptions().disable();
-
-        httpSecurity
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().hasAnyRole("USER","ADMIN")
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/dashboard")
-                .permitAll()
-                .and()
-                //session management prevents from concurent login
-                .sessionManagement().maximumSessions(1);
-    }*/
 }

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.repository.UserDao;
@@ -51,16 +50,13 @@ public class UserService {
         userDao.save(user);
     }
 
-
     private boolean checkForUserRightsToAccessOrModyfing(User user){
         User authennticatedUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Integer authennticatedUserId = authennticatedUser.getId(); //get id logged in username
         return user.getId() == authennticatedUserId;
     }
 
-    public void createUser(User user) {
-        PasswordEncoder passwordEncoder = (PasswordEncoder)appContext.getBean("passwordEncoder");
-        passwordEncoder.encode(user.getPassword());
-        userDao.save(user);
+    public void deleteUser(Integer userId) {
+        userDao.deleteById(userId);
     }
 }

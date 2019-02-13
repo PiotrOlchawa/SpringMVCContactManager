@@ -11,6 +11,9 @@ public class AdressBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    private String adressBookName;
+
     @OneToMany(
             targetEntity = Contact.class,
             fetch = FetchType.LAZY,
@@ -28,6 +31,14 @@ public class AdressBook {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getAdressBookName() {
+        return adressBookName;
+    }
+
+    public void setAdressBookName(String adressBookName) {
+        this.adressBookName = adressBookName;
     }
 
     public List<Contact> getContactList() {

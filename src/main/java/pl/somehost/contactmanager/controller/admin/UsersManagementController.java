@@ -1,8 +1,11 @@
 package pl.somehost.contactmanager.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.somehost.contactmanager.domain.User;
+import pl.somehost.contactmanager.domain.dto.FacadeUserDto;
+import pl.somehost.contactmanager.facade.UserManagementFacade;
 import pl.somehost.contactmanager.service.UserService;
 
 import java.util.List;
@@ -14,14 +17,30 @@ public class UsersManagementController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    UserManagementFacade userManagementFacade;
 
+    @Secured({"ROLE_ADMIN"})
     @GetMapping(value ="/users")
     List<User> getAllUsers(){
         return userService.getAllUsers();
     }
 
+    @Secured({"ROLE_ADMIN"})
     @PostMapping(value = "/users")
     void createUser(@RequestBody User user){
-        userService.createUser(user);
+        userService.save(user);
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @PostMapping(value = "/facadeUser")
+    void createFacadeUser(@RequestBody FacadeUserDto facadeUserDto){
+        userManagementFacade.createUser(facadeUserDto);
+    }
+
+    @Secured({"ROLE_ADMIN"})
+    @DeleteMapping(value = "/facadeUser")
+    void deleteFacadeUser(@RequestParam("id") Integer userId) {
+        userManagementFacade.deleteUser(userId);
     }
 }

@@ -1,0 +1,69 @@
+package pl.somehost.contactmanager.domain.dto;
+
+import pl.somehost.contactmanager.domain.AdressBook;
+import pl.somehost.contactmanager.domain.Authorities;
+
+import java.util.Set;
+
+public class FacadeUserDto {
+
+    private int id;
+    private String username;
+    private String password;
+    Set<Authorities> authorities;
+    private AdressBook adresBook;
+
+    public FacadeUserDto() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Authorities> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authorities> authorities) {
+        this.authorities = authorities;
+    }
+
+    public AdressBook getAdresBook() {
+        return adresBook;
+    }
+
+    public void setAdresBook(AdressBook adresBook) {
+        this.adresBook = adresBook;
+    }
+
+    @Override
+    public String toString() {
+        return "FacadeUserDto{" + "\n" +
+                "id=" + id + "\n" +
+                ", username='" + username + '\'' + "\n" +
+                ", password='" + password + '\'' + "\n" +
+                ", authorities=" + authorities + "\n" +
+                ", adresBook=" + adresBook + "\n" +
+                '}';
+    }
+}
