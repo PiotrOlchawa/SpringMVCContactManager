@@ -43,4 +43,10 @@ public class UsersManagementController {
     void deleteFacadeUser(@RequestParam("id") Integer userId) {
         userManagementFacade.deleteUser(userId);
     }
+
+    @Secured({"ROLE_ADMIN"})
+    @PutMapping (value = "/facadeUser")
+    void mofifFacadeUser(@RequestBody FacadeUserDto facadeUserDto){
+        userManagementFacade.modifyUser(facadeUserDto);
+    }
 }

@@ -27,8 +27,8 @@ public class UserService {
     }
 
     @Secured({"ROLE_ADMIN"})
-    public User getUser(Integer userId) {
-        return Optional.ofNullable(userDao.findById(userId)).orElseThrow(RuntimeException::new).get();
+    public Optional<User> getUser(Integer userId) {
+        return Optional.ofNullable(userDao.findById(userId)).orElseThrow(RuntimeException::new);
     }
 
     @Secured({"ROLE_ADMIN"})
