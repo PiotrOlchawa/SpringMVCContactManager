@@ -1,7 +1,6 @@
 package pl.somehost.contactmanager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,6 @@ public class UserService {
 
     @Autowired
     UserDao userDao;
-    @Autowired
-    private ApplicationContext appContext;
 
     public UserService() {
     }

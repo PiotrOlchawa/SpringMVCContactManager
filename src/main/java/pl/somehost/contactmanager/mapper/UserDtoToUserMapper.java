@@ -8,7 +8,6 @@ import pl.somehost.contactmanager.domain.AdressBook;
 import pl.somehost.contactmanager.domain.PasswordsEncoder;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.UserDto;
-import pl.somehost.contactmanager.service.UserService;
 
 import java.util.stream.Collectors;
 
@@ -17,8 +16,6 @@ public class UserDtoToUserMapper {
 
     @Autowired
     PasswordsEncoder passwordsEncoder;
-    @Autowired
-    UserService userService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDtoToUserMapper.class);
 
@@ -29,8 +26,8 @@ public class UserDtoToUserMapper {
         return createUserFromUserDto(userDto);
     }
 
-    public User mapUserDtoToUserWhileModyfing(UserDto userDto) {
-        userDto.setAdresBook(userService.getUser(userDto.getId()).get().getAdressBook());
+    public User mapUserDtoToUserWhileModyfing(UserDto userDto,User user) {
+        userDto.setAdresBook(user.getAdressBook());
         LOGGER.info("Authorities while mapping for userId=" +userDto.getId()+ " "
                 + userDto.getAuthorities().stream().map(l->l.getAuthority()).collect(Collectors.joining(",")));
         return createUserFromUserDto(userDto);

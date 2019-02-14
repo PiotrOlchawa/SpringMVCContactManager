@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.somehost.contactmanager.domain.Authorities;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.UserDto;
 import pl.somehost.contactmanager.mapper.UserDtoToUserMapper;
@@ -30,7 +31,6 @@ public class UserManagementFacade {
         LOGGER.info("createUser CALL");
         User user = userDtoToUserMapper.mapUserDtoToUserWhileCreatingNew(userDto);
         return userService.save(user);
-
     }
 
     public void deleteUser(Integer userId)
@@ -41,12 +41,11 @@ public class UserManagementFacade {
 
     public void modifyUser(UserDto userDto) {
         LOGGER.info("modifyUser CALL");
-
         Optional<User> optionalCurrentUser = userService.getUser(userDto.getId());
         if(optionalCurrentUser.isPresent()){
-            User user = userDtoToUserMapper.mapUserDtoToUserWhileModyfing(userDto);
+            User user = userDtoToUserMapper.mapUserDtoToUserWhileModyfing(userDto,optionalCurrentUser.get());
             LOGGER.info("Persisted User Authorities for userId,userName " + user.getId()+ "," + user.getUsername() + " "
-                    + user.getAuthorities().stream().map(l->l.getAuthority()).collect(Collectors.joining(",")));
+                    + user.getAuthorities().stream().map(Authorities::getAuthority).collect(Collectors.joining(",")));
             userService.save(user);
         } else {
             LOGGER.info("No USER ! userDto.getID() " + userDto.getId());

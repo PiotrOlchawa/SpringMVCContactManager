@@ -23,21 +23,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         LOGGER.info(" User Name " + username);
         Optional<User> user = Optional.ofNullable(userDao.findByUsername(username));
-
         if(!user.isPresent()){
-            LOGGER.info("--------------------------No USER--------------------- ");
+            LOGGER.info("User was NOT FOUND ");
+            throw new UsernameNotFoundException("User was NOT FOUND");
         }
         if(user.isPresent()){
-            LOGGER.info(" -------------getting user----------------- " + user.get().toString());
+            LOGGER.info(" User was FOUND " + user.get().toString());
         }
-        if (!user.isPresent()) {
-            throw new UsernameNotFoundException("User does not exist");
-        }
-
         return new SecurityUser(user.get());
-
     }
 }
