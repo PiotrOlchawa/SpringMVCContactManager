@@ -37,7 +37,8 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, Set<Authorities> authorities, AdressBook adresBook) {
+    public User(Integer id, String username, String password, Set<Authorities> authorities, AdressBook adresBook) {
+        this.id=id;
         this.username = username;
         this.password = password;
         this.authorities = authorities;

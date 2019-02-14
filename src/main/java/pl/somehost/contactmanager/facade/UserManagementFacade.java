@@ -4,15 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pl.somehost.contactmanager.domain.AdressBook;
-import pl.somehost.contactmanager.domain.PasswordsEncoder;
 import pl.somehost.contactmanager.domain.User;
-import pl.somehost.contactmanager.domain.dto.FacadeUserDto;
-import pl.somehost.contactmanager.mapper.FacadeUserDtoToUserMapper;
+import pl.somehost.contactmanager.domain.dto.UserDto;
+import pl.somehost.contactmanager.mapper.UserDtoToUserMapper;
 import pl.somehost.contactmanager.service.AuthoritiesService;
 import pl.somehost.contactmanager.service.UserService;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class UserManagementFacade {
@@ -24,19 +23,14 @@ public class UserManagementFacade {
     @Autowired
     AuthoritiesService authoritiesService;
     @Autowired
-    FacadeUserDtoToUserMapper facadeUserDtoToUserMapper;
-    @Autowired
-    private PasswordsEncoder passwordsEncoder;
+    UserDtoToUserMapper userDtoToUserMapper;
 
-    public User createUser(FacadeUserDto facadeUserDto) {
+    public User createUser(UserDto userDto) {
 
         LOGGER.info("createUser CALL");
-        facadeUserDto.setPassword(passwordsEncoder.encode(facadeUserDto.getPassword()));
-        facadeUserDto.setAdresBook(new AdressBook());
-        User user = facadeUserDtoToUserMapper.mapFacadeUserDtoToUser(facadeUserDto);
-        user.getAuthorities().stream().forEach(l->l.setUser(user));
-        User persistedUser = userService.save(user);
-        return persistedUser;
+        User user = userDtoToUserMapper.mapUserDtoToUserWhileCreatingNew(userDto);
+        return userService.save(user);
+
     }
 
     public void deleteUser(Integer userId)
@@ -45,19 +39,17 @@ public class UserManagementFacade {
         userService.deleteUser(userId);
     }
 
-    public void modifyUser(FacadeUserDto facadeUserDto) {
+    public void modifyUser(UserDto userDto) {
         LOGGER.info("modifyUser CALL");
-        Optional<User> optionalCurrentUser = userService.getUser(facadeUserDto.getId());
+
+        Optional<User> optionalCurrentUser = userService.getUser(userDto.getId());
         if(optionalCurrentUser.isPresent()){
-            User currentUser = optionalCurrentUser.get();
-            currentUser.setUsername(facadeUserDto.getUsername());
-            currentUser.setPassword(passwordsEncoder.encode(facadeUserDto.getPassword()));
-            facadeUserDto.getAuthorities().stream().forEach(l->l.setUser(currentUser));
-            currentUser.setAuthorities(facadeUserDto.getAuthorities());
-            userService.deleteUser(currentUser.getId());
-            userService.save(currentUser);
+            User user = userDtoToUserMapper.mapUserDtoToUserWhileModyfing(userDto);
+            LOGGER.info("Persisted User Authorities for userId,userName " + user.getId()+ "," + user.getUsername() + " "
+                    + user.getAuthorities().stream().map(l->l.getAuthority()).collect(Collectors.joining(",")));
+            userService.save(user);
         } else {
-            LOGGER.info("No USER ! facadeUserDto.getID() " + facadeUserDto.getId());
+            LOGGER.info("No USER ! userDto.getID() " + userDto.getId());
         }
 
     }

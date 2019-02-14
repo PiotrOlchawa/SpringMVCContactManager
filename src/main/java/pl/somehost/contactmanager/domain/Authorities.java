@@ -20,7 +20,7 @@ public class Authorities implements GrantedAuthority {
     private Roles authority;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID")
     private User user;
 

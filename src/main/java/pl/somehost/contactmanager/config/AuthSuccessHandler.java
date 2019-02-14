@@ -9,7 +9,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import pl.somehost.contactmanager.domain.AuthenticatedUserMasterRoleHeader;
+import pl.somehost.contactmanager.domain.AuthenticatedUserRoleHeader;
 import pl.somehost.contactmanager.security.SecurityUser;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
     private final ObjectMapper mapper;
 
     @Autowired
-    AuthenticatedUserMasterRoleHeader authenticatedUserMasterRoleHeader;
+    AuthenticatedUserRoleHeader authenticatedUserRoleHeader;
 
     @Autowired
     AuthSuccessHandler() {
@@ -45,7 +45,7 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
         writer.flush();*/
 
         response.addHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "User-Role");
-        response.addHeader("User-Role", authenticatedUserMasterRoleHeader.getRoles());
+        response.addHeader("User-Role", authenticatedUserRoleHeader.getRoles());
         //response.getWriter().flush();
 
     }

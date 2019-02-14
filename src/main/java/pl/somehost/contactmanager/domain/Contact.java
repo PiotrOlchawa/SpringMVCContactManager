@@ -30,6 +30,75 @@ public class Contact {
     public Contact(){
     }
 
+    public static class Builder {
+        private int id;
+        private String firstName;
+        private String lastName;
+        private String streetAdress;
+        private String zipCode;
+        private String aptNumber;
+        private String telephone;
+        private String email;
+        private AdressBook adressBook;
+
+        public Builder(){
+        }
+
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder setStreetAdress(String streetAdress) {
+            this.streetAdress = streetAdress;
+            return this;
+        }
+
+        public Builder setZipCode(String zipCode) {
+            this.zipCode = zipCode;
+            return this;
+        }
+
+        public Builder setAptNumber(String aptNumber) {
+            this.aptNumber = aptNumber;
+            return this;
+        }
+
+        public Builder setTelephone(String telephone) {
+            this.telephone = telephone;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setAdressBook(AdressBook adressBook) {
+            this.adressBook = adressBook;
+            return this;
+        }
+
+        public Contact build(){
+            return new Contact(id,firstName,lastName,streetAdress,zipCode,aptNumber,telephone,email);
+        }
+    }
+
+    private Contact(int id, String firstName, String lastName, String streetAdress,
+                   String zipCode, String aptNumber, String telephone, String email) {
+
+    }
+
     public int getId() {
         return id;
     }

@@ -22,7 +22,7 @@ public class UserMangementFacadeTest {
     public void shouldUserDtoToUserMapperTestPersistUser() {
 
         //Given
-        FacadeUserDto facadeUserDto = new FacadeUserDto();
+        UserDto facadeUserDto = new UserDto();
         Set<Authorities> authoritiesList = new HashSet<>();
         facadeUserDto.setUsername("Test");
         facadeUserDto.setPassword("Test");

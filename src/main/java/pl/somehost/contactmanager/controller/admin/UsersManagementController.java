@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.somehost.contactmanager.domain.User;
-import pl.somehost.contactmanager.domain.dto.FacadeUserDto;
+import pl.somehost.contactmanager.domain.dto.UserDto;
 import pl.somehost.contactmanager.facade.UserManagementFacade;
 import pl.somehost.contactmanager.service.UserService;
 
@@ -34,8 +34,8 @@ public class UsersManagementController {
 
     @Secured({"ROLE_ADMIN"})
     @PostMapping(value = "/facadeUser")
-    void createFacadeUser(@RequestBody FacadeUserDto facadeUserDto){
-        userManagementFacade.createUser(facadeUserDto);
+    void createFacadeUser(@RequestBody UserDto userDto){
+        userManagementFacade.createUser(userDto);
     }
 
     @Secured({"ROLE_ADMIN"})
@@ -46,7 +46,7 @@ public class UsersManagementController {
 
     @Secured({"ROLE_ADMIN"})
     @PutMapping (value = "/facadeUser")
-    void mofifFacadeUser(@RequestBody FacadeUserDto facadeUserDto){
-        userManagementFacade.modifyUser(facadeUserDto);
+    void mofifFacadeUser(@RequestBody UserDto userDto){
+        userManagementFacade.modifyUser(userDto);
     }
 }

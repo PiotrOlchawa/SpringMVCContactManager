@@ -20,7 +20,7 @@ import pl.somehost.contactmanager.service.UserDetailsServiceImpl;
 
 import java.util.Arrays;
 
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
