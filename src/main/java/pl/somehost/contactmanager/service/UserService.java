@@ -33,7 +33,7 @@ public class UserService {
         return userDao.save(user);
     }
 
-    @Secured({"ROLE_ADMIN,ROLE_USER"})
+    @Secured({"ROLE_ADMIN","ROLE_USER"})
     public User getcurrentUser() {
         User authennticatedUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return authennticatedUser;

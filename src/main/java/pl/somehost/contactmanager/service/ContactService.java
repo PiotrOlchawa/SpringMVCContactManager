@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.repository.ContactDao;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class ContactService {
@@ -17,7 +17,11 @@ public class ContactService {
         return contactDao.save(contact);
     }
 
-    public Optional<Contact> getContactForUser(int id) {
+    public List<Contact> getContactForUser(int id) {
         return contactDao.findByAdressBook_Id(id);
+    }
+
+    public void deleteContact(Integer id) {
+        contactDao.deleteById(id);
     }
 }

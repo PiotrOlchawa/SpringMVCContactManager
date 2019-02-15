@@ -5,4 +5,5 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = "pl.somehost.contactmanager")
 public class TestBeanConfig {
 
+
 }

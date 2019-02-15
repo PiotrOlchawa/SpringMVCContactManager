@@ -8,15 +8,17 @@ import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class ContactMapper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactMapper.class);
 
-    public Contact mapContactDtoToContactWhileCreateNew(ContactDto contactDto) {
+    public Contact mapContactDtoToContact(ContactDto contactDto) {
 
         User currentUser = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        LOGGER.info("BEFOREEEEEE");
 
         LOGGER.info("Current User AdressBook id " + currentUser.getAdressBook().getId());
         return new Contact.Builder()
@@ -32,8 +34,10 @@ public class ContactMapper {
                 .build();
     }
 
-    public ContactDto mapContactToContactDto(Contact contact) {
+    public List<ContactDto> mapContactListToContactDtoList(List<Contact> contactList) {
 
-        return null;
+        return contactList.stream().map(l -> new ContactDto(l.getId(), l.getFirstName(), l.getLastName(), l.getStreetAdress(),
+                l.getZipCode(), l.getAptNumber(), l.getTelephone(), l.getEmail())).collect(Collectors.toList());
     }
+
 }

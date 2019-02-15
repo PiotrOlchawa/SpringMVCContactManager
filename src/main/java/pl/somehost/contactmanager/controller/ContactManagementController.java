@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
 import pl.somehost.contactmanager.facade.ContactManagementFacade;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/user")
 public class ContactManagementController {
@@ -23,7 +25,18 @@ public class ContactManagementController {
     }
 
     @GetMapping(value = "/contact")
-    public ContactDto getContacts(@RequestParam("id") Integer userId) {
-        return contactManagementFacade.getContactsForUser(userId);
+    public List<ContactDto> getContacts() {
+        return contactManagementFacade.getContactsForCurrentUser();
     }
+    
+    @PutMapping(value = "/contact")
+    public void updateContact(@RequestBody ContactDto contactDto){
+        contactManagementFacade.updateContactForCurrentUser(contactDto);
+    }
+    
+    @DeleteMapping(value = "/contact")
+    public void deleteContact(@RequestParam("id") Integer id){
+        contactManagementFacade.deleteContactForCurrentUser(id);
+    }
+    
 }

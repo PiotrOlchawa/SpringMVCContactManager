@@ -134,6 +134,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/admin/users/**").authenticated()
+                .antMatchers("/user/contact/**").authenticated()
                 .and()
                 .formLogin()
                 .successHandler(authSuccessHandler)
