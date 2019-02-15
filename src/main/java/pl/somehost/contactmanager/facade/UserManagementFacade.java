@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.Authorities;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.UserDto;
-import pl.somehost.contactmanager.mapper.UserDtoToUserMapper;
+import pl.somehost.contactmanager.mapper.UserMapper;
 import pl.somehost.contactmanager.service.AuthoritiesService;
 import pl.somehost.contactmanager.service.UserService;
 
@@ -24,12 +24,12 @@ public class UserManagementFacade {
     @Autowired
     AuthoritiesService authoritiesService;
     @Autowired
-    UserDtoToUserMapper userDtoToUserMapper;
+    UserMapper userMapper;
 
     public User createUser(UserDto userDto) {
 
         LOGGER.info("createUser CALL");
-        User user = userDtoToUserMapper.mapUserDtoToUserWhileCreatingNew(userDto);
+        User user = userMapper.mapUserDtoToUserWhileCreatingNew(userDto);
         return userService.save(user);
     }
 
@@ -43,7 +43,7 @@ public class UserManagementFacade {
         LOGGER.info("modifyUser CALL");
         Optional<User> optionalCurrentUser = userService.getUser(userDto.getId());
         if(optionalCurrentUser.isPresent()){
-            User user = userDtoToUserMapper.mapUserDtoToUserWhileModyfing(userDto,optionalCurrentUser.get());
+            User user = userMapper.mapUserDtoToUserWhileModyfing(userDto,optionalCurrentUser.get());
             LOGGER.info("Persisted User Authorities for userId,userName " + user.getId()+ "," + user.getUsername() + " "
                     + user.getAuthorities().stream().map(Authorities::getAuthority).collect(Collectors.joining(",")));
             userService.save(user);

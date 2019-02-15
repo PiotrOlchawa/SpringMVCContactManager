@@ -78,4 +78,17 @@ public class ContactDto {
         this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return "ContactDto{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", streetAdress='" + streetAdress + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", aptNumber='" + aptNumber + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

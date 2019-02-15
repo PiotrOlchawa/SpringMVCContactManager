@@ -19,6 +19,7 @@ public class SecurityUser extends User implements UserDetails {
         this.setId(user.getId());
         this.setPassword(user.getPassword());
         this.setUsername(user.getUsername());
+        this.setAdressBook(user.getAdressBook());
         LOGGER.info("passed username : " + user.getUsername() + " password : " +user.getPassword());
     }
 

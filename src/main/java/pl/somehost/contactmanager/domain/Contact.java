@@ -90,13 +90,21 @@ public class Contact {
         }
 
         public Contact build(){
-            return new Contact(id,firstName,lastName,streetAdress,zipCode,aptNumber,telephone,email);
+            return new Contact(id,firstName,lastName,streetAdress,zipCode,aptNumber,telephone,email,adressBook);
         }
     }
 
     private Contact(int id, String firstName, String lastName, String streetAdress,
-                   String zipCode, String aptNumber, String telephone, String email) {
-
+                   String zipCode, String aptNumber, String telephone, String email,AdressBook adressBook) {
+        this.id=id;
+        this.firstName=firstName;
+        this.lastName = lastName;
+        this.streetAdress = streetAdress;
+        this.zipCode=zipCode;
+        this.aptNumber=aptNumber;
+        this.telephone=telephone;
+        this.email=email;
+        this.adressBook=adressBook;
     }
 
     public int getId() {
