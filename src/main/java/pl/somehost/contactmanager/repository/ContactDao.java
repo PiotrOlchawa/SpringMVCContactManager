@@ -11,6 +11,4 @@ public interface ContactDao extends CrudRepository<Contact,Integer> {
 
     List<Contact> findByAdressBook_Id(Integer id);
 
-
-
 }

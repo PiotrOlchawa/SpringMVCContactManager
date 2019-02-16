@@ -1,12 +1,22 @@
 package pl.somehost.contactmanager.mapper;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import pl.somehost.contactmanager.config.TestBeanConfig;
+import pl.somehost.contactmanager.domain.Authorities;
+import pl.somehost.contactmanager.domain.Roles;
+import pl.somehost.contactmanager.domain.User;
+import pl.somehost.contactmanager.domain.dto.UserDto;
 import pl.somehost.contactmanager.facade.UserManagementFacade;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -17,9 +27,9 @@ public class UserMangementFacadeTest {
     @Autowired
     UserManagementFacade userMangementFacade;
 
-  /*  @Test
+    @Test
     @WithMockUser(username = "admin", authorities = { "ROLE_ADMIN", "ROLE_USER" })
-    public void shouldUserDtoToUserMapperTestPersistUser() {
+    public void shouldUserDtoToUserMapperPersistUser() {
 
         //Given
         UserDto facadeUserDto = new UserDto();
@@ -33,7 +43,6 @@ public class UserMangementFacadeTest {
         //Then
         System.out.println("FacadeUser---" +facadeUserDto);
         System.out.println("User---" + user);
-
-
-    }*/
+        Assert.assertEquals(user.getUsername(),facadeUserDto.getUsername());
+    }
 }
