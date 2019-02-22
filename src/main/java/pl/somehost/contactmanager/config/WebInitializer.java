@@ -18,10 +18,10 @@ public class WebInitializer implements WebApplicationInitializer {
                 new AnnotationConfigWebApplicationContext();
         applicationContext.register(SpringContextInitializer.class);
 
-        ServletRegistration.Dynamic dynamic =
+        ServletRegistration.Dynamic dispatcher =
                 servletContext.addServlet("front-controller", new DispatcherServlet(applicationContext));
-        dynamic.setLoadOnStartup(1);
-        dynamic.addMapping("/");
+        dispatcher.setLoadOnStartup(1);
+        dispatcher.addMapping("/");
 
         ServletRegistration.Dynamic h2Servlet = servletContext
                 .addServlet("h2-console", new WebServlet());

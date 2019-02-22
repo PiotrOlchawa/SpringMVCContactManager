@@ -8,5 +8,4 @@ import pl.somehost.contactmanager.domain.AdressBook;
 public interface AdressBookDao extends CrudRepository<AdressBook,Integer> {
 
 
-
 }

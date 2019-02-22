@@ -26,6 +26,8 @@ public class UserManagementFacade {
     @Autowired
     UserMapper userMapper;
 
+    //@AuthenticationPrincipal
+
     public User createUser(UserDto userDto) {
 
         LOGGER.info("createUser CALL");
@@ -39,16 +41,17 @@ public class UserManagementFacade {
         userService.deleteUser(userId);
     }
 
-    public void modifyUser(UserDto userDto) {
+    public User modifyUser(UserDto userDto) {
         LOGGER.info("modifyUser CALL");
         Optional<User> optionalCurrentUser = userService.getUser(userDto.getId());
         if(optionalCurrentUser.isPresent()){
             User user = userMapper.mapUserDtoToUserWhileModyfing(userDto,optionalCurrentUser.get());
             LOGGER.info("Persisted User Authorities for userId,userName " + user.getId()+ "," + user.getUsername() + " "
                     + user.getAuthorities().stream().map(Authorities::getAuthority).collect(Collectors.joining(",")));
-            userService.save(user);
+            return userService.save(user);
         } else {
             LOGGER.info("No USER ! userDto.getID() " + userDto.getId());
+            return new User();
         }
 
     }

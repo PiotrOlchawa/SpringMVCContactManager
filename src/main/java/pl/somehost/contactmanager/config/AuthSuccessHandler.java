@@ -9,7 +9,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import pl.somehost.contactmanager.domain.AuthenticatedUser;
+import pl.somehost.contactmanager.domain.LoggedUserGetter;
 import pl.somehost.contactmanager.security.SecurityUser;
 
 import javax.servlet.http.Cookie;
@@ -24,10 +24,10 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
     private final ObjectMapper mapper;
 
     @Autowired
-    AuthenticatedUser authenticatedUser;
+    LoggedUserGetter loggedUserGetter;
 
     @Autowired
-    AuthSuccessHandler() {
+    public AuthSuccessHandler() {
         MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
         this.mapper = mappingJackson2HttpMessageConverter.getObjectMapper();
     }
@@ -36,9 +36,7 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
         response.setStatus(HttpServletResponse.SC_OK);
-
         SecurityUser userDetails = (SecurityUser) authentication.getPrincipal();
-
         LOGGER.info(userDetails.getUsername() + " got is connected ");
 
 /*        PrintWriter writer = response.getWriter();
@@ -46,8 +44,8 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
         writer.flush();*/
 
         response.addHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "User-Role");
-        response.addHeader("User-Role", authenticatedUser.getRoles());
-        response.addCookie(new Cookie("USER", authenticatedUser.getUserName()));
+        response.addHeader("User-Role", loggedUserGetter.getLoggedUserRoles());
+        response.addCookie(new Cookie("USER", loggedUserGetter.getLoggedUserName()));
         //response.getWriter().flush();
 
     }

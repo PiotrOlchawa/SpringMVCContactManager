@@ -28,20 +28,29 @@ public class UserMapper {
 
     public User mapUserDtoToUserWhileModyfing(UserDto userDto,User user) {
         userDto.setAdresBook(user.getAdressBook());
-        LOGGER.info("Authorities while mapping for userId=" +userDto.getId()+ " "
-                + userDto.getAuthorities().stream().map(l->l.getAuthority()).collect(Collectors.joining(",")));
+        String message = userDto.getAuthorities() == null ? "Authorities are null"
+                : "Authorities while mapping for userId=" +userDto.getId()+ " "
+                + userDto.getAuthorities().stream().map(l->l.getAuthority()).collect(Collectors.joining(","));
+        LOGGER.info(message);
         return createUserFromUserDto(userDto);
     }
 
     private User createUserFromUserDto(UserDto userDto){
+
+        ///////////////////////////////////////////passwordValidator  needed if null null poiner exception !!!!!!!!
+
         User user = new User(userDto.getId(),userDto.getUsername()
                 , passwordsEncoder.encode(userDto.getPassword())
+                /////////////////////////////////////////authoritiesValidator needed //////////////////////////////
                 , userDto.getAuthorities()
                 , userDto.getAdresBook());
 
+
         user.getAuthorities().stream().forEach(l->l.setUser(user));
-        LOGGER.info("Authorities while returning user to persist for userId= " + user.getId()+ " "
-                + user.getAuthorities().stream().map(l->l.getAuthority()).collect(Collectors.joining(",")));
+        String message = userDto.getAuthorities() == null ? "Authorities are null"
+                : "Authorities while returning user to persist for userId= " +userDto.getId()+ " "
+                + userDto.getAuthorities().stream().map(l->l.getAuthority()).collect(Collectors.joining(","));
+        LOGGER.info(message);
         return user;
     }
 }

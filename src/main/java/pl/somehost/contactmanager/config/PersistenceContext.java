@@ -18,7 +18,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement                                 //Enabling Annotation-Driven Transaction Management
 @PropertySource(value = "classpath:application.properties")  // Set external properties in Enviroment
-@EnableJpaRepositories(basePackages = {"pl.somehost.contactmanager.repository"}) //Configure the base packages that are scanned when Spring Data JPA
+@EnableJpaRepositories(basePackages = {"pl.somehost.contactmanager.repository"}) //Configure the base packages that are scanned with Spring Data JPA
 public class PersistenceContext {
 
     @Autowired
@@ -54,7 +54,7 @@ public class PersistenceContext {
         return entityManagerFactoryBean;
     }
 
-    @Bean // Transaction manager
+    @Bean // Transaction manager configuration
     @Autowired
     JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();

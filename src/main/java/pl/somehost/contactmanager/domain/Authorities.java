@@ -73,14 +73,5 @@ public class Authorities implements GrantedAuthority {
         result = 31 * result + (authority != null ? authority.hashCode() : 0);
         return result;
     }
-
-/*    @Override
-    public String toString() {
-        return "Authorities{" +
-                "id=" + id +
-                ", authority=" + authority +
-                ", user=" + user +
-                '}';
-    }*/
 }
 

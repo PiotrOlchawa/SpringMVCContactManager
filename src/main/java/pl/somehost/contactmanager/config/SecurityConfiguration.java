@@ -20,7 +20,7 @@ import pl.somehost.contactmanager.service.UserDetailsServiceImpl;
 
 import java.util.Arrays;
 
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity(debug = true)
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -44,9 +44,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
-        //logger.info("INFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFO");
-        //logger.debug("DEBBBBBBBBBBBBBBBBBBUG");
-        //System.out.println("LOGGGGGGGGGGGGGGGGGGGGGGGGGGG" + Logger.getRootLogger().getName());
         return super.authenticationManagerBean();
     }
 
@@ -133,8 +130,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin/users/**").authenticated()
-                .antMatchers("/user/contact/**").authenticated()
+                .antMatchers("/front-admin/users/**").authenticated()
+                .antMatchers("/front-user/contact/**").authenticated()
                 .and()
                 .formLogin()
                 .successHandler(authSuccessHandler)

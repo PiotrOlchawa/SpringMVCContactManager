@@ -2,8 +2,8 @@ package pl.somehost.contactmanager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import pl.somehost.contactmanager.domain.LoggedUserGetter;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.repository.UserDao;
 
@@ -14,7 +14,9 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
+    @Autowired
+    private LoggedUserGetter loggedUserGetter;
 
     public UserService() {
     }
@@ -35,8 +37,7 @@ public class UserService {
 
     @Secured({"ROLE_ADMIN","ROLE_USER"})
     public User getcurrentUser() {
-        User authennticatedUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return authennticatedUser;
+        return loggedUserGetter.getLoggedUser();
     }
 
     @Secured({"ROLE_USER"})
@@ -48,8 +49,7 @@ public class UserService {
     }
 
     private boolean checkForUserRightsToAccessOrModyfing(User user){
-        User authennticatedUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Integer authennticatedUserId = authennticatedUser.getId(); //get id logged in username
+        Integer authennticatedUserId = loggedUserGetter.getLoggedUser().getId(); //get id logged in username
         return user.getId() == authennticatedUserId;
     }
 

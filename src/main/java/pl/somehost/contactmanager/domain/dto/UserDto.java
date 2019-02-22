@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.AdressBook;
 import pl.somehost.contactmanager.domain.Authorities;
 
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Component
@@ -13,7 +14,9 @@ public class UserDto {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDto.class);
     private int id;
+    @Size(min = 3)
     private String username;
+    @Size(min = 7)
     private String password;
     private Set<Authorities> authorities;
     private AdressBook adresBook;
