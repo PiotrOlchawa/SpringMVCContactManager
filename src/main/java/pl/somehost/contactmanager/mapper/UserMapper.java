@@ -19,32 +19,28 @@ public class UserMapper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserMapper.class);
 
-    public User mapUserDtoToUserWhileCreatingNew(UserDto userDto) {
+    public User mapNewUserDtoToUser(UserDto userDto) {
         if(userDto.getAdresBook() == null){
             userDto.setAdresBook(new AdressBook());
         }
-        return createUserFromUserDto(userDto);
+        return mapAllUserDtoToUser(userDto);
     }
 
-    public User mapUserDtoToUserWhileModyfing(UserDto userDto,User user) {
+    public User mapExistedUserDtoToUser(UserDto userDto, User user) {
         userDto.setAdresBook(user.getAdressBook());
         String message = userDto.getAuthorities() == null ? "Authorities are null"
                 : "Authorities while mapping for userId=" +userDto.getId()+ " "
                 + userDto.getAuthorities().stream().map(l->l.getAuthority()).collect(Collectors.joining(","));
         LOGGER.info(message);
-        return createUserFromUserDto(userDto);
+        return mapAllUserDtoToUser(userDto);
     }
 
-    private User createUserFromUserDto(UserDto userDto){
-
-        ///////////////////////////////////////////passwordValidator  needed if null null poiner exception !!!!!!!!
+    private User mapAllUserDtoToUser(UserDto userDto){
 
         User user = new User(userDto.getId(),userDto.getUsername()
                 , passwordsEncoder.encode(userDto.getPassword())
-                /////////////////////////////////////////authoritiesValidator needed //////////////////////////////
                 , userDto.getAuthorities()
                 , userDto.getAdresBook());
-
 
         user.getAuthorities().stream().forEach(l->l.setUser(user));
         String message = userDto.getAuthorities() == null ? "Authorities are null"

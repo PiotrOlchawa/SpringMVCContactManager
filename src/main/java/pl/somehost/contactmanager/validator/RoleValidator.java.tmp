@@ -1,0 +1,26 @@
+package pl.somehost.contactmanager.validator;
+
+import pl.somehost.contactmanager.domain.Authorities;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import java.util.Set;
+
+
+public class RoleValidator implements
+        ConstraintValidator<RoleConstraint, Set<Authorities>> {
+
+    @Override
+    public void initialize(RoleConstraint role) {
+    }
+
+    @Override
+    public boolean isValid(Set<Authorities> authoritiesSet,
+                           ConstraintValidatorContext cxt) {
+        
+        authoritiesSet.stream().map(l->l.getAuthority().)
+        
+        return passwordField != null && passwordField.matches("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{7,}");
+        
+    }
+}

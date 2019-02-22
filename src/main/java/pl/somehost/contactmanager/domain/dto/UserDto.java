@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.AdressBook;
 import pl.somehost.contactmanager.domain.Authorities;
+import pl.somehost.contactmanager.validator.PasswordConstraint;
 
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -16,8 +17,9 @@ public class UserDto {
     private int id;
     @Size(min = 3)
     private String username;
-    @Size(min = 7)
+    @PasswordConstraint // Custom annotation it could be replaced with @Pattern
     private String password;
+    // ToDo: Validating by validator Set<Authorities> against ENUM Roles ?
     private Set<Authorities> authorities;
     private AdressBook adresBook;
 
@@ -74,6 +76,4 @@ public class UserDto {
                 ", adresBook=" + adresBook + "\n" +
                 '}';
     }
-
-
 }

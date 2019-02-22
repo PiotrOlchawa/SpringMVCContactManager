@@ -31,7 +31,7 @@ public class UserManagementFacade {
     public User createUser(UserDto userDto) {
 
         LOGGER.info("createUser CALL");
-        User user = userMapper.mapUserDtoToUserWhileCreatingNew(userDto);
+        User user = userMapper.mapNewUserDtoToUser(userDto);
         return userService.save(user);
     }
 
@@ -45,7 +45,7 @@ public class UserManagementFacade {
         LOGGER.info("modifyUser CALL");
         Optional<User> optionalCurrentUser = userService.getUser(userDto.getId());
         if(optionalCurrentUser.isPresent()){
-            User user = userMapper.mapUserDtoToUserWhileModyfing(userDto,optionalCurrentUser.get());
+            User user = userMapper.mapExistedUserDtoToUser(userDto,optionalCurrentUser.get());
             LOGGER.info("Persisted User Authorities for userId,userName " + user.getId()+ "," + user.getUsername() + " "
                     + user.getAuthorities().stream().map(Authorities::getAuthority).collect(Collectors.joining(",")));
             return userService.save(user);

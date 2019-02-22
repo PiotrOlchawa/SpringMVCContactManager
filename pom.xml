@@ -60,14 +60,6 @@
             <version>${spring.version}</version>
         </dependency>
 
-
-
-<!--        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons-core</artifactId>
-            <version>1.4.1.RELEASE</version>
-        </dependency>-->
-
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
@@ -196,6 +188,13 @@
             <artifactId>hibernate-validator</artifactId>
             <version>6.0.9.Final</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.14.Final</version>
+        </dependency>
+
 
         <!--Thmeleaf-->
         <dependency>
