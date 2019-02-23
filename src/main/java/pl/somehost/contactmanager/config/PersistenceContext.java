@@ -3,7 +3,6 @@ package pl.somehost.contactmanager.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -16,12 +15,11 @@ import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
 
 @Configuration
-@EnableTransactionManagement                                 //Enabling Annotation-Driven Transaction Management
-@PropertySource(value = "classpath:application.properties")  // Set external properties in Enviroment
+@EnableTransactionManagement  //Enabling Annotation-Driven Transaction Management
 @EnableJpaRepositories(basePackages = {"pl.somehost.contactmanager.repository"}) //Configure the base packages that are scanned with Spring Data JPA
 public class PersistenceContext {
 
-    @Autowired
+    @Autowired // Autowiring defined "@PropertySource"
     Environment env;
 
     @Bean  // Datasource configuration

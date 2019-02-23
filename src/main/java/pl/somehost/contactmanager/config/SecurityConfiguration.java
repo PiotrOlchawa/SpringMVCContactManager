@@ -24,10 +24,6 @@ import java.util.Arrays;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    //private Logger logger= Logger.getLogger(SecurityConfiguration.class);
-
-    private static final String LOGIN_PATH = "/user/login";
-
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired

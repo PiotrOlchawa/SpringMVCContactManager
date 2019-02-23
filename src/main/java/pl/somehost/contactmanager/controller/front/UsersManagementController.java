@@ -5,7 +5,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import pl.somehost.contactmanager.domain.dto.UserDto;
-import pl.somehost.contactmanager.exception.TestException;
 import pl.somehost.contactmanager.facade.UserManagementFacade;
 import pl.somehost.contactmanager.service.UserService;
 
@@ -29,12 +28,11 @@ public class UsersManagementController {
 
     @PostMapping(value = "/user")
     public void createUser(@Valid @RequestBody UserDto userDto) {
-        throw new TestException("Test Exception");
-        //userManagementFacade.createUser(userDto);
+        userManagementFacade.createUser(userDto);
     }
 
     @DeleteMapping(value = "/user")
-    public void deleteUser(@RequestParam("id") Integer userId) {
+    public void deleteUser(@RequestParam(required = true, value = "id" ,defaultValue = "0") Integer userId) {
         userManagementFacade.deleteUser(userId);
     }
 

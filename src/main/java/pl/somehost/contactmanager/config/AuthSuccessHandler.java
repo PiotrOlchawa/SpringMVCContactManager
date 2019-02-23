@@ -42,12 +42,11 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
 /*        PrintWriter writer = response.getWriter();
         mapper.writeValue(writer, authenticatedUserMasterRoleHeader.getRoles());
         writer.flush();*/
+        //response.getWriter().flush();
 
         response.addHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "User-Role");
         response.addHeader("User-Role", loggedUserGetter.getLoggedUserRoles());
         response.addCookie(new Cookie("USER", loggedUserGetter.getLoggedUserName()));
-        //response.getWriter().flush();
-
     }
 }
 

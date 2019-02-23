@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @ComponentScan(basePackages = {"pl.somehost.contactmanager.*"})
+
 @EnableWebMvc
 public class SpringContextInitializer implements ApplicationContextAware {
 
