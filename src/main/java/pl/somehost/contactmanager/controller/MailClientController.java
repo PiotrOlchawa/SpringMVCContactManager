@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.somehost.contactmanager.domain.Message;
-import pl.somehost.contactmanager.service.SimpleMailContactMessageService;
+import pl.somehost.contactmanager.service.MailContactMessageService;
 
 @RestController
 @Secured({"ROLE_ADMIN", "ROLE_USER"})
 public class MailClientController {
 
     @Autowired
-    SimpleMailContactMessageService contactMailService;
+    MailContactMessageService contactMailService;
 
     @PostMapping(value = "/mail/{contactId}")
     public void sendMailToContact(@PathVariable Integer contactId, @RequestBody Message message) {

@@ -10,11 +10,13 @@ import pl.somehost.contactmanager.domain.Mail;
 import pl.somehost.contactmanager.domain.Message;
 import pl.somehost.contactmanager.mapper.ContactToMailMapper;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class SimpleMailContactMessageService implements MailContactMessageService {
 
     @Autowired
