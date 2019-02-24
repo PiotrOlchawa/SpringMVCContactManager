@@ -3,6 +3,7 @@ package pl.somehost.contactmanager.domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,8 @@ public class LoggedUserGetter {
 
     @Autowired
     IAuthenticationFacade authenticationFacade;
+    @Value("${role.joining.character}")
+    private String roleJoiningCharacter;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggedUserGetter.class);
 
@@ -34,6 +37,6 @@ public class LoggedUserGetter {
     public String getLoggedUserRoles() {
         Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) authenticationFacade.getAuthentication().getAuthorities();
         LOGGER.info("Logged user userName and id " + getLoggedUser().getUsername() + " " + getLoggedUser().getId());
-        return authorities.stream().map(l -> l.getAuthority()).collect(Collectors.joining(","));
+        return authorities.stream().map(l -> l.getAuthority()).collect(Collectors.joining(roleJoiningCharacter));
     }
 }

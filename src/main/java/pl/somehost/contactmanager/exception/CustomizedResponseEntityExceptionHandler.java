@@ -1,5 +1,6 @@
 package pl.somehost.contactmanager.exception;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,9 @@ import java.util.stream.Collectors;
 @RestController
 @ControllerAdvice  //Apply to all controllers
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @Value("${role.joining.character}")
+    private String roleJoiningCharacter;
 
     @ExceptionHandler(Exception.class)
     ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
@@ -51,7 +55,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
             MethodArgumentNotValidException ex,HttpHeaders headers, HttpStatus status, WebRequest request) {
         BindingResult result = ex.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
-        String error = fieldErrors.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(" "));
+        String error = fieldErrors.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(roleJoiningCharacter));
         ExceptionReponse exceptionReponse =
                 new ExceptionReponse(new Date(),"Validation Failed !",error);
         return new ResponseEntity<>(exceptionReponse, HttpStatus.BAD_REQUEST);

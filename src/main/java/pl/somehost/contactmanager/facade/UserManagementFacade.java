@@ -50,7 +50,7 @@ public class UserManagementFacade {
         if(optionalCurrentUser.isPresent()){
             User user = userMapper.mapExistedUserDtoToUser(userDto,optionalCurrentUser.get());
             LOGGER.info("Persisted User Authorities for userId,userName " + user.getId()+ "," + user.getUsername() + " "
-                    + user.getAuthorities().stream().map(Authorities::getAuthority).collect(Collectors.joining(",")));
+                    + user.getAuthorities().stream().map(Authorities::getAuthority).collect(Collectors.joining(roleJoiningCharacter)));
             return userService.save(user);
         } else {
             LOGGER.info("No USER ! userDto.getID() " + userDto.getId());
