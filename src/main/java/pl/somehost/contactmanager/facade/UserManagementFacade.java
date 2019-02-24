@@ -3,6 +3,7 @@ package pl.somehost.contactmanager.facade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.Authorities;
 import pl.somehost.contactmanager.domain.User;
@@ -20,11 +21,13 @@ public class UserManagementFacade {
     public static final Logger LOGGER = LoggerFactory.getLogger(UserManagementFacade.class);
 
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    AuthoritiesService authoritiesService;
+    private AuthoritiesService authoritiesService;
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
+    @Value("${role.joining.character}")
+    private String roleJoiningCharacter;
 
     //@AuthenticationPrincipal
 

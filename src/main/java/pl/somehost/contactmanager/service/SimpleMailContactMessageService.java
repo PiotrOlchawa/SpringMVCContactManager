@@ -19,8 +19,10 @@ public class SimpleMailContactMessageService implements MailContactMessageServic
     ContactService contactService;
 
     @Override
-    public void send(Integer contactId, Message message) {
+    public void sendPersistedMessage(Integer contactId, Message message) {
         Contact contact = contactService.getContact(contactId);
+        contact.getMessageList().add(message);
+        contactService.saveContact(contact);
         mailClient.sendMail(contactToMailMapper.mapContactDtoToMail(contact,new Mail(message)));
     }
 }

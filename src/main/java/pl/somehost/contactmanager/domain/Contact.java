@@ -1,6 +1,7 @@
 package pl.somehost.contactmanager.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "contact")
 @Table(name = "contact")
@@ -26,6 +27,13 @@ public class Contact {
     @ManyToOne
     @JoinColumn(name = "adressbook_id")
     private AdressBook adressBook;
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            targetEntity = Message.class,
+            mappedBy = "contact"
+    )
+    private List<Message> messageList;
 
     public Contact(){
     }
@@ -40,6 +48,7 @@ public class Contact {
         private String telephone;
         private String email;
         private AdressBook adressBook;
+        private List<Message> messageList;
 
         public Builder(){
         }
@@ -89,13 +98,18 @@ public class Contact {
             return this;
         }
 
+        public Builder setMessageList(List<Message> messageList) {
+            this.messageList = messageList;
+            return this;
+        }
+
         public Contact build(){
-            return new Contact(id,firstName,lastName,streetAdress,zipCode,aptNumber,telephone,email,adressBook);
+            return new Contact(id,firstName,lastName,streetAdress,zipCode,aptNumber,telephone,email,adressBook,messageList);
         }
     }
 
     private Contact(int id, String firstName, String lastName, String streetAdress,
-                   String zipCode, String aptNumber, String telephone, String email,AdressBook adressBook) {
+                   String zipCode, String aptNumber, String telephone, String email,AdressBook adressBook,List<Message> messageList) {
         this.id=id;
         this.firstName=firstName;
         this.lastName = lastName;
@@ -105,6 +119,7 @@ public class Contact {
         this.telephone=telephone;
         this.email=email;
         this.adressBook=adressBook;
+        this.messageList = messageList;
     }
 
     public int getId() {
@@ -177,5 +192,13 @@ public class Contact {
 
     public void setAdressBook(AdressBook adressBook) {
         this.adressBook = adressBook;
+    }
+
+    public List<Message> getMessageList() {
+        return messageList;
+    }
+
+    public void setMessageList(List<Message> messageList) {
+        this.messageList = messageList;
     }
 }

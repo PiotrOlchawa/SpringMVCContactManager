@@ -29,6 +29,6 @@ public class ContactMailServiceTest {
         Contact persistedContact = contactService.saveContact(contact);
         Message message = new Message();
         message.setMessage("Test message");
-        contactMailService.send(persistedContact.getId(),message);
+        contactMailService.sendPersistedMessage(persistedContact.getId(),message);
     }
 }

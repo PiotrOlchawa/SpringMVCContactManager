@@ -18,7 +18,7 @@ public class MailClientController {
 
     @PostMapping(value = "/mail/{contactId}")
     public void sendMailToContact(@PathVariable Integer contactId, @RequestBody Message message) {
-        contactMailService.send(contactId, message);
+        contactMailService.sendPersistedMessage(contactId, message);
     }
 
 }
