@@ -11,10 +11,13 @@ import pl.somehost.contactmanager.config.TestBeanConfig;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.Message;
 
+import javax.transaction.Transactional;
+
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestBeanConfig.class})
 @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN", "ROLE_USER"})
+@Transactional
 public class ContactMailServiceTest {
 
     @Autowired
