@@ -25,8 +25,12 @@ public class ContactService {
         return contactDao.save(contactMapper.mapContactDtoToContact(contactDto));
     }
 
-    public List<Contact> getContact(int id) {
+    public List<Contact> getContactUsingAdressBookId(int id) {
         return contactDao.findByAdressBook_Id(id);
+    }
+
+    public Contact getContact(Integer id){
+        return contactDao.findById(id).get();
     }
 
     public void deleteContact(Integer id) {

@@ -38,7 +38,7 @@ public class ContactManagementFacade {
     public List<ContactDto> getContactsForCurrentUser() {
         User user = userService.getcurrentUser();
 
-        List<Contact> contactList = contactService.getContact(user.getAdressBook().getId());
+        List<Contact> contactList = contactService.getContactUsingAdressBookId(user.getAdressBook().getId());
         List<ContactDto> contactDtoList = new ArrayList<>();
         if(contactList.size()>0){
             contactDtoList =  contactMapper.mapContactListToContactDtoList(contactList);
@@ -48,7 +48,7 @@ public class ContactManagementFacade {
 
     public void updateContactForCurrentUser(ContactDto contactDto) {
         User user = userService.getcurrentUser();
-        List<Contact> contactList = contactService.getContact(user.getAdressBook().getId());
+        List<Contact> contactList = contactService.getContactUsingAdressBookId(user.getAdressBook().getId());
         Optional<Contact> contact = contactList.stream().filter(l->l.getId()==contactDto.getId()).findFirst();
         if(contact.isPresent()){
             Contact contactToPersist = contactMapper.mapContactDtoToContact(contactDto);
@@ -61,7 +61,7 @@ public class ContactManagementFacade {
 
     public void deleteContactForCurrentUser(Integer id) {
         User user = userService.getcurrentUser();
-        List<Contact> contactList = contactService.getContact(user.getAdressBook().getId());
+        List<Contact> contactList = contactService.getContactUsingAdressBookId(user.getAdressBook().getId());
         Optional<Contact> contact = contactList.stream().filter(l->l.getId()==id).findFirst();
         if(contact.isPresent()){
             LOGGER.info("deleteContactForCurrentUser : Delete contact to be persisted " +contact.get().getId() + "," + contact.get().getFirstName());
