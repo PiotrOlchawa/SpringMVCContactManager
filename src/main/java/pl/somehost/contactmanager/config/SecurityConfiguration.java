@@ -81,32 +81,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-      /*  http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/admin/users").hasRole("ADMIN")
-                .anyRequest().hasAnyRole("USER","ADMIN")
-                .and()
-                .authenticationProvider(authenticationProvider())
-                .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint)
-                .and()
-                .formLogin()
-                .permitAll()
-                .loginProcessingUrl(LOGIN_PATH)
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .successHandler(authSuccessHandler)
-                .failureHandler(authFailureHandler)
-                .and()
-                .logout()
-                .permitAll()
-                .logoutRequestMatcher(new AntPathRequestMatcher(LOGIN_PATH, "DELETE"))
-                .logoutSuccessHandler(logoutSuccessHandler)
-                .and()
-                .sessionManagement()
-                .maximumSessions(1);
-
-        http.authorizeRequests().anyRequest().authenticated();*/
 
         //Enable H2 console
         http.authorizeRequests().antMatchers("/").permitAll()

@@ -1,6 +1,8 @@
 package pl.somehost.contactmanager.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity(name = "contact")
@@ -10,8 +12,10 @@ public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotNull
     @Column(name = "firstName")
     private String firstName;
+    @NotNull
     @Column(name = "lastName")
     private String lastName;
     @Column(name = "streetAdress")
@@ -23,6 +27,7 @@ public class Contact {
     @Column(name = "telephone")
     private String telephone;
     @Column(name = "email")
+    @Email
     private String email;
     @ManyToOne
     @JoinColumn(name = "adressbook_id")
@@ -53,47 +58,47 @@ public class Contact {
         public Builder(){
         }
 
-        public Builder setId(int id) {
+        public Builder id(int id) {
             this.id = id;
             return this;
         }
 
-        public Builder setFirstName(String firstName) {
+        public Builder firstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public Builder setLastName(String lastName) {
+        public Builder lastName(String lastName) {
             this.lastName = lastName;
             return this;
         }
 
-        public Builder setStreetAdress(String streetAdress) {
+        public Builder streetAdress(String streetAdress) {
             this.streetAdress = streetAdress;
             return this;
         }
 
-        public Builder setZipCode(String zipCode) {
+        public Builder zipCode(String zipCode) {
             this.zipCode = zipCode;
             return this;
         }
 
-        public Builder setAptNumber(String aptNumber) {
+        public Builder aptNumber(String aptNumber) {
             this.aptNumber = aptNumber;
             return this;
         }
 
-        public Builder setTelephone(String telephone) {
+        public Builder telephone(String telephone) {
             this.telephone = telephone;
             return this;
         }
 
-        public Builder setEmail(String email) {
+        public Builder email(String email) {
             this.email = email;
             return this;
         }
 
-        public Builder setAdressBook(AdressBook adressBook) {
+        public Builder adressBook(AdressBook adressBook) {
             this.adressBook = adressBook;
             return this;
         }

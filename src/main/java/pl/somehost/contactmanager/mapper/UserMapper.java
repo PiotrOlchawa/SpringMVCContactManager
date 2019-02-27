@@ -22,34 +22,19 @@ public class UserMapper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserMapper.class);
 
-    public User mapNewUserDtoToUser(UserDto userDto) {
+    public User mapUserDtoToUser(UserDto userDto) {
         if(userDto.getAdresBook() == null){
             userDto.setAdresBook(new AdressBook());
         }
-        return mapAllUserDtoToUser(userDto);
-    }
-
-    public User mapExistedUserDtoToUser(UserDto userDto, User user) {
-        userDto.setAdresBook(user.getAdressBook());
-        String message = userDto.getAuthorities() == null ? "Authorities are null"
-                : "Authorities while mapping for userId=" +userDto.getId()+ " "
-                + userDto.getAuthorities().stream().map(l->l.getAuthority()).collect(Collectors.joining(roleJoiningCharacter));
-        LOGGER.info(message);
-        return mapAllUserDtoToUser(userDto);
-    }
-
-    private User mapAllUserDtoToUser(UserDto userDto){
-
         User user = new User(userDto.getId(),userDto.getUsername()
                 , passwordsEncoder.encode(userDto.getPassword())
                 , userDto.getAuthorities()
                 , userDto.getAdresBook());
 
         user.getAuthorities().stream().forEach(l->l.setUser(user));
-        String message = userDto.getAuthorities() == null ? "Authorities are null"
+        LOGGER.info( userDto.getAuthorities() == null ? "Authorities are null"
                 : "Authorities while returning user to persist for userId= " +userDto.getId()+ " "
-                + userDto.getAuthorities().stream().map(l->l.getAuthority()).collect(Collectors.joining(roleJoiningCharacter));
-        LOGGER.info(message);
+                + userDto.getAuthorities().stream().map(l->l.getAuthority()).collect(Collectors.joining(roleJoiningCharacter)));
         return user;
     }
 }

@@ -6,17 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
+import pl.somehost.contactmanager.mapper.ContactMapper;
 import pl.somehost.contactmanager.service.ContactService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @Secured({"ROLE_ADMIN"})
 public class ContactController {
 
     @Autowired
-    ContactService contactService;
+    private ContactService contactService;
+    @Autowired
+    private ContactMapper contactMapper;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
@@ -27,8 +29,9 @@ public class ContactController {
     }
 
     @GetMapping(value = "/contact/{id}")
-    public List<ContactDto> getContacts(@PathVariable Integer id) {
-        return contactService.getContacts(id);
+    public ContactDto getContacts(@PathVariable Integer id) {
+
+        return contactMapper.mapContactToContactDto(contactService.getContact(id));
     }
 
     @PutMapping(value = "/contact")

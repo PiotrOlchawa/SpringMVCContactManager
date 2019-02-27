@@ -26,15 +26,15 @@ public class ContactMapper {
 
         LOGGER.info("Current User AdressBook id " + currentUser.getAdressBook().getId());
         return new Contact.Builder()
-                .setFirstName(contactDto.getFirstName())
-                .setLastName(contactDto.getLastName())
-                .setId(contactDto.getId())
-                .setAptNumber(contactDto.getAptNumber())
-                .setEmail(contactDto.getEmail())
-                .setStreetAdress(contactDto.getStreetAdress())
-                .setTelephone(contactDto.getTelephone())
-                .setZipCode(contactDto.getZipCode())
-                .setAdressBook(currentUser.getAdressBook())
+                .firstName(contactDto.getFirstName())
+                .lastName(contactDto.getLastName())
+                .id(contactDto.getId())
+                .aptNumber(contactDto.getAptNumber())
+                .email(contactDto.getEmail())
+                .streetAdress(contactDto.getStreetAdress())
+                .telephone(contactDto.getTelephone())
+                .zipCode(contactDto.getZipCode())
+                .adressBook(currentUser.getAdressBook())
                 .build();
     }
 
@@ -44,4 +44,17 @@ public class ContactMapper {
                 l.getZipCode(), l.getAptNumber(), l.getTelephone(), l.getEmail())).collect(Collectors.toList());
     }
 
+    public ContactDto mapContactToContactDto(Contact contact) {
+
+        return new ContactDto.Builder()
+                .id(contact.getId())
+                .firstName(contact.getFirstName())
+                .lastName(contact.getLastName())
+                .streetAdress(contact.getStreetAdress())
+                .zipCode(contact.getZipCode())
+                .aptNumber(contact.getAptNumber())
+                .telephone(contact.getTelephone())
+                .email(contact.getEmail())
+                .build();
+    }
 }

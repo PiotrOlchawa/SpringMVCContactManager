@@ -21,7 +21,7 @@ import javax.transaction.Transactional;
 public class ContactMailServiceTest {
 
     @Autowired
-    private SimpleMailContactMessageService contactMailService;
+    private MailContactMessageService contactMailService;
     @Autowired
     private ContactService contactService;
 

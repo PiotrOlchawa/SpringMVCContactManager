@@ -4,18 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
+import pl.somehost.contactmanager.exception.ContactNotFoundException;
 import pl.somehost.contactmanager.mapper.ContactMapper;
 import pl.somehost.contactmanager.repository.ContactDao;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContactService {
 
     @Autowired
-    ContactDao contactDao;
+    private ContactDao contactDao;
     @Autowired
-    ContactMapper contactMapper;
+    private ContactMapper contactMapper;
 
     public Contact saveContact(Contact contact) {
         return contactDao.save(contact);
@@ -25,28 +27,25 @@ public class ContactService {
         return contactDao.save(contactMapper.mapContactDtoToContact(contactDto));
     }
 
-    public List<Contact> getContactUsingAdressBookId(int id) {
+    public List<Contact> getContactByAdressBookId(int id) {
         return contactDao.findByAdressBook_Id(id);
-    }
-
-    public Contact getContact(Integer id){
-        return contactDao.findById(id).get();
     }
 
     public void deleteContact(Integer id) {
         contactDao.deleteById(id);
     }
 
-    public void createContact(ContactDto contactDto) {
+    public Contact getContact(Integer id) {
+        Optional<Contact> optionalContact = Optional.ofNullable(contactDao.findById(id))
+                .orElseThrow(() -> new ContactNotFoundException(id, "was not found"));
+        return optionalContact.get();
     }
 
-    public List<ContactDto> getContacts(Integer id) {
-    return null;
-    }
-
-    public void updateContact(ContactDto contactDto) {
+    public Contact updateContact(ContactDto contactDto) {
+        return contactDao.save(contactMapper.mapContactDtoToContact(contactDto));
     }
 
     public void deleteContactr(Integer id) {
+        contactDao.deleteById(id);
     }
 }
