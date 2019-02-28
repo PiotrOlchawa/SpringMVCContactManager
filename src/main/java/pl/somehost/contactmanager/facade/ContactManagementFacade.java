@@ -4,14 +4,20 @@ package pl.somehost.contactmanager.facade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
+import pl.somehost.contactmanager.domain.responce.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.mapper.ContactMapper;
 import pl.somehost.contactmanager.service.ContactService;
 import pl.somehost.contactmanager.service.UserService;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,14 +31,27 @@ public class ContactManagementFacade {
     private UserService userService;
     @Autowired
     private ContactMapper contactMapper;
+    @Autowired
+    private ContactManagerResponseMessage contactManagerResponseMessage;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactManagementFacade.class);
 
-    public Contact createContact(ContactDto contactDto) {
-        LOGGER.info("Facade Dto " +contactDto.toString());
+    public ResponseEntity<ContactManagerResponseMessage> createContact(ContactDto contactDto) {
+        LOGGER.info("Facade Dto " + contactDto.toString());
         Contact contact = contactMapper.mapContactDtoToContact(contactDto);
-        LOGGER.info("Persisted contactDto id, "+contactDto.getId() +","+contactDto.getFirstName() + " Persisted contact id, "+contact.getId() +","+contact.getFirstName());
-        return contactService.saveContact(contact);
+        LOGGER.info("Persisted contactDto id, " + contactDto.getId() + "," + contactDto.getFirstName() + " Persisted contact id, " + contact.getId() + "," + contact.getFirstName());
+        Contact persistedContact = contactService.saveContact(contact);
+        URI location = ServletUriComponentsBuilder.fromCurrentServletMapping()
+                .path("")
+                .path("/path")
+                .buildAndExpand(persistedContact.getId())
+                .toUri();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setLocation(location);
+        responseHeaders.set("MyResponseHeader", "Link to resource");
+        LOGGER.info("location " + location.toString());
+        contactManagerResponseMessage.setMessage("Contact was created: " + location.toString());
+        return new ResponseEntity<ContactManagerResponseMessage>(contactManagerResponseMessage,responseHeaders, HttpStatus.CREATED);
     }
 
     public List<ContactDto> getContactsForCurrentUser() {
@@ -40,8 +59,8 @@ public class ContactManagementFacade {
 
         List<Contact> contactList = contactService.getContactByAdressBookId(user.getAdressBook().getId());
         List<ContactDto> contactDtoList = new ArrayList<>();
-        if(contactList.size()>0){
-            contactDtoList =  contactMapper.mapContactListToContactDtoList(contactList);
+        if (contactList.size() > 0) {
+            contactDtoList = contactMapper.mapContactListToContactDtoList(contactList);
         }
         return contactDtoList;
     }
@@ -49,22 +68,22 @@ public class ContactManagementFacade {
     public void updateContactForCurrentUser(ContactDto contactDto) {
         User user = userService.getcurrentUser();
         List<Contact> contactList = contactService.getContactByAdressBookId(user.getAdressBook().getId());
-        Optional<Contact> contact = contactList.stream().filter(l->l.getId()==contactDto.getId()).findFirst();
-        if(contact.isPresent()){
+        Optional<Contact> contact = contactList.stream().filter(l -> l.getId() == contactDto.getId()).findFirst();
+        if (contact.isPresent()) {
             Contact contactToPersist = contactMapper.mapContactDtoToContact(contactDto);
-            LOGGER.info("updateContactForCurrentUser : Update contact to be persisted " +contactToPersist.getId() + "," + contactToPersist.getFirstName());
+            LOGGER.info("updateContactForCurrentUser : Update contact to be persisted " + contactToPersist.getId() + "," + contactToPersist.getFirstName());
             contactService.saveContact(contactToPersist);
             return;
         }
-        LOGGER.info("updateContactForCurrentUser : Contact is not present " +contactDto.getId());
+        LOGGER.info("updateContactForCurrentUser : Contact is not present " + contactDto.getId());
     }
 
     public void deleteContactForCurrentUser(Integer id) {
         User user = userService.getcurrentUser();
         List<Contact> contactList = contactService.getContactByAdressBookId(user.getAdressBook().getId());
-        Optional<Contact> contact = contactList.stream().filter(l->l.getId()==id).findFirst();
-        if(contact.isPresent()){
-            LOGGER.info("deleteContactForCurrentUser : Delete contact to be persisted " +contact.get().getId() + "," + contact.get().getFirstName());
+        Optional<Contact> contact = contactList.stream().filter(l -> l.getId() == id).findFirst();
+        if (contact.isPresent()) {
+            LOGGER.info("deleteContactForCurrentUser : Delete contact to be persisted " + contact.get().getId() + "," + contact.get().getFirstName());
             contactService.deleteContact(id);
             return;
         }

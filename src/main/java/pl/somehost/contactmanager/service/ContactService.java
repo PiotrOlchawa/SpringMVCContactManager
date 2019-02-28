@@ -48,4 +48,8 @@ public class ContactService {
     public void deleteContactr(Integer id) {
         contactDao.deleteById(id);
     }
+
+    public List<Contact> getContacts() {
+        return contactDao.findAll();
+    }
 }

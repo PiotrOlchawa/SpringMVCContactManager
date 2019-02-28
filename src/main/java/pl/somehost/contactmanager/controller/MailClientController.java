@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pl.somehost.contactmanager.domain.MailResponse;
 import pl.somehost.contactmanager.domain.Message;
+import pl.somehost.contactmanager.domain.responce.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.service.MailContactMessageService;
 
 @RestController
@@ -16,11 +16,14 @@ public class MailClientController {
 
     @Autowired
     MailContactMessageService contactMailService;
+    @Autowired
+    ContactManagerResponseMessage contactManagerResponseMessage;
 
     @PostMapping(value = "/mail/{contactId}")
-    public MailResponse sendMailToContact(@PathVariable Integer contactId, @RequestBody Message message) {
+    public ContactManagerResponseMessage sendMailToContact(@PathVariable Integer contactId, @RequestBody Message message) {
         contactMailService.sendPersistedMessage(contactId, message);
-        return new MailResponse("Massage was send");
+        contactManagerResponseMessage.setMessage("Massage was send");
+        return contactManagerResponseMessage;
     }
 
 }

@@ -10,6 +10,7 @@ import pl.somehost.contactmanager.mapper.ContactMapper;
 import pl.somehost.contactmanager.service.ContactService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Secured({"ROLE_ADMIN"})
@@ -22,25 +23,29 @@ public class ContactController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactController.class);
 
-    @PostMapping(value ="/contact")
-    public void createContact(@Valid @RequestBody ContactDto contactDto){
+    @GetMapping(value = "/contact")
+    public List<ContactDto> getContacts() {
+        return contactMapper.mapContactListToContactDtoList(contactService.getContacts());
+    }
+
+    @GetMapping(value = "/contact/{id}")
+    public ContactDto getContact(@PathVariable Integer id) {
+        return contactMapper.mapContactToContactDto(contactService.getContact(id));
+    }
+
+    @PostMapping(value = "/contact")
+    public void createContact(@Valid @RequestBody ContactDto contactDto) {
         LOGGER.info("Post ContactDto " + contactDto.toString());
         contactService.saveContact(contactDto);
     }
 
-    @GetMapping(value = "/contact/{id}")
-    public ContactDto getContacts(@PathVariable Integer id) {
-
-        return contactMapper.mapContactToContactDto(contactService.getContact(id));
-    }
-
     @PutMapping(value = "/contact")
-    public void updateContact(@Valid @RequestBody ContactDto contactDto){
+    public void updateContact(@Valid @RequestBody ContactDto contactDto) {
         contactService.updateContact(contactDto);
     }
 
     @DeleteMapping(value = "/contact/{id}")
-    public void deleteContact(@RequestParam("id") Integer id){
+    public void deleteContact(@RequestParam("id") Integer id) {
         contactService.deleteContactr(id);
     }
 
