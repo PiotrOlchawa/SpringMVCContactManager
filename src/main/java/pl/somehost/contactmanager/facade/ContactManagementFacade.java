@@ -42,13 +42,12 @@ public class ContactManagementFacade {
         LOGGER.info("Persisted contactDto id, " + contactDto.getId() + "," + contactDto.getFirstName() + " Persisted contact id, " + contact.getId() + "," + contact.getFirstName());
         Contact persistedContact = contactService.saveContact(contact);
         URI location = ServletUriComponentsBuilder.fromCurrentServletMapping()
-                .path("")
-                .path("/path")
+                .path("/contact/{id}")
                 .buildAndExpand(persistedContact.getId())
                 .toUri();
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setLocation(location);
-        responseHeaders.set("MyResponseHeader", "Link to resource");
+        responseHeaders.set("ContactResponseHeader", "Link to resource " + location.toString());
         LOGGER.info("location " + location.toString());
         contactManagerResponseMessage.setMessage("Contact was created: " + location.toString());
         return new ResponseEntity<ContactManagerResponseMessage>(contactManagerResponseMessage,responseHeaders, HttpStatus.CREATED);

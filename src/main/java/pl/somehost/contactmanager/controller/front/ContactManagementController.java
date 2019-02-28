@@ -27,12 +27,6 @@ public class ContactManagementController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactManagementController.class);
 
-    @PostMapping(value = "/contact")
-    public ResponseEntity<ContactManagerResponseMessage> createContact(@RequestBody ContactDto contactDto) {
-        LOGGER.info("Post ContactDto " + contactDto.toString());
-        return contactManagementFacade.createContact(contactDto);
-    }
-
     @GetMapping(value = "/contact")
     public List<ContactDto> getContacts() {
         return contactManagementFacade.getContactsForCurrentUser();
@@ -41,6 +35,12 @@ public class ContactManagementController {
     @GetMapping(value = "/contact/{id}")
     public RedirectView getContact(@PathVariable String id) {
         return new RedirectView("/contact/" + id);
+    }
+
+    @PostMapping(value = "/contact")
+    public ResponseEntity<ContactManagerResponseMessage> createContact(@RequestBody ContactDto contactDto) {
+        LOGGER.info("Post ContactDto " + contactDto.toString());
+        return contactManagementFacade.createContact(contactDto);
     }
 
     @PutMapping(value = "/contact")
