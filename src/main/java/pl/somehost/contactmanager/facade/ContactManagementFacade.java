@@ -8,13 +8,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
 import pl.somehost.contactmanager.domain.responce.ContactManagerResponseMessage;
+import pl.somehost.contactmanager.exception.ContactNotFoundException;
 import pl.somehost.contactmanager.mapper.ContactMapper;
 import pl.somehost.contactmanager.service.ContactService;
+import pl.somehost.contactmanager.service.ResourceLocationService;
 import pl.somehost.contactmanager.service.UserService;
 
 import java.net.URI;
@@ -33,59 +34,71 @@ public class ContactManagementFacade {
     private ContactMapper contactMapper;
     @Autowired
     private ContactManagerResponseMessage contactManagerResponseMessage;
+    @Autowired
+    private ResourceLocationService resourceLocationService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactManagementFacade.class);
 
     public ResponseEntity<ContactManagerResponseMessage> createContact(ContactDto contactDto) {
-        LOGGER.info("Facade Dto " + contactDto.toString());
+
         Contact contact = contactMapper.mapContactDtoToContact(contactDto);
-        LOGGER.info("Persisted contactDto id, " + contactDto.getId() + "," + contactDto.getFirstName() + " Persisted contact id, " + contact.getId() + "," + contact.getFirstName());
         Contact persistedContact = contactService.saveContact(contact);
-        URI location = ServletUriComponentsBuilder.fromCurrentServletMapping()
-                .path("/contact/{id}")
-                .buildAndExpand(persistedContact.getId())
-                .toUri();
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setLocation(location);
-        responseHeaders.set("ContactResponseHeader", "Link to resource " + location.toString());
-        LOGGER.info("location " + location.toString());
-        contactManagerResponseMessage.setMessage("Contact was created: " + location.toString());
-        return new ResponseEntity<ContactManagerResponseMessage>(contactManagerResponseMessage,responseHeaders, HttpStatus.CREATED);
+        URI resourceLocation = resourceLocationService.getLinkedResourceLocation("/contact/" + persistedContact.getId());
+
+        LOGGER.info("Facade Dto " + contactDto.toString());
+        LOGGER.info("Persisted contactDto id, " + contactDto.getId() + ","
+                + contactDto.getFirstName() + " Persisted contact id, " + contact.getId() + "," + contact.getFirstName());
+        LOGGER.info("resourceLocation " + resourceLocation.toString());
+
+        contactManagerResponseMessage.setMessage("Contact was created: " + resourceLocation.toString());
+        return new ResponseEntity<>(contactManagerResponseMessage, getResponseHeaders(resourceLocation), HttpStatus.CREATED);
     }
 
-    public List<ContactDto> getContactsForCurrentUser() {
-        User user = userService.getcurrentUser();
+    public ResponseEntity<List<ContactDto>> getContactsForCurrentUser() {
 
+        User user = userService.getcurrentUser();
         List<Contact> contactList = contactService.getContactByAdressBookId(user.getAdressBook().getId());
         List<ContactDto> contactDtoList = new ArrayList<>();
         if (contactList.size() > 0) {
             contactDtoList = contactMapper.mapContactListToContactDtoList(contactList);
         }
-        return contactDtoList;
+        return new ResponseEntity<>(contactDtoList, HttpStatus.OK);
     }
 
-    public void updateContactForCurrentUser(ContactDto contactDto) {
+    public ResponseEntity<ContactManagerResponseMessage> updateContactForCurrentUser(ContactDto contactDto) {
+
         User user = userService.getcurrentUser();
         List<Contact> contactList = contactService.getContactByAdressBookId(user.getAdressBook().getId());
         Optional<Contact> contact = contactList.stream().filter(l -> l.getId() == contactDto.getId()).findFirst();
-        if (contact.isPresent()) {
-            Contact contactToPersist = contactMapper.mapContactDtoToContact(contactDto);
-            LOGGER.info("updateContactForCurrentUser : Update contact to be persisted " + contactToPersist.getId() + "," + contactToPersist.getFirstName());
-            contactService.saveContact(contactToPersist);
-            return;
-        }
-        LOGGER.info("updateContactForCurrentUser : Contact is not present " + contactDto.getId());
+        contact.orElseThrow(() -> new ContactNotFoundException(contactDto.getId(), "not found"));
+        Contact contactToPersist = contactMapper.mapContactDtoToContact(contactDto);
+        contactService.saveContact(contactToPersist);
+        URI resourceLocation = resourceLocationService.getLinkedResourceLocation("/contact/" + contactToPersist.getId());
+        LOGGER.info("updateContactForCurrentUser : Update contact to be persisted "
+                + contactToPersist.getId() + "," + contactToPersist.getFirstName());
+
+        contactManagerResponseMessage.setMessage("Contact was updated: " + resourceLocation.toString());
+        return new ResponseEntity<>(contactManagerResponseMessage, getResponseHeaders(resourceLocation), HttpStatus.CREATED);
     }
 
-    public void deleteContactForCurrentUser(Integer id) {
+    public ResponseEntity<ContactManagerResponseMessage> deleteContactForCurrentUser(Integer id) {
+
         User user = userService.getcurrentUser();
         List<Contact> contactList = contactService.getContactByAdressBookId(user.getAdressBook().getId());
         Optional<Contact> contact = contactList.stream().filter(l -> l.getId() == id).findFirst();
-        if (contact.isPresent()) {
-            LOGGER.info("deleteContactForCurrentUser : Delete contact to be persisted " + contact.get().getId() + "," + contact.get().getFirstName());
-            contactService.deleteContact(id);
-            return;
-        }
-        LOGGER.info("deleteContactForCurrentUser : Contact is not present ");
+        contact.orElseThrow(() -> new ContactNotFoundException(id, "not found"));
+        contactService.deleteContact(id);
+        contactManagerResponseMessage.setMessage("Contact with id: " + id + " was deleted sucessfuly");
+        LOGGER.info("deleteContactForCurrentUser : Contact was deleted");
+        return new ResponseEntity<>(contactManagerResponseMessage, HttpStatus.OK);
     }
+
+    private HttpHeaders getResponseHeaders(URI resourceLocation) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setLocation(resourceLocation);
+        responseHeaders.set("ContactResponseHeader", "Link to resource " + resourceLocation.toString());
+        return responseHeaders;
+    }
+
 }
+

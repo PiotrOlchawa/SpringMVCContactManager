@@ -28,7 +28,7 @@ public class ContactManagementController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactManagementController.class);
 
     @GetMapping(value = "/contact")
-    public List<ContactDto> getContacts() {
+    public ResponseEntity<List<ContactDto>> getContacts() {
         return contactManagementFacade.getContactsForCurrentUser();
     }
 
@@ -44,13 +44,13 @@ public class ContactManagementController {
     }
 
     @PutMapping(value = "/contact")
-    public void updateContact(@RequestBody ContactDto contactDto) {
-        contactManagementFacade.updateContactForCurrentUser(contactDto);
+    public ResponseEntity<ContactManagerResponseMessage> updateContact(@RequestBody ContactDto contactDto) {
+        return contactManagementFacade.updateContactForCurrentUser(contactDto);
     }
 
     @DeleteMapping(value = "/contact")
-    public void deleteContact(@RequestParam("id") Integer id) {
-        contactManagementFacade.deleteContactForCurrentUser(id);
+    public ResponseEntity<ContactManagerResponseMessage> deleteContact(@RequestParam("id") Integer id) {
+        return contactManagementFacade.deleteContactForCurrentUser(id);
     }
 
 }
