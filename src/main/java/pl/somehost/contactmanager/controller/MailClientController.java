@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.somehost.contactmanager.domain.Message;
-import pl.somehost.contactmanager.domain.responce.ContactManagerResponseMessage;
+import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.service.MailContactMessageService;
 
 @RestController

@@ -7,6 +7,7 @@ import pl.somehost.contactmanager.domain.AdressBook;
 import pl.somehost.contactmanager.domain.Authorities;
 import pl.somehost.contactmanager.validator.PasswordConstraint;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ public class UserDto {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDto.class);
     private int id;
     @Size(min = 3)
+    @NotNull
     private String username;
     @PasswordConstraint // Custom annotation it could be replaced with @Pattern
     private String password;

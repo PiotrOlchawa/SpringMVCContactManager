@@ -4,13 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.somehost.contactmanager.client.mail.MailClient;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.Mail;
 import pl.somehost.contactmanager.domain.Message;
 import pl.somehost.contactmanager.mapper.ContactToMailMapper;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -8,7 +8,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
-import pl.somehost.contactmanager.domain.responce.ContactManagerResponseMessage;
+import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.facade.ContactManagementFacade;
 
 import java.util.List;

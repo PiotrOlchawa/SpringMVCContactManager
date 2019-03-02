@@ -7,11 +7,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 import pl.somehost.contactmanager.config.TestBeanConfig;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.Message;
-
-import javax.transaction.Transactional;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)

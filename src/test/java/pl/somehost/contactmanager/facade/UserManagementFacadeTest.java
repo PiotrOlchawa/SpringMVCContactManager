@@ -4,17 +4,20 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 import pl.somehost.contactmanager.config.TestBeanConfig;
 import pl.somehost.contactmanager.domain.AdressBook;
 import pl.somehost.contactmanager.domain.Authorities;
 import pl.somehost.contactmanager.domain.Roles;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.UserDto;
+import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.repository.UserDao;
 
 import java.util.HashSet;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestBeanConfig.class})
 @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN", "ROLE_USER"})
+@Transactional
 public class UserManagementFacadeTest {
 
     @Autowired
@@ -50,7 +54,9 @@ public class UserManagementFacadeTest {
         facadeUserDto.setPassword("password");
         facadeUserDto.setAuthorities(authoritiesList);
         //When
-        User user = userMangementFacade.createUser(facadeUserDto);
+        ResponseEntity<ContactManagerResponseMessage> contactManagerResponseMessageResponseEntity = userMangementFacade.createUser(facadeUserDto);
+        String [] response = contactManagerResponseMessageResponseEntity.getBody().getMessage().split(": ");
+        User user = userDao.findById(Integer.valueOf(response[2])).get();
         List<String> userAuthorities = user.getAuthorities().stream().map(authorities -> authorities.getAuthority())
                 .collect(Collectors.toList());
         List<String> userDtoAuthorities = facadeUserDto.getAuthorities().stream().map(authorities -> authorities.getAuthority())
@@ -78,7 +84,9 @@ public class UserManagementFacadeTest {
         System.out.println("persistedUser.getId()  " +persistedUser.getId());
         userDto.setId(persistedUser.getId());
         //When
-        User modifiedUser = userMangementFacade.modifyUser(userDto);
+        ResponseEntity<ContactManagerResponseMessage> contactManagerResponseMessageResponseEntity = userMangementFacade.modifyUser(userDto);
+        String [] response = contactManagerResponseMessageResponseEntity.getBody().getMessage().split(": ");
+        User modifiedUser = userDao.findById(Integer.valueOf(response[2])).get();
         //Then
         Assert.assertEquals(modifiedUser.getUsername(),"username1");
         Assert.assertTrue(passwordsEncoder.matches("password1",modifiedUser.getPassword()));

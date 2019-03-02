@@ -4,14 +4,14 @@ package pl.somehost.contactmanager.facade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
-import pl.somehost.contactmanager.domain.responce.ContactManagerResponseMessage;
+import pl.somehost.contactmanager.domain.response.ContactManagerResponseHeader;
+import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.exception.ContactNotFoundException;
 import pl.somehost.contactmanager.mapper.ContactMapper;
 import pl.somehost.contactmanager.service.ContactService;
@@ -44,14 +44,14 @@ public class ContactManagementFacade {
         Contact contact = contactMapper.mapContactDtoToContact(contactDto);
         Contact persistedContact = contactService.saveContact(contact);
         URI resourceLocation = resourceLocationService.getLinkedResourceLocation("/contact/" + persistedContact.getId());
-
         LOGGER.info("Facade Dto " + contactDto.toString());
         LOGGER.info("Persisted contactDto id, " + contactDto.getId() + ","
                 + contactDto.getFirstName() + " Persisted contact id, " + contact.getId() + "," + contact.getFirstName());
         LOGGER.info("resourceLocation " + resourceLocation.toString());
-
         contactManagerResponseMessage.setMessage("Contact was created: " + resourceLocation.toString());
-        return new ResponseEntity<>(contactManagerResponseMessage, getResponseHeaders(resourceLocation), HttpStatus.CREATED);
+        ContactManagerResponseHeader contactManagerResponseHeader =
+                new ContactManagerResponseHeader("ContactResponceHeader", "Link to resource", resourceLocation);
+        return new ResponseEntity<>(contactManagerResponseMessage, contactManagerResponseHeader.getResponseHeaders(), HttpStatus.CREATED);
     }
 
     public ResponseEntity<List<ContactDto>> getContactsForCurrentUser() {
@@ -76,9 +76,10 @@ public class ContactManagementFacade {
         URI resourceLocation = resourceLocationService.getLinkedResourceLocation("/contact/" + contactToPersist.getId());
         LOGGER.info("updateContactForCurrentUser : Update contact to be persisted "
                 + contactToPersist.getId() + "," + contactToPersist.getFirstName());
-
         contactManagerResponseMessage.setMessage("Contact was updated: " + resourceLocation.toString());
-        return new ResponseEntity<>(contactManagerResponseMessage, getResponseHeaders(resourceLocation), HttpStatus.CREATED);
+        ContactManagerResponseHeader contactManagerResponseHeader =
+                new ContactManagerResponseHeader("ContactResponceHeader", "Link to resource", resourceLocation);
+        return new ResponseEntity<>(contactManagerResponseMessage, contactManagerResponseHeader.getResponseHeaders(), HttpStatus.CREATED);
     }
 
     public ResponseEntity<ContactManagerResponseMessage> deleteContactForCurrentUser(Integer id) {
@@ -93,12 +94,7 @@ public class ContactManagementFacade {
         return new ResponseEntity<>(contactManagerResponseMessage, HttpStatus.OK);
     }
 
-    private HttpHeaders getResponseHeaders(URI resourceLocation) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setLocation(resourceLocation);
-        responseHeaders.set("ContactResponseHeader", "Link to resource " + resourceLocation.toString());
-        return responseHeaders;
-    }
+
 
 }
 

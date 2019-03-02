@@ -31,7 +31,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
     ExceptionReponse exceptionReponse =
             new ExceptionReponse(new Date(),ex.getMessage(),request.getDescription(false));
-    return new ResponseEntity<>(exceptionReponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(exceptionReponse, HttpStatus.BAD_REQUEST);
     }
    // Handling incorrect id value
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -55,7 +55,9 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
             MethodArgumentNotValidException ex,HttpHeaders headers, HttpStatus status, WebRequest request) {
         BindingResult result = ex.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
-        String error = fieldErrors.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(roleJoiningCharacter));
+        String error = fieldErrors.stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining(roleJoiningCharacter));
         ExceptionReponse exceptionReponse =
                 new ExceptionReponse(new Date(),"Validation Failed !",error);
         return new ResponseEntity<>(exceptionReponse, HttpStatus.BAD_REQUEST);

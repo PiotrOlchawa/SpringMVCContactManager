@@ -1,10 +1,12 @@
 package pl.somehost.contactmanager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import pl.somehost.contactmanager.domain.LoggedUserGetter;
 import pl.somehost.contactmanager.domain.User;
+import pl.somehost.contactmanager.exception.UserNotFoundException;
 import pl.somehost.contactmanager.repository.UserDao;
 
 import java.util.List;
@@ -54,6 +56,10 @@ public class UserService {
     }
 
     public void deleteUser(Integer userId) {
-        userDao.deleteById(userId);
+        try {
+            userDao.deleteById(userId);
+        } catch (EmptyResultDataAccessException ex){
+            throw new UserNotFoundException("User with id: " +userId+ " was not found");
+        }
     }
 }

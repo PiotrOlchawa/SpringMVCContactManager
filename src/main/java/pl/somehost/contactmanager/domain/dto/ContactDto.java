@@ -13,7 +13,7 @@ public class ContactDto {
     public ContactDto() {
     }
 
-    public ContactDto(int id, String firstName, String lastName, String streetAdress,
+    public ContactDto(int id, String firstName, String lastName, String privatestreetAdress,
                       String zipCode, String aptNumber, String telephone, String email) {
         this.id = id;
         this.firstName = firstName;
