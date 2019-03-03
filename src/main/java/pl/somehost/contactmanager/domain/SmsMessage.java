@@ -5,6 +5,11 @@ public class SmsMessage {
     private String phoneNumber;
     private String messageText;
 
+    public SmsMessage(Message message) {
+        this.messageText=message.getMessage();
+    }
+
+
     public String getPhoneNumber() {
         return phoneNumber;
     }

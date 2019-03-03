@@ -41,11 +41,11 @@ public class SmsConfiguration {
         return smsPhoneParaneter;
     }
 
-    public String getSmsConnectTimeout() {
+    public Integer getSmsConnectTimeout() {
         return smsConnectTimeout;
     }
 
-    public String getSmsSocketTimeout() {
+    public Integer getSmsSocketTimeout() {
         return smsSocketTimeout;
     }
 }

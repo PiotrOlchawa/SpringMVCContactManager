@@ -1,15 +1,14 @@
 package pl.somehost.contactmanager.client.sms;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.config.sms.SmsConfiguration;
 import pl.somehost.contactmanager.domain.SmsMessage;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
@@ -17,22 +16,22 @@ import pl.somehost.contactmanager.exception.SmsException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@Component
 public class SmsClient {
 
     @Autowired
     SmsConfiguration smsConfiguration;
 
-        String
+    Integer responseStatusCode = HttpServletResponse.SC_NOT_FOUND;
 
         public ContactManagerResponseMessage sendMessage(SmsMessage smsMessage){
 
             RequestConfig requestConfig = RequestConfig.custom()
                     .setSocketTimeout(smsConfiguration.getSmsSocketTimeout())
-                    .setConnectTimeout(smsConfiguration.)
+                    .setConnectTimeout(smsConfiguration.getSmsConnectTimeout())
                     .build();
 
             try {
@@ -61,12 +60,12 @@ public class SmsClient {
                 }
 
 
-
             } catch (URISyntaxException | IOException e) {
                 e.printStackTrace();
             }
 
-
+            return new ContactManagerResponseMessage("Message to: " + smsMessage.getPhoneNumber()
+                    +" was send sucessfully with status code: " +responseStatusCode );
         }
 
 
