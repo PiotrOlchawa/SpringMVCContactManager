@@ -5,14 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
@@ -20,15 +17,15 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement  //Enabling Annotation-Driven Transaction Management
 @EnableJpaRepositories(basePackages = {"pl.somehost.contactmanager.repository"}) //Configure the base packages that are scanned with Spring Data JPA
-public class PersistenceContextConfiguration implements TransactionManagementConfigurer {
+public class PersistenceContextConfiguration /*implements TransactionManagementConfigurer*/ {
 
     @Autowired // Autowiring defined "@PropertySource"
     Environment env;
 
-    @Override
+/*    @Override
     public PlatformTransactionManager annotationDrivenTransactionManager() {
         return new DataSourceTransactionManager(dataSource(env));
-    }
+    }*/
 
     @Bean  // Datasource configuration
     DriverManagerDataSource dataSource(Environment env) {

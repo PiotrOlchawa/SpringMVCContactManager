@@ -10,29 +10,29 @@ import java.util.Properties;
 @Configuration
 public class MailConfiguration {
 
-    @Value("${mail.protocol}")
+    @Value("${mailMessage.protocol}")
     private String protocol;
-    @Value("${mail.host}")
+    @Value("${mailMessage.host}")
     private String host;
-    @Value("${mail.port}")
+    @Value("${mailMessage.port}")
     private int port;
-    @Value("${mail.smtp.socketFactory.port}")
+    @Value("${mailMessage.smtp.socketFactory.port}")
     private int socketPort;
-    @Value("${mail.smtp.auth}")
+    @Value("${mailMessage.smtp.auth}")
     private boolean auth;
-    @Value("${mail.smtp.ssl.enable}")
+    @Value("${mailMessage.smtp.ssl.enable}")
     private boolean ssl;
-    @Value("${mail.smtp.starttls.enable}")
+    @Value("${mailMessage.smtp.starttls.enable}")
     private boolean starttls;
-    @Value("${mail.smtp.starttls.required}")
+    @Value("${mailMessage.smtp.starttls.required}")
     private boolean startlls_required;
-    @Value("${mail.smtp.debug}")
+    @Value("${mailMessage.smtp.debug}")
     private boolean debug;
-    @Value("${mail.smtp.socketFactory.fallback}")
+    @Value("${mailMessage.smtp.socketFactory.fallback}")
     private boolean fallback;
-    @Value("${mail.from}")
+    @Value("${mailMessage.from}")
     private String username;
-    @Value("${mail.password}")
+    @Value("${mailMessage.password}")
     private String password;
 
     @Bean

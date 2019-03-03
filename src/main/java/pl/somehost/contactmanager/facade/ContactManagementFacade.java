@@ -44,9 +44,8 @@ public class ContactManagementFacade {
         Contact contact = contactMapper.mapContactDtoToContact(contactDto);
         Contact persistedContact = contactService.saveContact(contact);
         URI resourceLocation = resourceLocationService.getLinkedResourceLocation("/contact/" + persistedContact.getId());
-        LOGGER.info("Facade Dto " + contactDto.toString());
-        LOGGER.info("Persisted contactDto id, " + contactDto.getId() + ","
-                + contactDto.getFirstName() + " Persisted contact id, " + contact.getId() + "," + contact.getFirstName());
+        LOGGER.info("Facade Dto: " + contactDto.toString());
+        LOGGER.info("Persisted contactDto: " + contact.getContactInfo());
         LOGGER.info("resourceLocation " + resourceLocation.toString());
         contactManagerResponseMessage.setMessage("Contact was created: " + resourceLocation.toString());
         ContactManagerResponseHeader contactManagerResponseHeader =
@@ -90,7 +89,7 @@ public class ContactManagementFacade {
         contact.orElseThrow(() -> new ContactNotFoundException(id, "not found"));
         contactService.deleteContact(id);
         contactManagerResponseMessage.setMessage("Contact with id: " + id + " was deleted sucessfuly");
-        LOGGER.info("deleteContactForCurrentUser : Contact was deleted");
+        LOGGER.info("deleteContactForCurrentUser : Contact was deleted " +contact.get().getContactInfo());
         return new ResponseEntity<>(contactManagerResponseMessage, HttpStatus.OK);
     }
 

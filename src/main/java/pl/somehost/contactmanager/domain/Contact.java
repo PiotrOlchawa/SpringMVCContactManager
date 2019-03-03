@@ -206,4 +206,19 @@ public class Contact {
     public void setMessageList(List<Message> messageList) {
         this.messageList = messageList;
     }
+
+    public String getContactInfo() {
+        return "Contact{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", streetAdress='" + streetAdress + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", aptNumber='" + aptNumber + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", email='" + email + '\'' +
+                ", adressBook=" + adressBook +
+                ", messageList=" + messageList +
+                '}';
+    }
 }

@@ -7,6 +7,8 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.config.sms.SmsConfiguration;
@@ -25,6 +27,8 @@ public class SmsClient {
     @Autowired
     SmsConfiguration smsConfiguration;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SmsClient.class);
+
     Integer responseStatusCode = HttpServletResponse.SC_NOT_FOUND;
 
         public ContactManagerResponseMessage sendMessage(SmsMessage smsMessage){
@@ -34,6 +38,7 @@ public class SmsClient {
                     .setConnectTimeout(smsConfiguration.getSmsConnectTimeout())
                     .build();
 
+
             try {
                 URI uri = new URIBuilder()
                         .setScheme("http")
@@ -41,8 +46,10 @@ public class SmsClient {
                         .setPort(smsConfiguration.getSmsPort())
                         .setPath(smsConfiguration.getSmsPath())
                         .setParameter(smsConfiguration.getSmsPhoneParaneter(),smsMessage.getPhoneNumber())
-                        .setParameter(smsConfiguration.getSmsMessageParaneter(),smsMessage.getPhoneNumber())
+                        .setParameter(smsConfiguration.getSmsMessageParaneter(),smsMessage.getMessageText())
                         .build();
+
+                LOGGER.info("SMS URI : "  + uri.toString());
 
                 HttpPost httpPost = new HttpPost(uri);
                 httpPost.setConfig(requestConfig);
@@ -55,13 +62,17 @@ public class SmsClient {
 
                 Integer responseStatusCode = response.getStatusLine().getStatusCode();
 
-                if(responseStatusCode != HttpServletResponse.SC_OK){
-                    throw new SmsException("Can't send sms : status code " + responseStatusCode);
+                LOGGER.info("SMS Response HTTP status code: " + responseStatusCode);
+
+                if(!responseStatusCode.equals(HttpServletResponse.SC_OK)){
+                    LOGGER.info("Throwing exception as a result of HTTP status code other than 200: SmsException");
+                    throw new SmsException("Can't send sms : SMS Response HTTP status code: " + responseStatusCode);
                 }
 
 
             } catch (URISyntaxException | IOException e) {
-                e.printStackTrace();
+                LOGGER.info("Error sending message");
+                throw new SmsException("Can't send sms : " + e.getMessage());
             }
 
             return new ContactManagerResponseMessage("Message to: " + smsMessage.getPhoneNumber()
