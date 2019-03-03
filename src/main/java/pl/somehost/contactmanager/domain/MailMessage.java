@@ -1,12 +1,12 @@
 package pl.somehost.contactmanager.domain;
 
-public class Mail extends Message  {
+public class MailMessage extends Message  {
 
         private String mailTo;
         private String toCC;
         private String subject;
 
-    public Mail(Message message) {
+    public MailMessage(Message message) {
         super(message.getMessage());
     }
 

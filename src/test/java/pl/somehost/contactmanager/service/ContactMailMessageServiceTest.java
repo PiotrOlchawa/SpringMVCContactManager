@@ -17,7 +17,7 @@ import pl.somehost.contactmanager.domain.Message;
 @ContextConfiguration(classes = {TestBeanConfig.class})
 @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN", "ROLE_USER"})
 @Transactional
-public class ContactMailServiceTest {
+public class ContactMailMessageServiceTest {
 
     @Autowired
     private MailContactMessageService contactMailService;

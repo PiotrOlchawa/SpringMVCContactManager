@@ -40,12 +40,6 @@
         <!-- Spring Security -->
 
         <!--Spring-->
- <!--       <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>${spring.version}</version>
-        </dependency>-->
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
@@ -64,18 +58,6 @@
             <version>${spring.version}</version>
         </dependency>
 
-<!--        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-            <version>${spring.version}</version>
-        </dependency>-->
-
-<!--        <dependency>
-            <groupId>org.springframework.data<tx/groupId>
-            <artifactId>spring-data-commons</artifactId>
-            <version>2.1.4.RELEASE</version>
-        </dependency>-->
-
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
@@ -83,11 +65,10 @@
         </dependency>
 
 
-
         <!--MAIL-->
         <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
+            <groupId>javax.mailMessage</groupId>
+            <artifactId>mailMessage</artifactId>
             <version>RELEASE</version>
         </dependency>
         <!--Spring-->
@@ -104,14 +85,7 @@
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <version>1.0.2.Final</version>
         </dependency>
-<!--        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-hibernate</artifactId>
-            <version>1.2.9</version>
-        </dependency>-->
         <!--HIBERNATE-->
-
-
 
         <dependency>
             <groupId>javax.validation</groupId>
@@ -174,6 +148,7 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <!--Junit-->
 
         <dependency>
             <groupId>mysql</groupId>
@@ -186,6 +161,14 @@
             <artifactId>jaxb-api</artifactId>
             <version>2.3.1</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.7</version>
+        </dependency>
+
 
     </dependencies>
 

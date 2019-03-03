@@ -6,7 +6,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
-import pl.somehost.contactmanager.domain.Mail;
+import pl.somehost.contactmanager.domain.MailMessage;
 
 @Component
 public class MailClient {
@@ -16,17 +16,17 @@ public class MailClient {
     @Value("${mail.from}")
     private String from;
 
-    private MimeMessagePreparator createMimeMessage(final Mail mail) {
+    private MimeMessagePreparator createMimeMessage(final MailMessage mailMessage) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setTo(mail.getMailTo());
-            messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mail.getMessage());
+            messageHelper.setTo(mailMessage.getMailTo());
+            messageHelper.setSubject(mailMessage.getSubject());
+            messageHelper.setText(mailMessage.getMessage());
             messageHelper.setFrom(from);
         };
     }
 
-    public void sendMail(Mail mail) {
-        javaMailSender.send(createMimeMessage(mail));
+    public void sendMail(MailMessage mailMessage) {
+        javaMailSender.send(createMimeMessage(mailMessage));
     }
 }

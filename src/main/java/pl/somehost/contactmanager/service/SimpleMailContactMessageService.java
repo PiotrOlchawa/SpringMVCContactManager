@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.somehost.contactmanager.client.mail.MailClient;
 import pl.somehost.contactmanager.domain.Contact;
-import pl.somehost.contactmanager.domain.Mail;
+import pl.somehost.contactmanager.domain.MailMessage;
 import pl.somehost.contactmanager.domain.Message;
 import pl.somehost.contactmanager.mapper.ContactToMailMapper;
 
@@ -39,7 +39,7 @@ public class SimpleMailContactMessageService implements MailContactMessageServic
         }
         contact.getMessageList().add(message);
         contactService.saveContact(contact);
-        mailClient.sendMail(contactToMailMapper.mapContactDtoToMail(contact,new Mail(message)));
+        mailClient.sendMail(contactToMailMapper.mapContactDtoToMail(contact,new MailMessage(message)));
     }
 }
 

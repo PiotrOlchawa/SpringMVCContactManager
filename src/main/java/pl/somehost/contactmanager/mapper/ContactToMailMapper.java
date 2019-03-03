@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.LoggedUserGetter;
-import pl.somehost.contactmanager.domain.Mail;
+import pl.somehost.contactmanager.domain.MailMessage;
 
 @Component
 public class ContactToMailMapper {
@@ -15,9 +15,9 @@ public class ContactToMailMapper {
     @Value("${mail.message.subject}")
     private String subject;
 
-    public Mail mapContactDtoToMail(Contact contact, Mail mail){
-        mail.setMailTo(contact.getEmail());
-        mail.setSubject(subject + loggedUserGetter.getLoggedUserName());
-        return mail;
+    public MailMessage mapContactDtoToMail(Contact contact, MailMessage mailMessage){
+        mailMessage.setMailTo(contact.getEmail());
+        mailMessage.setSubject(subject + loggedUserGetter.getLoggedUserName());
+        return mailMessage;
     }
 }
