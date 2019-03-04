@@ -13,7 +13,7 @@ public class MailClient {
 
     @Autowired
     private JavaMailSenderImpl javaMailSender;
-    @Value("${mail.from}")
+    @Value("${mailMessage.from}")
     private String from;
 
     private MimeMessagePreparator createMimeMessage(final MailMessage mailMessage) {

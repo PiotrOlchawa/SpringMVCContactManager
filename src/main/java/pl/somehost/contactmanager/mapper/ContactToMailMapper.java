@@ -12,12 +12,12 @@ public class ContactToMailMapper {
 
     @Autowired
     LoggedUserGetter loggedUserGetter;
-    @Value("${mail.message.subject}")
+    @Value("${mailMessage.message.subject}")
     private String subject;
 
-    public MailMessage mapContactDtoToMail(Contact contact, MailMessage mailMessage){
+    public MailMessage mapContactDtoToMail(Contact contact, MailMessage mailMessage) {
         mailMessage.setMailTo(contact.getEmail());
-        mailMessage.setSubject(subject + loggedUserGetter.getLoggedUserName());
+        mailMessage.setSubject(subject + " " + loggedUserGetter.getLoggedUserName());
         return mailMessage;
     }
 }
