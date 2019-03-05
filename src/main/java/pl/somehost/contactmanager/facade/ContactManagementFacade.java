@@ -16,7 +16,6 @@ import pl.somehost.contactmanager.exception.ContactNotFoundException;
 import pl.somehost.contactmanager.mapper.ContactMapper;
 import pl.somehost.contactmanager.service.ContactService;
 import pl.somehost.contactmanager.service.ResourceLocationService;
-import pl.somehost.contactmanager.service.UserService;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -28,8 +27,6 @@ public class ContactManagementFacade {
 
     @Autowired
     private ContactService contactService;
-    @Autowired
-    private UserService userService;
     @Autowired
     private ContactMapper contactMapper;
     @Autowired
@@ -53,9 +50,8 @@ public class ContactManagementFacade {
         return new ResponseEntity<>(contactManagerResponseMessage, contactManagerResponseHeader.getResponseHeaders(), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<List<ContactDto>> getContactsForCurrentUser() {
+    public ResponseEntity<List<ContactDto>> getContactsForUser(User user) {
 
-        User user = userService.getcurrentUser();
         List<Contact> contactList = contactService.getContactByAdressBookId(user.getAdressBook().getId());
         List<ContactDto> contactDtoList = new ArrayList<>();
         if (contactList.size() > 0) {
@@ -64,16 +60,15 @@ public class ContactManagementFacade {
         return new ResponseEntity<>(contactDtoList, HttpStatus.OK);
     }
 
-    public ResponseEntity<ContactManagerResponseMessage> updateContactForCurrentUser(ContactDto contactDto) {
+    public ResponseEntity<ContactManagerResponseMessage> updateContactForUser(ContactDto contactDto,User user) {
 
-        User user = userService.getcurrentUser();
         List<Contact> contactList = contactService.getContactByAdressBookId(user.getAdressBook().getId());
         Optional<Contact> contact = contactList.stream().filter(l -> l.getId() == contactDto.getId()).findFirst();
         contact.orElseThrow(() -> new ContactNotFoundException(contactDto.getId(), "not found"));
         Contact contactToPersist = contactMapper.mapContactDtoToContact(contactDto);
         contactService.saveContact(contactToPersist);
         URI resourceLocation = resourceLocationService.getLinkedResourceLocation("/contact/" + contactToPersist.getId());
-        LOGGER.info("updateContactForCurrentUser : Update contact to be persisted "
+        LOGGER.info("updateContactForUser : Update contact to be persisted "
                 + contactToPersist.getId() + "," + contactToPersist.getFirstName());
         contactManagerResponseMessage.setMessage("Contact was updated: " + resourceLocation.toString());
         ContactManagerResponseHeader contactManagerResponseHeader =
@@ -81,9 +76,8 @@ public class ContactManagementFacade {
         return new ResponseEntity<>(contactManagerResponseMessage, contactManagerResponseHeader.getResponseHeaders(), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<ContactManagerResponseMessage> deleteContactForCurrentUser(Integer id) {
+    public ResponseEntity<ContactManagerResponseMessage> deleteContactForCurrentUser(Integer id,User user) {
 
-        User user = userService.getcurrentUser();
         List<Contact> contactList = contactService.getContactByAdressBookId(user.getAdressBook().getId());
         Optional<Contact> contact = contactList.stream().filter(l -> l.getId() == id).findFirst();
         contact.orElseThrow(() -> new ContactNotFoundException(id, "not found"));

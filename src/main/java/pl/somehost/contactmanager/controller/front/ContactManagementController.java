@@ -5,8 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.facade.ContactManagementFacade;
@@ -28,8 +30,8 @@ public class ContactManagementController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactManagementController.class);
 
     @GetMapping(value = "/contact")
-    public ResponseEntity<List<ContactDto>> getContacts() {
-        return contactManagementFacade.getContactsForCurrentUser();
+    public ResponseEntity<List<ContactDto>> getContacts(@AuthenticationPrincipal User user) {
+        return contactManagementFacade.getContactsForUser(user);
     }
 
     @GetMapping(value = "/contact/{id}")
@@ -44,13 +46,13 @@ public class ContactManagementController {
     }
 
     @PutMapping(value = "/contact")
-    public ResponseEntity<ContactManagerResponseMessage> updateContact(@RequestBody ContactDto contactDto) {
-        return contactManagementFacade.updateContactForCurrentUser(contactDto);
+    public ResponseEntity<ContactManagerResponseMessage> updateContact(@RequestBody ContactDto contactDto, @AuthenticationPrincipal User user) {
+        return contactManagementFacade.updateContactForUser(contactDto, user);
     }
 
     @DeleteMapping(value = "/contact")
-    public ResponseEntity<ContactManagerResponseMessage> deleteContact(@RequestParam("id") Integer id) {
-        return contactManagementFacade.deleteContactForCurrentUser(id);
+    public ResponseEntity<ContactManagerResponseMessage> deleteContact(@RequestParam("id") Integer id, @AuthenticationPrincipal User user) {
+        return contactManagementFacade.deleteContactForCurrentUser(id, user);
     }
 
 }

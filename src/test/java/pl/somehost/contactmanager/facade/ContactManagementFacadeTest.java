@@ -44,7 +44,7 @@ public class ContactManagementFacadeTest {
         User persistedUser = userDao.save(user);
         Contact persistedContactDto = contactDao.findByAdressBook_Id(persistedUser.getAdressBook().getId()).get();
         Integer userId = persistedUser.getId();
-        ContactDto contactDto = contactManagementFacade.getContactsForCurrentUser(userId);
+        ContactDto contactDto = contactManagementFacade.getContactsForUser(userId);
         //Then
         Assert.assertEquals(contactDto.getFirstName(),persistedContactDto.getFirstName());
 */
