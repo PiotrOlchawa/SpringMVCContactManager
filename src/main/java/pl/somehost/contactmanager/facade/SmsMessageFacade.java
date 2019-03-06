@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.somehost.contactmanager.client.sms.SmsClient;
 import pl.somehost.contactmanager.domain.*;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
-import pl.somehost.contactmanager.exception.SmsExceptions;
+import pl.somehost.contactmanager.exception.SmsException;
 import pl.somehost.contactmanager.mapper.ContactToSmsMapper;
 import pl.somehost.contactmanager.service.ContactService;
 import pl.somehost.contactmanager.service.MessageService;
@@ -40,7 +40,7 @@ public class SmsMessageFacade {
         messageSchedulerConfigurator.configureMessage(message);
         Message persistedMessage = messageService.saveMessage(message);
         if(messageStatus.equals(MessageStatus.NOT_SEND)){
-            throw new SmsExceptions("Can't send sms");
+            throw new SmsException("Can't send sms");
         }
 
         return new ContactManagerResponseMessage("Message to: " + contact.getTelephone() + " was send ");

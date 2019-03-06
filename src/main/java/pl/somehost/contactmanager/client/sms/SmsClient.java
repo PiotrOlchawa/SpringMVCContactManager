@@ -58,7 +58,7 @@ public class SmsClient {
             LOGGER.info("SMS Response HTTP status code: " + responseStatusCode);
 
             if (!responseStatusCode.equals(HttpServletResponse.SC_OK)) {
-                LOGGER.info("Throwing exception as a result of HTTP status code other than 200: SmsExceptions");
+                LOGGER.info("Throwing exception as a result of HTTP status code other than 200: SmsException");
                 return MessageStatus.NOT_SEND;
             }
 
