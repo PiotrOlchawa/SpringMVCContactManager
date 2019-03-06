@@ -11,11 +11,24 @@ public class Message {
     int id;
     @Column(name = "message")
     protected String message;
+    @Column(name = "messageStatus")
+    @Enumerated(EnumType.STRING)
+    protected MessageStatus messageStatus;
+    @Column(name = "sendTrays")
+    protected Integer sendTrays;
     @ManyToOne
     @JoinColumn(name = "CONTACT_ID")
     private Contact contact;
 
     public Message() {
+    }
+
+    public Integer getSendTrays() {
+        return sendTrays;
+    }
+
+    public void setSendTrays(Integer sendTrays) {
+        this.sendTrays = sendTrays;
     }
 
     public Message(String message) {
@@ -44,5 +57,13 @@ public class Message {
 
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    public MessageStatus getMessageStatus() {
+        return messageStatus;
+    }
+
+    public void setMessageStatus(MessageStatus messageStatus) {
+        this.messageStatus = messageStatus;
     }
 }

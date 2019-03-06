@@ -17,10 +17,10 @@ public interface UserDao extends CrudRepository<User, Integer> {
     @Override
     @Query("select distinct u from User u left join fetch u.authorities")
     List<User> findAll();
-
+    
     @Override
     User save(User user);
-
+    
     Optional<User> findById(Integer id);
 
     // Jesli nie ma query to wywala lazy inicialization bo w user fetch jest LAZY przy autthorities

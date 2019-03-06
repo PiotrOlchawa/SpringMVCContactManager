@@ -16,9 +16,7 @@
 
     <packaging>war</packaging>
 
-
     <dependencies>
-
         <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.security</groupId>

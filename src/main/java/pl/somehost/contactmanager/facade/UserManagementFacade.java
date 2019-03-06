@@ -40,8 +40,6 @@ public class UserManagementFacade {
     @Value("${role.joining.character}")
     private String roleJoiningCharacter;
 
-
-    //@AuthenticationPrincipal
     public ResponseEntity<ContactManagerResponseMessage> createUser(UserDto userDto) {
 
         LOGGER.info("createUser CALL" + " by " + loggedUserGetter.getLoggedUserName());

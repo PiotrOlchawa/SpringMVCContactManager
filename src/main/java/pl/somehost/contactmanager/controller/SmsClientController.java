@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pl.somehost.contactmanager.domain.Message;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
-import pl.somehost.contactmanager.service.SmsContactMessageService;
+import pl.somehost.contactmanager.facade.SmsMessageFacade;
 
 
 @RestController
@@ -16,13 +16,13 @@ import pl.somehost.contactmanager.service.SmsContactMessageService;
 public class SmsClientController {
 
     @Autowired
-    SmsContactMessageService smsContactMessageService;
+    private ContactManagerResponseMessage contactManagerResponseMessage;
     @Autowired
-    ContactManagerResponseMessage contactManagerResponseMessage;
+    private SmsMessageFacade smsMessageFacade;
 
     @PostMapping(value = "/sms/{contactId}")
     public ContactManagerResponseMessage sendMailToContact(@PathVariable Integer contactId, @RequestBody Message message) {
-        smsContactMessageService.sendPersistedMessage(contactId, message);
+        smsMessageFacade.sendPersistedMessage(contactId, message);
         contactManagerResponseMessage.setMessage("Massage was send");
         return contactManagerResponseMessage;
     }

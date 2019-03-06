@@ -9,6 +9,11 @@ public class SmsMessage {
         this.messageText=message.getMessage();
     }
 
+    public SmsMessage(Message message, String phoneNumber) {
+        this.messageText=message.getMessage();
+        this.phoneNumber=phoneNumber;
+    }
+
 
     public String getPhoneNumber() {
         return phoneNumber;
