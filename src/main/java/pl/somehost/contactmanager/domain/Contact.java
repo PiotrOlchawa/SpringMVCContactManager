@@ -1,5 +1,7 @@
 package pl.somehost.contactmanager.domain;
 
+import pl.somehost.contactmanager.domain.message.Message;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;

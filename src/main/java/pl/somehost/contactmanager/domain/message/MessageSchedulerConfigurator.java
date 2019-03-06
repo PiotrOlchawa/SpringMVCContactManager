@@ -1,21 +1,19 @@
-package pl.somehost.contactmanager.domain;
+package pl.somehost.contactmanager.domain.message;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pl.somehost.contactmanager.config.scheduler.SchedulerConfig;
+import pl.somehost.contactmanager.config.scheduler.SchedulerConfiguration;
 
 @Component
 public class MessageSchedulerConfigurator {
 
     @Autowired
-    private SchedulerConfig schedulerConfig;
+    private SchedulerConfiguration schedulerConfiguration;
 
     public void configureMessage(Message message) {
 
-        message.setSendTrays(schedulerConfig.getMessageTrays());
-
         if (message.getMessageStatus().equals(MessageStatus.NOT_SEND)) {
-            message.setSendTrays(schedulerConfig.getMessageTrays());
+            message.setSendTrays(schedulerConfiguration.getMessageTrays());
         }
     }
 }

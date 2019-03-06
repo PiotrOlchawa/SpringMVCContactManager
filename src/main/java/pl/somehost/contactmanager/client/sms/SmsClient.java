@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.config.sms.SmsConfiguration;
-import pl.somehost.contactmanager.domain.MessageStatus;
-import pl.somehost.contactmanager.domain.SmsMessage;
+import pl.somehost.contactmanager.domain.message.MessageStatus;
+import pl.somehost.contactmanager.domain.message.SmsMessage;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class SmsClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsClient.class);
 
-    public MessageStatus sendMessage(SmsMessage smsMessage) {
+    public MessageStatus sendMail(SmsMessage smsMessage) {
 
         RequestConfig requestConfig = RequestConfig.custom()
                 .setSocketTimeout(smsConfiguration.getSmsSocketTimeout())
@@ -58,7 +58,7 @@ public class SmsClient {
             LOGGER.info("SMS Response HTTP status code: " + responseStatusCode);
 
             if (!responseStatusCode.equals(HttpServletResponse.SC_OK)) {
-                LOGGER.info("Throwing exception as a result of HTTP status code other than 200: SmsException");
+                LOGGER.info("Throwing exception as a result of HTTP status code other than 200: MessageSendException");
                 return MessageStatus.NOT_SEND;
             }
 

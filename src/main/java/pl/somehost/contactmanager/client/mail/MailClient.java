@@ -2,11 +2,13 @@ package pl.somehost.contactmanager.client.mail;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
-import pl.somehost.contactmanager.domain.MailMessage;
+import pl.somehost.contactmanager.domain.message.MailMessage;
+import pl.somehost.contactmanager.domain.message.MessageStatus;
 
 @Component
 public class MailClient {
@@ -26,7 +28,12 @@ public class MailClient {
         };
     }
 
-    public void sendMail(MailMessage mailMessage) {
-        javaMailSender.send(createMimeMessage(mailMessage));
+    public MessageStatus sendMail(MailMessage mailMessage) {
+        try {
+            javaMailSender.send(createMimeMessage(mailMessage));
+            return MessageStatus.SEND;
+        } catch (MailException e){
+            return MessageStatus.NOT_SEND;
+        }
     }
 }

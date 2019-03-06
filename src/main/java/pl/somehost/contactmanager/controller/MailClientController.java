@@ -6,22 +6,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pl.somehost.contactmanager.domain.Message;
+import pl.somehost.contactmanager.domain.message.Message;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
-import pl.somehost.contactmanager.service.MailContactMessageService;
+import pl.somehost.contactmanager.facade.MessageFacade;
 
 @RestController
 @Secured({"ROLE_ADMIN", "ROLE_USER"})
 public class MailClientController {
 
-    @Autowired
-    MailContactMessageService contactMailService;
+    @Autowired //Autowired by name
+    MessageFacade mailMessageFacade;
     @Autowired
     ContactManagerResponseMessage contactManagerResponseMessage;
 
     @PostMapping(value = "/mail/{contactId}")
     public ContactManagerResponseMessage sendMailToContact(@PathVariable Integer contactId, @RequestBody Message message) {
-        contactMailService.sendPersistedMessage(contactId, message);
+        mailMessageFacade.sendPersistedMessage(contactId, message);
         contactManagerResponseMessage.setMessage("Massage was send");
         return contactManagerResponseMessage;
     }

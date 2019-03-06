@@ -2,11 +2,13 @@ package pl.somehost.contactmanager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.somehost.contactmanager.domain.Message;
-import pl.somehost.contactmanager.domain.MessageStatus;
+import pl.somehost.contactmanager.domain.message.Message;
+import pl.somehost.contactmanager.domain.message.MessageSendMethod;
+import pl.somehost.contactmanager.domain.message.MessageStatus;
 import pl.somehost.contactmanager.repository.MessageDao;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MessageService {
@@ -22,7 +24,12 @@ public class MessageService {
         return messageDao.findByMessageStatus(messageStatus);
     }
 
-    public List<Message> getMessageWithStatusAndNumberOfTrys (MessageStatus messageStatus,Integer messageTrysCount) {
+    public Optional<List<Message>> getMessageWithStatusAndNumberOfTrysGreater(MessageStatus messageStatus, Integer messageTrysCount) {
         return messageDao.findByMessageStatusAndAndSendTraysIsGreaterThan(messageStatus,messageTrysCount);
+    }
+
+    public Optional<List<Message>> getStatusAndMessageSendMethodAndSendTraysGreater
+            (MessageStatus messageStatus, MessageSendMethod messageSendMethod,Integer messageTrysCount) {
+        return messageDao.findByMessageStatusAndMessageSendMethodAndSendTraysGreaterThan(messageStatus,messageSendMethod,messageTrysCount);
     }
 }

@@ -1,4 +1,6 @@
-package pl.somehost.contactmanager.domain;
+package pl.somehost.contactmanager.domain.message;
+
+import pl.somehost.contactmanager.domain.Contact;
 
 import javax.persistence.*;
 
@@ -14,6 +16,9 @@ public class Message {
     @Column(name = "messageStatus")
     @Enumerated(EnumType.STRING)
     protected MessageStatus messageStatus;
+    @Column(name = "messagesendmethod")
+    @Enumerated(EnumType.STRING)
+    protected MessageSendMethod messageSendMethod;
     @Column(name = "sendTrays")
     protected Integer sendTrays;
     @ManyToOne
@@ -21,6 +26,14 @@ public class Message {
     private Contact contact;
 
     public Message() {
+    }
+
+    public MessageSendMethod getMessageSendMethod() {
+        return messageSendMethod;
+    }
+
+    public void setMessageSendMethod(MessageSendMethod messageSendMethod) {
+        this.messageSendMethod = messageSendMethod;
     }
 
     public Integer getSendTrays() {

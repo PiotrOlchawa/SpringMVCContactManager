@@ -1,4 +1,4 @@
-package pl.somehost.contactmanager.domain;
+package pl.somehost.contactmanager.domain.message;
 
 public class SmsMessage {
 
