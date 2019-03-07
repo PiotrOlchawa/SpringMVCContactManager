@@ -1,5 +1,7 @@
 package pl.somehost.contactmanager.client.mail;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -18,6 +20,8 @@ public class MailClient {
     @Value("${mailMessage.from}")
     private String from;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailClient.class);
+
     private MimeMessagePreparator createMimeMessage(final MailMessage mailMessage) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
@@ -31,6 +35,7 @@ public class MailClient {
     public MessageStatus sendMail(MailMessage mailMessage) {
         try {
             javaMailSender.send(createMimeMessage(mailMessage));
+            LOGGER.info("Mail Message was send");
             return MessageStatus.SEND;
         } catch (MailException e){
             return MessageStatus.NOT_SEND;

@@ -13,12 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pl.somehost.contactmanager.service.UserDetailsServiceImpl;
-
-import java.util.Arrays;
 
 @EnableWebSecurity(debug = false)
 @Configuration
@@ -55,18 +50,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         authenticationProvider.setUserDetailsService(userDetailsServiceImpl);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedHeader("*");
-        configuration.setAllowedMethods(Arrays.asList("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 
     @Override

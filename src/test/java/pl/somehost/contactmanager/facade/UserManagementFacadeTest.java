@@ -11,7 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import pl.somehost.contactmanager.config.TestBeanConfig;
+import pl.somehost.contactmanager.config.TestingBeanConfig;
 import pl.somehost.contactmanager.domain.AdressBook;
 import pl.somehost.contactmanager.domain.Authorities;
 import pl.somehost.contactmanager.domain.Roles;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestBeanConfig.class})
+@ContextConfiguration(classes = {TestingBeanConfig.class})
 @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN", "ROLE_USER"})
 @Transactional
 public class UserManagementFacadeTest {
