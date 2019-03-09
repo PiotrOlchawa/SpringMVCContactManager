@@ -3,8 +3,10 @@ package pl.somehost.contactmanager.controller.front;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.UserDto;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.facade.UserManagementFacade;
@@ -29,17 +31,17 @@ public class UsersManagementController {
     }
 
     @PostMapping(value = "/user")
-    public ResponseEntity<ContactManagerResponseMessage>  createUser(@Valid @RequestBody UserDto userDto) {
-        return userManagementFacade.createUser(userDto);
+    public ResponseEntity<ContactManagerResponseMessage>  createUser(@Valid @RequestBody UserDto userDto, @AuthenticationPrincipal User user) {
+        return userManagementFacade.createUser(userDto,user);
     }
 
     @DeleteMapping(value = "/user")
-    public ResponseEntity<ContactManagerResponseMessage> deleteUser(@RequestParam(required = true, value = "id" ,defaultValue = "0") Integer userId) {
-       return userManagementFacade.deleteUser(userId);
+    public ResponseEntity<ContactManagerResponseMessage> deleteUser(@RequestParam(required = true, value = "id" ,defaultValue = "0") Integer userId,@AuthenticationPrincipal User user) {
+       return userManagementFacade.deleteUser(userId,user);
     }
 
     @PutMapping (value = "/user")
-    public ResponseEntity<ContactManagerResponseMessage> modifyUser(@Valid @RequestBody UserDto userDto){
-        return userManagementFacade.modifyUser(userDto);
+    public ResponseEntity<ContactManagerResponseMessage> modifyUser(@Valid @RequestBody UserDto userDto,@AuthenticationPrincipal User user){
+        return userManagementFacade.modifyUser(userDto,user);
     }
 }

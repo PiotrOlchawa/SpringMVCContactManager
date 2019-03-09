@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.Authorities;
-import pl.somehost.contactmanager.domain.LoggedUserGetter;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.UserDto;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseHeader;
@@ -32,17 +31,15 @@ public class UserManagementFacade {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private LoggedUserGetter loggedUserGetter;
-    @Autowired
     private ContactManagerResponseMessage contactManagerResponseMessage;
     @Autowired
     private ResourceLocationService resourceLocationService;
     @Value("${role.joining.character}")
     private String roleJoiningCharacter;
 
-    public ResponseEntity<ContactManagerResponseMessage> createUser(UserDto userDto) {
+    public ResponseEntity<ContactManagerResponseMessage> createUser(UserDto userDto,User authenticatedUser) {
 
-        LOGGER.info("createUser CALL" + " by " + loggedUserGetter.getLoggedUserName());
+        LOGGER.info("createUser CALL" + " by " + authenticatedUser.getUsername());
         User user = userMapper.mapUserDtoToUser(userDto);
         User persistedUser = userService.save(user);
         contactManagerResponseMessage.setMessage("User was created: user id: " + persistedUser.getId());
@@ -52,19 +49,19 @@ public class UserManagementFacade {
         return new ResponseEntity<>(contactManagerResponseMessage, contactManagerResponseHeader.getResponseHeaders(), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<ContactManagerResponseMessage> deleteUser(Integer userId) {
+    public ResponseEntity<ContactManagerResponseMessage> deleteUser(Integer userId,User authenticatedUser) {
 
-        LOGGER.info("deleteUser CALL" + " by " + loggedUserGetter.getLoggedUserName());
+        LOGGER.info("deleteUser CALL" + " by " + authenticatedUser.getUsername());
         userService.deleteUser(userId);
         contactManagerResponseMessage.setMessage("User was deleted: user id: " + userId);
         ContactManagerResponseHeader contactManagerResponseHeader =
                 new ContactManagerResponseHeader("ContactResponceHeader", "User with id: " + userId + " was deleted ");
-        return new ResponseEntity<>(contactManagerResponseMessage, contactManagerResponseHeader.getResponseHeaders(), HttpStatus.CREATED);
+        return new ResponseEntity<>(contactManagerResponseMessage, contactManagerResponseHeader.getResponseHeaders(), HttpStatus.OK);
     }
 
-    public ResponseEntity<ContactManagerResponseMessage> modifyUser(UserDto userDto) {
+    public ResponseEntity<ContactManagerResponseMessage> modifyUser(UserDto userDto, User authenticatedUser) {
 
-        LOGGER.info("modifyUser CALL" + " by " + loggedUserGetter.getLoggedUserName());
+        LOGGER.info("modifyUser CALL" + " by " + authenticatedUser.getUsername());
         Optional<User> optionalCurrentUser = userService.getUser(userDto.getId());
         Optional<User> optionalUser = userService.getUser(userDto.getId());
         optionalUser.orElseThrow(() -> new UserNotFoundException("User with id: " + userDto.getId() + " was not found"));
@@ -73,7 +70,7 @@ public class UserManagementFacade {
         User user = userMapper.mapUserDtoToUser(userDto);
         LOGGER.info(userDto.getAuthorities() == null ? "Authorities are null"
                 : "Authorities while mapping for userId=" + userDto.getId() + " "
-                + userDto.getAuthorities().stream().map(l -> l.getAuthority()).collect(Collectors.joining(roleJoiningCharacter)));
+                + userDto.getAuthorities().stream().map(Authorities::getAuthority).collect(Collectors.joining(roleJoiningCharacter)));
         LOGGER.info("Persisted User Authorities for userId,userName " + user.getId() + "," + user.getUsername() + " "
                 + user.getAuthorities().stream().map(Authorities::getAuthority).collect(Collectors.joining(roleJoiningCharacter)));
         userService.save(user);
