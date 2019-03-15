@@ -1,4 +1,4 @@
-package pl.somehost.contactmanager.domain.message;
+package pl.somehost.contactmanager.domain.message.enums;
 
 public enum MessageSendMethod {
 

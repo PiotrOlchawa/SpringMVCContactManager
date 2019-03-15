@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.AdressBook;
-import pl.somehost.contactmanager.domain.Authorities;
+import pl.somehost.contactmanager.domain.security.Authorities;
 import pl.somehost.contactmanager.validator.PasswordConstraint;
 
 import javax.validation.constraints.NotNull;

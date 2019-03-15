@@ -1,4 +1,4 @@
-package pl.somehost.contactmanager.client.sms;
+package pl.somehost.contactmanager.messageclient.sms;
 
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -12,8 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.config.sms.SmsConfiguration;
-import pl.somehost.contactmanager.domain.message.MessageStatus;
+import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
 import pl.somehost.contactmanager.domain.message.SmsMessage;
+import pl.somehost.contactmanager.messageclient.IMessageClient;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -21,14 +22,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @Component
-public class SmsClient {
+public class SmsClient implements IMessageClient<SmsMessage> {
 
     @Autowired
     SmsConfiguration smsConfiguration;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsClient.class);
 
-    public MessageStatus sendMail(SmsMessage smsMessage) {
+    @Override
+    public MessageStatus sendMessage(SmsMessage smsMessage) {
 
         RequestConfig requestConfig = RequestConfig.custom()
                 .setSocketTimeout(smsConfiguration.getSmsSocketTimeout())

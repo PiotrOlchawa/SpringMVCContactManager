@@ -14,7 +14,7 @@ public class SchedulerConfiguration {
     @Value("${scheduling.period}")
     private Long schedulingPeriod;
 
-    public Integer getMessageTrays() {
+    public Integer getMessageTrys() {
         return messageTrys;
     }
 

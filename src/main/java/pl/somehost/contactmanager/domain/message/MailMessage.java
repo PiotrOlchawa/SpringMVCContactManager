@@ -1,13 +1,14 @@
 package pl.somehost.contactmanager.domain.message;
 
-public class MailMessage extends Message  {
+public class MailMessage {
 
-        private String mailTo;
-        private String toCC;
-        private String subject;
+    private String mailTo;
+    private String toCC;
+    private String subject;
+    private String message;
 
     public MailMessage(Message message) {
-        super(message.getMessage());
+        this.message = message.getMessage();
     }
 
     public String getMailTo() {
@@ -20,6 +21,14 @@ public class MailMessage extends Message  {
 
     public String getToCC() {
         return toCC;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public void setToCC(String toCC) {

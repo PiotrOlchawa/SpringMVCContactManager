@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.AdressBook;
-import pl.somehost.contactmanager.domain.PasswordsEncoder;
+import pl.somehost.contactmanager.domain.security.PasswordsEncoder;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.UserDto;
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
-import pl.somehost.contactmanager.domain.response.ContactManagerResponseHeader;
+import pl.somehost.contactmanager.domain.response.CMResponseEntityPreparator;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.exception.ContactNotFoundException;
 import pl.somehost.contactmanager.mapper.ContactMapper;
@@ -30,9 +30,9 @@ public class ContactManagementFacade {
     @Autowired
     private ContactMapper contactMapper;
     @Autowired
-    private ContactManagerResponseMessage contactManagerResponseMessage;
-    @Autowired
     private ResourceLocationService resourceLocationService;
+    @Autowired
+    private CMResponseEntityPreparator cmResponseEntityPreparator;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactManagementFacade.class);
 
@@ -40,14 +40,11 @@ public class ContactManagementFacade {
 
         Contact contact = contactMapper.mapContactDtoToContact(contactDto);
         Contact persistedContact = contactService.saveContact(contact);
-        URI resourceLocation = resourceLocationService.getLinkedResourceLocation("/contact/" + persistedContact.getId());
         LOGGER.info("Facade Dto: " + contactDto.toString());
         LOGGER.info("Persisted contactDto: " + contact.getContactInfo());
-        LOGGER.info("resourceLocation " + resourceLocation.toString());
-        contactManagerResponseMessage.setMessage("Contact was created: " + resourceLocation.toString());
-        ContactManagerResponseHeader contactManagerResponseHeader =
-                new ContactManagerResponseHeader("ContactResponceHeader", "Link to resource", resourceLocation);
-        return new ResponseEntity<>(contactManagerResponseMessage, contactManagerResponseHeader.getResponseHeaders(), HttpStatus.CREATED);
+
+        return cmResponseEntityPreparator.getResponseEntity("Contact with id " + persistedContact.getId() +" was created"
+                , "/contact/" + persistedContact.getId(),HttpStatus.CREATED);
     }
 
     public ResponseEntity<List<ContactDto>> getContactsForUser(User user) {
@@ -70,10 +67,9 @@ public class ContactManagementFacade {
         URI resourceLocation = resourceLocationService.getLinkedResourceLocation("/contact/" + contactToPersist.getId());
         LOGGER.info("updateContactForUser : Update contact to be persisted "
                 + contactToPersist.getId() + "," + contactToPersist.getFirstName());
-        contactManagerResponseMessage.setMessage("Contact was updated: " + resourceLocation.toString());
-        ContactManagerResponseHeader contactManagerResponseHeader =
-                new ContactManagerResponseHeader("ContactResponceHeader", "Link to resource", resourceLocation);
-        return new ResponseEntity<>(contactManagerResponseMessage, contactManagerResponseHeader.getResponseHeaders(), HttpStatus.CREATED);
+
+        return cmResponseEntityPreparator.getResponseEntity("Contact with id " + contact.get().getId() +" was updated"
+                , "/contact/" + contact.get().getId(),HttpStatus.OK);
     }
 
     public ResponseEntity<ContactManagerResponseMessage> deleteContactForCurrentUser(Integer id,User user) {
@@ -82,9 +78,7 @@ public class ContactManagementFacade {
         Optional<Contact> contact = contactList.stream().filter(l -> l.getId() == id).findFirst();
         contact.orElseThrow(() -> new ContactNotFoundException(id, "not found"));
         contactService.deleteContact(id);
-        contactManagerResponseMessage.setMessage("Contact with id: " + id + " was deleted sucessfuly");
-        LOGGER.info("deleteContactForCurrentUser : Contact was deleted " +contact.get().getContactInfo());
-        return new ResponseEntity<>(contactManagerResponseMessage, HttpStatus.OK);
+        return cmResponseEntityPreparator.getResponseEntity("Contact with id " + id +" was deleted",HttpStatus.OK);
     }
 
 

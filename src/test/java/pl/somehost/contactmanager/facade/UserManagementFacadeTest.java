@@ -12,12 +12,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import pl.somehost.contactmanager.config.TestingBeanConfig;
-import pl.somehost.contactmanager.domain.AdressBook;
-import pl.somehost.contactmanager.domain.Authorities;
-import pl.somehost.contactmanager.domain.Roles;
-import pl.somehost.contactmanager.domain.User;
+import pl.somehost.contactmanager.domain.*;
 import pl.somehost.contactmanager.domain.dto.UserDto;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
+import pl.somehost.contactmanager.domain.security.Authorities;
+import pl.somehost.contactmanager.domain.security.LoggedUserGetter;
+import pl.somehost.contactmanager.domain.security.Roles;
 import pl.somehost.contactmanager.repository.UserDao;
 
 import java.util.HashSet;
@@ -33,11 +33,13 @@ import java.util.stream.Collectors;
 public class UserManagementFacadeTest {
 
     @Autowired
-    UserManagementFacade userMangementFacade;
+    private UserManagementFacade userMangementFacade;
     @Autowired
-    PasswordEncoder passwordsEncoder;
+    private PasswordEncoder passwordsEncoder;
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
+    @Autowired
+    private LoggedUserGetter loggedUserGetter;
 
     @Test
     public void shouldUserManagementFacadeCreateUser() {
@@ -91,6 +93,8 @@ public class UserManagementFacadeTest {
         Assert.assertEquals(modifiedUser.getUsername(),"username1");
         Assert.assertTrue(passwordsEncoder.matches("password1",modifiedUser.getPassword()));
         Assert.assertEquals(modifiedUser.getId(),persistedUser.getId());
+        //Cleanup
+        userDao.delete(user);
     }
 
 }

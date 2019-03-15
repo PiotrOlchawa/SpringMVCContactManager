@@ -2,6 +2,7 @@ package pl.somehost.contactmanager.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import pl.somehost.contactmanager.domain.security.Authorities;
 
 import javax.persistence.*;
 import java.util.Set;

@@ -3,8 +3,8 @@ package pl.somehost.contactmanager.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.somehost.contactmanager.domain.message.Message;
-import pl.somehost.contactmanager.domain.message.MessageSendMethod;
-import pl.somehost.contactmanager.domain.message.MessageStatus;
+import pl.somehost.contactmanager.domain.message.enums.MessageSendMethod;
+import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
 import pl.somehost.contactmanager.repository.MessageDao;
 
 import java.util.List;

@@ -38,7 +38,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     ResponseEntity<Object> handleIllegalArgumentException(MethodArgumentTypeMismatchException ex, WebRequest request) {
         ExceptionReponse exceptionReponse =
                 new ExceptionReponse(new Date(),"Incorrect Id value !",request.getDescription(false));
-        return new ResponseEntity<>(exceptionReponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(exceptionReponse, HttpStatus.BAD_REQUEST);
     }
 
     //Overriding this method handle exception for "Json @RequestBody" all controllers errors

@@ -1,4 +1,4 @@
-package pl.somehost.contactmanager.domain;
+package pl.somehost.contactmanager.domain.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,4 +1,4 @@
-package pl.somehost.contactmanager.domain;
+package pl.somehost.contactmanager.domain.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

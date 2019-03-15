@@ -28,8 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(!user.isPresent()){
             LOGGER.info("User was NOT FOUND ");
             throw new UsernameNotFoundException("User was NOT FOUND");
-        }
-        if(user.isPresent()){
+        } else
+        {
             LOGGER.info(" User was FOUND " + user.get().toString());
         }
         return new SecurityUser(user.get());

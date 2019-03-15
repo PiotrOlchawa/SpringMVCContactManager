@@ -1,6 +1,8 @@
 package pl.somehost.contactmanager.domain.message;
 
 import pl.somehost.contactmanager.domain.Contact;
+import pl.somehost.contactmanager.domain.message.enums.MessageSendMethod;
+import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
 
 import javax.persistence.*;
 
@@ -15,12 +17,12 @@ public class Message {
     protected String message;
     @Column(name = "messageStatus")
     @Enumerated(EnumType.STRING)
-    protected MessageStatus messageStatus;
+    private MessageStatus messageStatus;
     @Column(name = "messagesendmethod")
     @Enumerated(EnumType.STRING)
-    protected MessageSendMethod messageSendMethod;
+    private MessageSendMethod messageSendMethod;
     @Column(name = "sendTrays")
-    protected Integer sendTrays;
+    private Integer sendTrays;
     @ManyToOne
     @JoinColumn(name = "CONTACT_ID")
     private Contact contact;
@@ -40,7 +42,7 @@ public class Message {
         return sendTrays;
     }
 
-    public void setSendTrays(Integer sendTrays) {
+    public void setSendTrys(Integer sendTrays) {
         this.sendTrays = sendTrays;
     }
 

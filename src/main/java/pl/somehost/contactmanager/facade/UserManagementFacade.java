@@ -7,17 +7,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import pl.somehost.contactmanager.domain.Authorities;
+import pl.somehost.contactmanager.domain.security.Authorities;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.UserDto;
-import pl.somehost.contactmanager.domain.response.ContactManagerResponseHeader;
+import pl.somehost.contactmanager.domain.response.CMResponseEntityPreparator;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.exception.UserNotFoundException;
 import pl.somehost.contactmanager.mapper.UserMapper;
 import pl.somehost.contactmanager.service.ResourceLocationService;
 import pl.somehost.contactmanager.service.UserService;
 
-import java.net.URI;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,34 +33,29 @@ public class UserManagementFacade {
     private ContactManagerResponseMessage contactManagerResponseMessage;
     @Autowired
     private ResourceLocationService resourceLocationService;
+    @Autowired
+    private CMResponseEntityPreparator cmResponseEntityPreparator;
     @Value("${role.joining.character}")
     private String roleJoiningCharacter;
 
-    public ResponseEntity<ContactManagerResponseMessage> createUser(UserDto userDto,User authenticatedUser) {
+    public ResponseEntity<ContactManagerResponseMessage> createUser(UserDto userDto) {
 
-        LOGGER.info("createUser CALL" + " by " + authenticatedUser.getUsername());
         User user = userMapper.mapUserDtoToUser(userDto);
         User persistedUser = userService.save(user);
         contactManagerResponseMessage.setMessage("User was created: user id: " + persistedUser.getId());
-        URI resourceLocation = resourceLocationService.getLinkedResourceLocation("/user/" + persistedUser.getId());
-        ContactManagerResponseHeader contactManagerResponseHeader =
-                new ContactManagerResponseHeader("ContactResponceHeader", "Link to created resource", resourceLocation);
-        return new ResponseEntity<>(contactManagerResponseMessage, contactManagerResponseHeader.getResponseHeaders(), HttpStatus.CREATED);
+        return cmResponseEntityPreparator.getResponseEntity("User with id " + persistedUser.getId() +" was created"
+                , "/user/" + persistedUser.getId(),HttpStatus.CREATED);
     }
 
     public ResponseEntity<ContactManagerResponseMessage> deleteUser(Integer userId,User authenticatedUser) {
 
-        LOGGER.info("deleteUser CALL" + " by " + authenticatedUser.getUsername());
         userService.deleteUser(userId);
         contactManagerResponseMessage.setMessage("User was deleted: user id: " + userId);
-        ContactManagerResponseHeader contactManagerResponseHeader =
-                new ContactManagerResponseHeader("ContactResponceHeader", "User with id: " + userId + " was deleted ");
-        return new ResponseEntity<>(contactManagerResponseMessage, contactManagerResponseHeader.getResponseHeaders(), HttpStatus.OK);
+        return cmResponseEntityPreparator.getResponseEntity("User with id " + userId +" was deleted",HttpStatus.OK);
     }
 
-    public ResponseEntity<ContactManagerResponseMessage> modifyUser(UserDto userDto, User authenticatedUser) {
+    public ResponseEntity<ContactManagerResponseMessage> modifyUser(UserDto userDto) {
 
-        LOGGER.info("modifyUser CALL" + " by " + authenticatedUser.getUsername());
         Optional<User> optionalCurrentUser = userService.getUser(userDto.getId());
         Optional<User> optionalUser = userService.getUser(userDto.getId());
         optionalUser.orElseThrow(() -> new UserNotFoundException("User with id: " + userDto.getId() + " was not found"));
@@ -75,10 +69,7 @@ public class UserManagementFacade {
                 + user.getAuthorities().stream().map(Authorities::getAuthority).collect(Collectors.joining(roleJoiningCharacter)));
         userService.save(user);
 
-        contactManagerResponseMessage.setMessage("User was modified: user id: " + userDto.getId());
-        URI resourceLocation = resourceLocationService.getLinkedResourceLocation("/user/" + userDto.getId());
-        ContactManagerResponseHeader contactManagerResponseHeader =
-                new ContactManagerResponseHeader("ContactResponceHeader", "Link to updated resource", resourceLocation);
-        return new ResponseEntity<>(contactManagerResponseMessage, contactManagerResponseHeader.getResponseHeaders(), HttpStatus.OK);
+        return cmResponseEntityPreparator.getResponseEntity("User with id " + userDto.getId() +" was modified"
+                , "/user/" + userDto.getId(),HttpStatus.OK);
     }
 }

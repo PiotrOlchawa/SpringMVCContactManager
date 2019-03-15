@@ -9,7 +9,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import pl.somehost.contactmanager.domain.LoggedUserGetter;
+import pl.somehost.contactmanager.domain.security.LoggedUserGetter;
 import pl.somehost.contactmanager.security.SecurityUser;
 
 import javax.servlet.http.Cookie;

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
-import pl.somehost.contactmanager.domain.LoggedUserGetter;
+import pl.somehost.contactmanager.domain.security.LoggedUserGetter;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.exception.UserNotFoundException;
 import pl.somehost.contactmanager.repository.UserDao;

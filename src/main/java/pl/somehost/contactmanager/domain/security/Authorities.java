@@ -1,7 +1,8 @@
-package pl.somehost.contactmanager.domain;
+package pl.somehost.contactmanager.domain.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
+import pl.somehost.contactmanager.domain.User;
 
 import javax.persistence.*;
 

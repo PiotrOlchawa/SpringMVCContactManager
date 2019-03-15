@@ -1,4 +1,4 @@
-package pl.somehost.contactmanager.domain;
+package pl.somehost.contactmanager.domain.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.security.SecurityUser;
 
 import java.util.Collection;

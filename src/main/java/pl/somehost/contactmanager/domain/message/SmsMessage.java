@@ -6,14 +6,13 @@ public class SmsMessage {
     private String messageText;
 
     public SmsMessage(Message message) {
-        this.messageText=message.getMessage();
+        this.messageText = message.getMessage();
     }
 
     public SmsMessage(Message message, String phoneNumber) {
-        this.messageText=message.getMessage();
-        this.phoneNumber=phoneNumber;
+        this.messageText = message.getMessage();
+        this.phoneNumber = phoneNumber;
     }
-
 
     public String getPhoneNumber() {
         return phoneNumber;

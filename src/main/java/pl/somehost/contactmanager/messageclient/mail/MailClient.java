@@ -1,4 +1,4 @@
-package pl.somehost.contactmanager.client.mail;
+package pl.somehost.contactmanager.messageclient.mail;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +10,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.message.MailMessage;
-import pl.somehost.contactmanager.domain.message.MessageStatus;
+import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
+import pl.somehost.contactmanager.messageclient.IMessageClient;
 
 @Component
-public class MailClient {
+public class MailClient implements IMessageClient<MailMessage> {
 
     @Autowired
     private JavaMailSenderImpl javaMailSender;
@@ -32,7 +33,8 @@ public class MailClient {
         };
     }
 
-    public MessageStatus sendMail(MailMessage mailMessage) {
+    @Override
+    public MessageStatus sendMessage(MailMessage mailMessage) {
         try {
             javaMailSender.send(createMimeMessage(mailMessage));
             LOGGER.info("Mail Message was send");

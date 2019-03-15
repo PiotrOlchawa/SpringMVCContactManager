@@ -1,6 +1,7 @@
 package pl.somehost.contactmanager.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,10 +21,10 @@ public class MailClientController {
     ContactManagerResponseMessage contactManagerResponseMessage;
 
     @PostMapping(value = "/mail/{contactId}")
-    public ContactManagerResponseMessage sendMailToContact(@PathVariable Integer contactId, @RequestBody Message message) {
-        mailMessageFacade.sendPersistedMessage(contactId, message);
-        contactManagerResponseMessage.setMessage("Massage was send");
-        return contactManagerResponseMessage;
+    public ResponseEntity<ContactManagerResponseMessage> sendMailToContact(@PathVariable Integer contactId, @RequestBody Message message) {
+        return mailMessageFacade.sendPersistedMessage(contactId, message);
+        //contactManagerResponseMessage.setMessage("Massage was send");
+        //return contactManagerResponseMessage;
     }
 
 }

@@ -31,8 +31,8 @@ public class UsersManagementController {
     }
 
     @PostMapping(value = "/user")
-    public ResponseEntity<ContactManagerResponseMessage>  createUser(@Valid @RequestBody UserDto userDto, @AuthenticationPrincipal User user) {
-        return userManagementFacade.createUser(userDto,user);
+    public ResponseEntity<ContactManagerResponseMessage>  createUser(@Valid @RequestBody UserDto userDto) {
+        return userManagementFacade.createUser(userDto);
     }
 
     @DeleteMapping(value = "/user")
@@ -41,7 +41,7 @@ public class UsersManagementController {
     }
 
     @PutMapping (value = "/user")
-    public ResponseEntity<ContactManagerResponseMessage> modifyUser(@Valid @RequestBody UserDto userDto,@AuthenticationPrincipal User user){
-        return userManagementFacade.modifyUser(userDto,user);
+    public ResponseEntity<ContactManagerResponseMessage> modifyUser(@Valid @RequestBody UserDto userDto){
+        return userManagementFacade.modifyUser(userDto);
     }
 }
