@@ -22,14 +22,14 @@ import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.mapper.ContactMapper;
 import pl.somehost.contactmanager.service.ContactService;
 
-@WebAppConfiguration
+@WebAppConfiguration(value = "TestingBeanConfig.class" )
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestingBeanConfig.class})
 public class ContactManagementFacadeTest {
 
     @Autowired
     @InjectMocks
-    ContactManagementFacade contactManagementFacade;
+    private ContactManagementFacade contactManagementFacade;
     @Mock
     private ContactService contactService;
     @Mock
@@ -54,8 +54,10 @@ public class ContactManagementFacadeTest {
         //When
         ResponseEntity<ContactManagerResponseMessage> contactManagerResponseMessage = contactManagementFacade.createContact(contactDto);
         HttpStatus httpResponseStatus = contactManagerResponseMessage.getStatusCode();
+        Integer contactManagerResponseBodyMessageLenght = contactManagerResponseMessage.getBody().getMessage().length();
         //Then
         Assert.assertEquals(HttpStatus.CREATED, httpResponseStatus);
-
+        Assert.assertTrue(contactManagerResponseBodyMessageLenght > 0);
+        Assert.assertTrue(contactManagerResponseMessage.hasBody());
     }
 }

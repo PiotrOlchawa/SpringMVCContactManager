@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.config.scheduler.MessageSchedulerConfigurator;
 import pl.somehost.contactmanager.domain.Contact;
-import pl.somehost.contactmanager.domain.message.*;
+import pl.somehost.contactmanager.domain.message.Message;
+import pl.somehost.contactmanager.domain.message.SmsMessage;
 import pl.somehost.contactmanager.domain.message.enums.MessageSendMethod;
 import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
 import pl.somehost.contactmanager.domain.response.CMResponseEntityPreparator;
@@ -24,18 +25,25 @@ public class SmsIMessageFacade implements IMessageFacade {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailIMessageFacade.class);
 
-    @Autowired
     private ContactService contactService;
-    @Autowired
     private MessageService messageService;
-    @Autowired
     private IMessageClient smsGatewayClient;
-    @Autowired
     private ContactMapper contactMapper;
-    @Autowired
     private MessageSchedulerConfigurator messageSchedulerConfigurator;
-    @Autowired
     private CMResponseEntityPreparator cmResponseEntityPreparator;
+
+    @Autowired
+    public SmsIMessageFacade(ContactService contactService, MessageService messageService, IMessageClient smsGatewayClient, ContactMapper contactMapper, MessageSchedulerConfigurator messageSchedulerConfigurator, CMResponseEntityPreparator cmResponseEntityPreparator) {
+        this.contactService = contactService;
+        this.messageService = messageService;
+        this.smsGatewayClient = smsGatewayClient;
+        this.contactMapper = contactMapper;
+        this.messageSchedulerConfigurator = messageSchedulerConfigurator;
+        this.cmResponseEntityPreparator = cmResponseEntityPreparator;
+    }
+
+    public SmsIMessageFacade() {
+    }
 
     @Override
     public ResponseEntity<ContactManagerResponseMessage> sendPersistedMessage(Integer contactId, Message message) {

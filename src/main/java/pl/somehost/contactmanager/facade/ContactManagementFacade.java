@@ -23,12 +23,16 @@ import java.util.Optional;
 @Component
 public class ContactManagementFacade {
 
-    @Autowired
     private ContactService contactService;
-    @Autowired
     private ContactMapper contactMapper;
-    @Autowired
     private CMResponseEntityPreparator cmResponseEntityPreparator;
+
+    @Autowired
+    public ContactManagementFacade(ContactService contactService, ContactMapper contactMapper, CMResponseEntityPreparator cmResponseEntityPreparator) {
+        this.contactService = contactService;
+        this.contactMapper = contactMapper;
+        this.cmResponseEntityPreparator = cmResponseEntityPreparator;
+    }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactManagementFacade.class);
 
@@ -38,7 +42,6 @@ public class ContactManagementFacade {
         Contact persistedContact = contactService.saveContact(contact);
         LOGGER.info("Facade Dto: " + contactDto.toString());
         LOGGER.info("Persisted contactDto: " + contact.getContactInfo());
-        LOGGER.info("xxxxxx: " + cmResponseEntityPreparator);
         return cmResponseEntityPreparator.getResponseEntity("Contact with id " + persistedContact.getId() + " was created"
                 , "/contact/" + persistedContact.getId(), HttpStatus.CREATED);
     }

@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @ContextConfiguration(classes = {TestingBeanConfig.class})
 @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN", "ROLE_USER"})
 @Transactional
-public class UserManagementFacadeTest {
+public class IntegratedUserManagementFacadeTest {
 
     @Autowired
     private UserManagementFacade userMangementFacade;
