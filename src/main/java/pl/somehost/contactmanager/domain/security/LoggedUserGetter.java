@@ -24,7 +24,7 @@ public class LoggedUserGetter {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggedUserGetter.class);
 
     public User getLoggedUser() {
-        return (User) authenticationFacade.getAuthentication().getPrincipal();
+        return (SecurityUser) authenticationFacade.getAuthentication().getPrincipal();
     }
 
     public UserDetails getLoggedUserDetails() {

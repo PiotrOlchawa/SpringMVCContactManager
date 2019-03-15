@@ -74,7 +74,7 @@ public class ContactMapper {
         return new SmsMessage(message, message.getContact().getTelephone());
     }
 
-    public SmsMessage mapContactToSmsMessage(Contact contact,SmsMessage smsMessage){
+    public SmsMessage mapContactToSms(Contact contact, SmsMessage smsMessage){
         smsMessage.setPhoneNumber(contact.getTelephone());
         return smsMessage;
     }

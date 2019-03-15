@@ -20,16 +20,16 @@ import pl.somehost.contactmanager.service.ContactService;
 import pl.somehost.contactmanager.service.MessageService;
 
 @Component
-public class SmsMessageFacade implements MessageFacade {
+public class SmsIMessageFacade implements IMessageFacade {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MailMessageFacade.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailIMessageFacade.class);
 
     @Autowired
     private ContactService contactService;
     @Autowired
     private MessageService messageService;
     @Autowired
-    private IMessageClient smsClient;
+    private IMessageClient smsGatewayClient;
     @Autowired
     private ContactMapper contactMapper;
     @Autowired
@@ -42,8 +42,8 @@ public class SmsMessageFacade implements MessageFacade {
         Contact contact = contactService.getContact(contactId);
         message.setContact(contact);
         message.setMessageSendMethod(MessageSendMethod.MESSAGE_BY_SMS);
-        MessageStatus messageStatus = smsClient
-                .sendMessage(contactMapper.mapContactToSmsMessage(contact, new SmsMessage(message)));
+        MessageStatus messageStatus = smsGatewayClient
+                .sendMessage(contactMapper.mapContactToSms(contact, new SmsMessage(message)));
         message.setMessageStatus(messageStatus);
         messageSchedulerConfigurator.configureMessage(message);
         Message persistedMessage = messageService.saveMessage(message);

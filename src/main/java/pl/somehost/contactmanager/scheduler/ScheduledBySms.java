@@ -23,7 +23,7 @@ public class ScheduledBySms {
     @Autowired
     private MessageService messageService;
     @Autowired
-    private IMessageClient smsClient;
+    private IMessageClient smsGatewayClient;
     @Autowired
     private ContactMapper contactMapper;
     @Autowired
@@ -39,7 +39,7 @@ public class ScheduledBySms {
 
         Optionals.ifPresentOrElse(optionalSmsMessageList, smsMessagesList -> {
                     smsMessagesList.forEach(l -> {
-                        MessageStatus messageStatus = smsClient.sendMessage(contactMapper.mapContactToSms(l));
+                        MessageStatus messageStatus = smsGatewayClient.sendMessage(contactMapper.mapContactToSms(l));
                         schedulerMessageStatus.setMessageStatus(messageStatus, l);
                     });
                 }

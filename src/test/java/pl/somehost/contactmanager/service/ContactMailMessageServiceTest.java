@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.somehost.contactmanager.config.TestingBeanConfig;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.message.Message;
-import pl.somehost.contactmanager.facade.MessageFacade;
+import pl.somehost.contactmanager.facade.IMessageFacade;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -21,7 +21,7 @@ import pl.somehost.contactmanager.facade.MessageFacade;
 public class ContactMailMessageServiceTest {
 
     @Autowired
-    private MessageFacade mailMessageFacade; // Autowired by name
+    private IMessageFacade mailIMessageFacade; // Autowired by name
     @Autowired
     private ContactService contactService;
 
@@ -32,6 +32,6 @@ public class ContactMailMessageServiceTest {
         Contact persistedContact = contactService.saveContact(contact);
         Message message = new Message();
         message.setMessage("Test message");
-        mailMessageFacade.sendPersistedMessage(persistedContact.getId(),message);
+        mailIMessageFacade.sendPersistedMessage(persistedContact.getId(),message);
     }
 }

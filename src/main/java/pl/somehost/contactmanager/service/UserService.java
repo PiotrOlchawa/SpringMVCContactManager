@@ -55,6 +55,7 @@ public class UserService {
         return user.getId() == authennticatedUserId;
     }
 
+    @Secured({"ROLE_ADMIN"})
     public void deleteUser(Integer userId) {
         try {
             userDao.deleteById(userId);

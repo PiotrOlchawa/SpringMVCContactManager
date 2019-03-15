@@ -57,8 +57,8 @@ public class UserManagementFacadeTest {
         facadeUserDto.setAuthorities(authoritiesList);
         //When
         ResponseEntity<ContactManagerResponseMessage> contactManagerResponseMessageResponseEntity = userMangementFacade.createUser(facadeUserDto);
-        String [] response = contactManagerResponseMessageResponseEntity.getBody().getMessage().split(": ");
-        User user = userDao.findById(Integer.valueOf(response[2])).get();
+        String [] response = contactManagerResponseMessageResponseEntity.getBody().getMessage().split(" ");
+        User user = userDao.findById(Integer.valueOf(response[3])).get();
         List<String> userAuthorities = user.getAuthorities().stream().map(authorities -> authorities.getAuthority())
                 .collect(Collectors.toList());
         List<String> userDtoAuthorities = facadeUserDto.getAuthorities().stream().map(authorities -> authorities.getAuthority())
@@ -86,9 +86,9 @@ public class UserManagementFacadeTest {
         System.out.println("persistedUser.getId()  " +persistedUser.getId());
         userDto.setId(persistedUser.getId());
         //When
-        ResponseEntity<ContactManagerResponseMessage> contactManagerResponseMessageResponseEntity = userMangementFacade.modifyUser(userDto);
-        String [] response = contactManagerResponseMessageResponseEntity.getBody().getMessage().split(": ");
-        User modifiedUser = userDao.findById(Integer.valueOf(response[2])).get();
+        ResponseEntity<ContactManagerResponseMessage> contactManagerResponce = userMangementFacade.modifyUser(userDto);
+        String [] response = contactManagerResponce.getBody().getMessage().split(" ");
+        User modifiedUser = userDao.findById(Integer.valueOf(response[3])).get();
         //Then
         Assert.assertEquals(modifiedUser.getUsername(),"username1");
         Assert.assertTrue(passwordsEncoder.matches("password1",modifiedUser.getPassword()));

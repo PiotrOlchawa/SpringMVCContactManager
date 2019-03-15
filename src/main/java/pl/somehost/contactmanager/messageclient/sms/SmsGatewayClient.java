@@ -21,13 +21,24 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/*SmsGatewayClient based on Android phone as a SMS Gateway.
+Services in PL offering high prices for sms packages.
+Better option is buy sim card and turn on SMS operator packages that are cheaper
+Example price for VirginMobile is 3zł/400sms.
+
+Phone must be conected to Localnet (or have external ip with cellular connection)
+and configured with wi-fi connection.
+
+Android Application name: REST SMS Gateway
+*/
+
 @Component
-public class SmsClient implements IMessageClient<SmsMessage> {
+public class SmsGatewayClient implements IMessageClient<SmsMessage> {
 
     @Autowired
     SmsConfiguration smsConfiguration;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SmsClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SmsGatewayClient.class);
 
     @Override
     public MessageStatus sendMessage(SmsMessage smsMessage) {

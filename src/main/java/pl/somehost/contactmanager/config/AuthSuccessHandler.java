@@ -44,6 +44,8 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
         writer.flush();*/
         //response.getWriter().flush();
 
+        LOGGER.info("Correct password passed for user " + request.getParameter("username"));
+
         response.addHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "User-Role");
         response.addHeader("User-Role", loggedUserGetter.getLoggedUserRoles());
         response.addCookie(new Cookie("USER", loggedUserGetter.getLoggedUserName()));

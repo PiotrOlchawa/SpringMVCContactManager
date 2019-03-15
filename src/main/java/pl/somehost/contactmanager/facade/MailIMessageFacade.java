@@ -18,7 +18,7 @@ import pl.somehost.contactmanager.service.ContactService;
 import pl.somehost.contactmanager.service.MessageService;
 
 @Component
-public class MailMessageFacade implements MessageFacade {
+public class MailIMessageFacade implements IMessageFacade {
 
     @Autowired
     private IMessageClient mailClient;
