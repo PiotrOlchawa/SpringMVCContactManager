@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.message.Message;
 import pl.somehost.contactmanager.domain.message.enums.MessageSendMethod;
 import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
-import pl.somehost.contactmanager.mapper.ContactMapper;
+import pl.somehost.contactmanager.mapper.MessageMapper;
 import pl.somehost.contactmanager.messageclient.IMessageClient;
 import pl.somehost.contactmanager.service.MessageService;
 
@@ -25,7 +25,7 @@ public class ScheduledBySms {
     @Autowired
     private IMessageClient smsGatewayClient;
     @Autowired
-    private ContactMapper contactMapper;
+    private MessageMapper messageMapper;
     @Autowired
     private SchedulerMessageStatus schedulerMessageStatus;
 
@@ -39,7 +39,7 @@ public class ScheduledBySms {
 
         Optionals.ifPresentOrElse(optionalSmsMessageList, smsMessagesList -> {
                     smsMessagesList.forEach(l -> {
-                        MessageStatus messageStatus = smsGatewayClient.sendMessage(contactMapper.mapContactToSms(l));
+                        MessageStatus messageStatus = smsGatewayClient.sendMessage(messageMapper.mapMessageToSmsMessage(l));
                         schedulerMessageStatus.setMessageStatus(messageStatus, l);
                     });
                 }

@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.Contact;
-import pl.somehost.contactmanager.domain.security.LoggedUserGetter;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
 import pl.somehost.contactmanager.domain.message.MailMessage;
-import pl.somehost.contactmanager.domain.message.Message;
 import pl.somehost.contactmanager.domain.message.SmsMessage;
+import pl.somehost.contactmanager.domain.security.LoggedUserGetter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,10 +67,6 @@ public class ContactMapper {
         mailMessage.setMailTo(contact.getEmail());
         mailMessage.setSubject(subject + " " + loggedUserGetter.getLoggedUserName());
         return mailMessage;
-    }
-
-    public SmsMessage mapContactToSms(Message message){
-        return new SmsMessage(message, message.getContact().getTelephone());
     }
 
     public SmsMessage mapContactToSms(Contact contact, SmsMessage smsMessage){
