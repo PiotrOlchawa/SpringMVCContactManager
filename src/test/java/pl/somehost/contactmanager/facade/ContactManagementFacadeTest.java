@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import pl.somehost.contactmanager.config.TestingBeanConfig;
 import pl.somehost.contactmanager.domain.Contact;
@@ -23,7 +23,7 @@ import pl.somehost.contactmanager.mapper.ContactMapper;
 import pl.somehost.contactmanager.service.ContactService;
 
 @WebAppConfiguration(value = "TestingBeanConfig.class" )
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {TestingBeanConfig.class})
 public class ContactManagementFacadeTest {
 

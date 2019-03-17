@@ -10,7 +10,7 @@ import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
 import pl.somehost.contactmanager.service.MessageService;
 
 @Component
-@Scope("prototype")
+@Scope("session")
 public class SchedulerMessageStatus {
 
     @Autowired

@@ -10,7 +10,7 @@ import pl.somehost.contactmanager.service.ResourceLocationService;
 import java.net.URI;
 
 @Component
-@Scope("prototype")
+@Scope("session")
 public class CMResponseEntityPreparator {
 
     @Autowired

@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import pl.somehost.contactmanager.config.TestingBeanConfig;
@@ -14,7 +14,7 @@ import pl.somehost.contactmanager.domain.message.Message;
 import pl.somehost.contactmanager.facade.IMessageFacade;
 
 @WebAppConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {TestingBeanConfig.class})
 @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN", "ROLE_USER"})
 @Transactional

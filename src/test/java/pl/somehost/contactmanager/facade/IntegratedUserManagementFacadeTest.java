@@ -8,11 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import pl.somehost.contactmanager.config.TestingBeanConfig;
-import pl.somehost.contactmanager.domain.*;
+import pl.somehost.contactmanager.domain.AdressBook;
+import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.UserDto;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.domain.security.Authorities;
@@ -26,7 +27,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @WebAppConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {TestingBeanConfig.class})
 @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN", "ROLE_USER"})
 @Transactional
