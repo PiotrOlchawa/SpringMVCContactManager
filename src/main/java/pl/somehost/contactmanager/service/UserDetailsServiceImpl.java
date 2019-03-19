@@ -24,6 +24,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LOGGER.info(" User Name " + username);
+        LOGGER.info(" All Users ");
+        userDao.findAll().stream().forEach(l->LOGGER.info("Username " + l.getUsername()));
         Optional<User> user = Optional.ofNullable(userDao.findByUsername(username));
         if(!user.isPresent()){
             LOGGER.info("User was NOT FOUND ");

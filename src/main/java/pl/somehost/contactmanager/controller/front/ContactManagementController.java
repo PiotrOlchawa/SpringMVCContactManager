@@ -31,6 +31,7 @@ public class ContactManagementController {
 
     @GetMapping(value = "/contact")
     public ResponseEntity<List<ContactDto>> getContacts(@AuthenticationPrincipal User user) {
+        LOGGER.info("Get Contacts for User: " + user.getUsername());
         return contactManagementFacade.getContactsForUser(user);
     }
 

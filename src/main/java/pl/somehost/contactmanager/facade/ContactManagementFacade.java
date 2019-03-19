@@ -48,7 +48,9 @@ public class ContactManagementFacade {
 
     public ResponseEntity<List<ContactDto>> getContactsForUser(User user) {
 
+        LOGGER.info("Getting contact for User: " + user.getUsername());
         List<Contact> contactList = contactService.getContactByAdressBookId(user.getAdressBook().getId());
+        LOGGER.info("contactList : " + contactList);
         List<ContactDto> contactDtoList = new ArrayList<>();
         if (contactList.size() > 0) {
             contactDtoList = contactMapper.mapContactListToContactDtoList(contactList);
