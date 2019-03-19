@@ -3,7 +3,7 @@ package pl.somehost.contactmanager.config.scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.message.Message;
-import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
+import pl.somehost.contactmanager.domain.message.definitions.MessageStatus;
 
 @Component
 public class MessageSchedulerConfigurator {

@@ -1,8 +1,8 @@
 package pl.somehost.contactmanager.domain.message;
 
 import pl.somehost.contactmanager.domain.Contact;
-import pl.somehost.contactmanager.domain.message.enums.MessageSendMethod;
-import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
+import pl.somehost.contactmanager.domain.message.definitions.MessageSendMethod;
+import pl.somehost.contactmanager.domain.message.definitions.MessageStatus;
 
 import javax.persistence.*;
 

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.config.sms.SmsConfiguration;
-import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
+import pl.somehost.contactmanager.domain.message.definitions.MessageStatus;
 import pl.somehost.contactmanager.domain.message.SmsMessage;
 import pl.somehost.contactmanager.messageclient.IMessageClient;
 

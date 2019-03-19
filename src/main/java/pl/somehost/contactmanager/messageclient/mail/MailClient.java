@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.message.MailMessage;
-import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
+import pl.somehost.contactmanager.domain.message.definitions.MessageStatus;
 import pl.somehost.contactmanager.messageclient.IMessageClient;
 
 @Component

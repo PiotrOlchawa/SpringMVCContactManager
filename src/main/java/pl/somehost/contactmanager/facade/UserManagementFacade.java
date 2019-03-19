@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.security.Authorities;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.UserDto;
-import pl.somehost.contactmanager.domain.response.CMResponseEntityPreparator;
+import pl.somehost.contactmanager.domain.response.CMResponseEntityProvider;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.exception.UserNotFoundException;
 import pl.somehost.contactmanager.mapper.UserMapper;
@@ -34,7 +34,7 @@ public class UserManagementFacade {
     @Autowired
     private ResourceLocationService resourceLocationService;
     @Autowired
-    private CMResponseEntityPreparator cmResponseEntityPreparator;
+    private CMResponseEntityProvider cmResponseEntityProvider;
     @Value("${role.joining.character}")
     private String roleJoiningCharacter;
 
@@ -43,7 +43,7 @@ public class UserManagementFacade {
         User user = userMapper.mapUserDtoToUser(userDto);
         User persistedUser = userService.save(user);
         contactManagerResponseMessage.setMessage("User was created: user id: " + persistedUser.getId());
-        return cmResponseEntityPreparator.getResponseEntity("User with id " + persistedUser.getId() +" was created"
+        return cmResponseEntityProvider.getResponseEntity("User with id " + persistedUser.getId() +" was created"
                 , "/user/" + persistedUser.getId(),HttpStatus.CREATED);
     }
 
@@ -51,7 +51,7 @@ public class UserManagementFacade {
 
         userService.deleteUser(userId);
         contactManagerResponseMessage.setMessage("User was deleted: user id: " + userId);
-        return cmResponseEntityPreparator.getResponseEntity("User with id " + userId +" was deleted",HttpStatus.OK);
+        return cmResponseEntityProvider.getResponseEntity("User with id " + userId +" was deleted",HttpStatus.OK);
     }
 
     public ResponseEntity<ContactManagerResponseMessage> modifyUser(UserDto userDto) {
@@ -69,7 +69,7 @@ public class UserManagementFacade {
                 + user.getAuthorities().stream().map(Authorities::getAuthority).collect(Collectors.joining(roleJoiningCharacter)));
         userService.save(user);
 
-        return cmResponseEntityPreparator.getResponseEntity("User with id " + userDto.getId() +" was modified"
+        return cmResponseEntityProvider.getResponseEntity("User with id " + userDto.getId() +" was modified"
                 , "/user/" + userDto.getId(),HttpStatus.OK);
     }
 }

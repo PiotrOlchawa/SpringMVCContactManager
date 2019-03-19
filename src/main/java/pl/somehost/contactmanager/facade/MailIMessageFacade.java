@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.config.scheduler.MessageSchedulerConfigurator;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.message.*;
-import pl.somehost.contactmanager.domain.message.enums.MessageSendMethod;
-import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
-import pl.somehost.contactmanager.domain.response.CMResponseEntityPreparator;
+import pl.somehost.contactmanager.domain.message.definitions.MessageSendMethod;
+import pl.somehost.contactmanager.domain.message.definitions.MessageStatus;
+import pl.somehost.contactmanager.domain.response.CMResponseEntityProvider;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.exception.MessageSendException;
 import pl.somehost.contactmanager.mapper.ContactMapper;
@@ -31,7 +31,7 @@ public class MailIMessageFacade implements IMessageFacade {
     @Autowired
     private MessageSchedulerConfigurator messageSchedulerConfigurator;
     @Autowired
-    private CMResponseEntityPreparator cmResponseEntityPreparator;
+    private CMResponseEntityProvider cmResponseEntityProvider;
 
     @Override
     public ResponseEntity<ContactManagerResponseMessage> sendPersistedMessage(Integer contactId, Message message) {
@@ -45,7 +45,7 @@ public class MailIMessageFacade implements IMessageFacade {
         if (messageStatus.equals(MessageStatus.NOT_SEND)) {
             throw new MessageSendException("Can't send mail");
         }
-        return cmResponseEntityPreparator.getResponseEntity("Mail Message to: " + contact.getTelephone() + " was send "
+        return cmResponseEntityProvider.getResponseEntity("Mail Message to: " + contact.getTelephone() + " was send "
                 , "/message/" + persistedMessage.getId(), HttpStatus.OK);
     }
 }

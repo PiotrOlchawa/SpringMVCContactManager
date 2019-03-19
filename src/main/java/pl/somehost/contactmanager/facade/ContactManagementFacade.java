@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
-import pl.somehost.contactmanager.domain.response.CMResponseEntityPreparator;
+import pl.somehost.contactmanager.domain.response.CMResponseEntityProvider;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.exception.ContactNotFoundException;
 import pl.somehost.contactmanager.mapper.ContactMapper;
@@ -25,13 +25,13 @@ public class ContactManagementFacade {
 
     private ContactService contactService;
     private ContactMapper contactMapper;
-    private CMResponseEntityPreparator cmResponseEntityPreparator;
+    private CMResponseEntityProvider cmResponseEntityProvider;
 
     @Autowired
-    public ContactManagementFacade(ContactService contactService, ContactMapper contactMapper, CMResponseEntityPreparator cmResponseEntityPreparator) {
+    public ContactManagementFacade(ContactService contactService, ContactMapper contactMapper, CMResponseEntityProvider cmResponseEntityProvider) {
         this.contactService = contactService;
         this.contactMapper = contactMapper;
-        this.cmResponseEntityPreparator = cmResponseEntityPreparator;
+        this.cmResponseEntityProvider = cmResponseEntityProvider;
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactManagementFacade.class);
@@ -42,7 +42,7 @@ public class ContactManagementFacade {
         Contact persistedContact = contactService.saveContact(contact);
         LOGGER.info("Facade Dto: " + contactDto.toString());
         LOGGER.info("Persisted contactDto: " + contact.getContactInfo());
-        return cmResponseEntityPreparator.getResponseEntity("Contact with id " + persistedContact.getId() + " was created"
+        return cmResponseEntityProvider.getResponseEntity("Contact with id " + persistedContact.getId() + " was created"
                 , "/contact/" + persistedContact.getId(), HttpStatus.CREATED);
     }
 
@@ -67,7 +67,7 @@ public class ContactManagementFacade {
         contactService.saveContact(contactToPersist);
         LOGGER.info("updateContactForUser : Update contact to be persisted "
                 + contactToPersist.getId() + "," + contactToPersist.getFirstName());
-        return cmResponseEntityPreparator.getResponseEntity("Contact with id " + contact.get().getId()
+        return cmResponseEntityProvider.getResponseEntity("Contact with id " + contact.get().getId()
                         + " was updated", "/contact/" + contact.get().getId(), HttpStatus.OK);
     }
 
@@ -77,7 +77,7 @@ public class ContactManagementFacade {
         Optional<Contact> contact = contactList.stream().filter(l -> l.getId() == id).findFirst();
         contact.orElseThrow(() -> new ContactNotFoundException(id, "not found"));
         contactService.deleteContact(id);
-        return cmResponseEntityPreparator.getResponseEntity("Contact with id " + id
+        return cmResponseEntityProvider.getResponseEntity("Contact with id " + id
                 + " was deleted", HttpStatus.OK);
     }
 

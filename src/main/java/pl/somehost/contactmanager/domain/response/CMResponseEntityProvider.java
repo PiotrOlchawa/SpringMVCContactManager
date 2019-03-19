@@ -11,12 +11,16 @@ import java.net.URI;
 
 @Component
 @Scope("prototype")
-public class CMResponseEntityPreparator {
+public class CMResponseEntityProvider {
+
+    private final ContactManagerResponseMessage contactManagerResponseMessage;
+    private final ResourceLocationService resourceLocationService;
 
     @Autowired
-    private ContactManagerResponseMessage contactManagerResponseMessage;
-    @Autowired
-    private ResourceLocationService resourceLocationService;
+    public CMResponseEntityProvider(ContactManagerResponseMessage contactManagerResponseMessage, ResourceLocationService resourceLocationService) {
+        this.contactManagerResponseMessage = contactManagerResponseMessage;
+        this.resourceLocationService = resourceLocationService;
+    }
 
     public ResponseEntity<ContactManagerResponseMessage> getResponseEntity(String responseMessage, String resourceLocationPath, HttpStatus httpStatus) {
 

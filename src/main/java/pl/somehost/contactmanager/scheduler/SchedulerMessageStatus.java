@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import pl.somehost.contactmanager.domain.message.Message;
-import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
+import pl.somehost.contactmanager.domain.message.definitions.MessageStatus;
 import pl.somehost.contactmanager.service.MessageService;
 
 @Component

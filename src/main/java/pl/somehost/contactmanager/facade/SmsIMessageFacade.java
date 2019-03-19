@@ -10,9 +10,9 @@ import pl.somehost.contactmanager.config.scheduler.MessageSchedulerConfigurator;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.message.Message;
 import pl.somehost.contactmanager.domain.message.SmsMessage;
-import pl.somehost.contactmanager.domain.message.enums.MessageSendMethod;
-import pl.somehost.contactmanager.domain.message.enums.MessageStatus;
-import pl.somehost.contactmanager.domain.response.CMResponseEntityPreparator;
+import pl.somehost.contactmanager.domain.message.definitions.MessageSendMethod;
+import pl.somehost.contactmanager.domain.message.definitions.MessageStatus;
+import pl.somehost.contactmanager.domain.response.CMResponseEntityProvider;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;
 import pl.somehost.contactmanager.exception.MessageSendException;
 import pl.somehost.contactmanager.mapper.ContactMapper;
@@ -30,16 +30,16 @@ public class SmsIMessageFacade implements IMessageFacade {
     private IMessageClient smsGatewayClient;
     private ContactMapper contactMapper;
     private MessageSchedulerConfigurator messageSchedulerConfigurator;
-    private CMResponseEntityPreparator cmResponseEntityPreparator;
+    private CMResponseEntityProvider cmResponseEntityProvider;
 
     @Autowired
-    public SmsIMessageFacade(ContactService contactService, MessageService messageService, IMessageClient smsGatewayClient, ContactMapper contactMapper, MessageSchedulerConfigurator messageSchedulerConfigurator, CMResponseEntityPreparator cmResponseEntityPreparator) {
+    public SmsIMessageFacade(ContactService contactService, MessageService messageService, IMessageClient smsGatewayClient, ContactMapper contactMapper, MessageSchedulerConfigurator messageSchedulerConfigurator, CMResponseEntityProvider cmResponseEntityProvider) {
         this.contactService = contactService;
         this.messageService = messageService;
         this.smsGatewayClient = smsGatewayClient;
         this.contactMapper = contactMapper;
         this.messageSchedulerConfigurator = messageSchedulerConfigurator;
-        this.cmResponseEntityPreparator = cmResponseEntityPreparator;
+        this.cmResponseEntityProvider = cmResponseEntityProvider;
     }
 
     public SmsIMessageFacade() {
@@ -58,7 +58,7 @@ public class SmsIMessageFacade implements IMessageFacade {
         if (messageStatus.equals(MessageStatus.NOT_SEND)) {
             throw new MessageSendException("Can't send sms");
         }
-        return cmResponseEntityPreparator.getResponseEntity("Sms Message to: " + contact.getTelephone() + " was send "
+        return cmResponseEntityProvider.getResponseEntity("Sms Message to: " + contact.getTelephone() + " was send "
                 ,"/message/" + persistedMessage.getId(), HttpStatus.OK);
     }
 }
