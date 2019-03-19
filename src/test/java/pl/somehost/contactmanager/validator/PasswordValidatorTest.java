@@ -13,8 +13,4 @@ public class PasswordValidatorTest {
         Assert.assertTrue(result);
     }
 
-    @Test
-    public void shouldPasswordBeValid() {
-
-    }
 }

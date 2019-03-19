@@ -1,5 +1,6 @@
 package pl.somehost.contactmanager.domain.response;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.HttpHeaders;
@@ -15,8 +16,12 @@ public class ContactManagerResponseHeaderTest {
 
     @Test
     public void getResponseHeaders() {
+        //Given
         ContactManagerResponseHeader contactManagerResponseHeader =
-                new ContactManagerResponseHeader("ContactResponceHeader", "User with id: " + 10 + " was deleted ");
+                new ContactManagerResponseHeader("ContactResponceHeader", "User with id: " + 10 + " was deleted");
+        // When
         HttpHeaders httpHeaders = contactManagerResponseHeader.getResponseHeaders();
+        // Then
+        Assert.assertEquals("User with id: 10 was deleted",httpHeaders.get("ContactResponceHeader").get(0));
     }
 }

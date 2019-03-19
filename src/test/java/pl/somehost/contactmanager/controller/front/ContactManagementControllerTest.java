@@ -31,8 +31,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,16 +55,6 @@ public class ContactManagementControllerTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactManagementControllerTest.class);
 
-    private final Contact contact = new Contact.Builder()
-            .firstName("firstname")
-            .lastName("lastname")
-            .aptNumber("aptNumber")
-            .email("email@email.pl")
-            .id(1)
-            .streetAdress("streetAdress")
-            .telephone("123456789")
-            .zipCode("32453")
-            .build();
 
     private final ContactDto contactDto = new ContactDto.Builder()
             .firstName("firstname")
@@ -86,19 +75,34 @@ public class ContactManagementControllerTest {
 
     @Test
     @WithUserDetails(userDetailsServiceBeanName = "userDetailsServiceImpl", value = "admin")
-    //This is needed because controller have @AuthenticationPrincipal; userDetailsServiceImpl need real database with specified user
+    //This is needed because controller have @AuthenticationPrincipal; (applContext) userDetailsServiceImpl need real database with specified user because depends on it
+    // ToDo: The problem is that database must exist with specified user while test is executed . Need change ex. inMemoryUserDetailsServiceImpl service bean or somthing like that
+    // ToDo: injected through TestConfig.class as @Primary or with AOP /How ?/
     public void shouldReturnAllContacts() throws Exception {
 
         // Given
+
+        Contact contact = new Contact.Builder()
+                .firstName("firstname")
+                .lastName("lastname")
+                .aptNumber("aptNumber")
+                .email("email@email.pl")
+                .id(1)
+                .streetAdress("streetAdress")
+                .telephone("123456789")
+                .zipCode("32453")
+                .build();
+
         List<ContactDto> contactDtos = new ArrayList<>(Arrays.asList(contactDto, contactDto));
         List<Contact> contacts = new ArrayList<>(Arrays.asList(contact, contact));
         ResponseEntity<List<ContactDto>> listResponseEntity = new ResponseEntity<>(contactDtos, HttpStatus.OK);
-        //when&then
+
+        //When & Then
         when(contactManagementFacade.getContactsForUser(any())).thenReturn(listResponseEntity);
-            mockMvc.perform(get("/front-user/contact").contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$", hasSize(2)))
-                    .andDo(result -> LOGGER.info(result.getResponse().getContentAsString()));
+        mockMvc.perform(get("/front-user/contact").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andDo(result -> LOGGER.info(result.getResponse().getContentAsString()));
     }
 
     @Test
@@ -109,29 +113,61 @@ public class ContactManagementControllerTest {
         Gson gson = new Gson();
         String contactDtoJson = gson.toJson(contactDto);
 
-        ContactManagerResponseMessage contactManagerResponseMessage = new ContactManagerResponseMessage();
-        contactManagerResponseMessage.setMessage("Contact with id " + contactDto.getId() + " was created");
         ResponseEntity<ContactManagerResponseMessage> responseEntity = cmResponseEntityProvider.getResponseEntity("Contact with id " + contactDto.getId() + " was created"
                 , "/contact/" + contactDto.getId(), HttpStatus.CREATED);
         LOGGER.info(responseEntity.getStatusCode().toString());
+
         //When & Then
         when(contactManagementFacade.createContact(any())).thenReturn(responseEntity);
 
-            mockMvc.perform(post("/front-user/contact").contentType(MediaType.APPLICATION_JSON)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .characterEncoding("UTF-8")
-                    .content(contactDtoJson))
-                    .andExpect(status().isCreated())
-                    .andDo(result -> LOGGER.info(result.getResponse().getContentAsString()))
-                   .andExpect(jsonPath("$.message", is("Contact with id " + "1" + " was created")));
+        mockMvc.perform(post("/front-user/contact").contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(contactDtoJson))
+                .andExpect(status().isCreated())
+                .andDo(result -> LOGGER.info(result.getResponse().getContentAsString()))
+                .andExpect(jsonPath("$.message", is("Contact with id " + "1" + " was created")));
     }
 
 
     @Test
-    public void updateContact() {
+    @WithUserDetails(userDetailsServiceBeanName = "userDetailsServiceImpl", value = "admin")
+    public void shouldUpdateContact() throws Exception {
+
+        //Given
+        Gson gson = new Gson();
+        String contactDtoJson = gson.toJson(contactDto);
+
+        ResponseEntity<ContactManagerResponseMessage> responseEntity = cmResponseEntityProvider.getResponseEntity("Contact with id " + contactDto.getId() + " was updated"
+                , "/contact/" + contactDto.getId(), HttpStatus.OK);
+        LOGGER.info(responseEntity.getStatusCode().toString());
+
+        //When & Then
+        when(contactManagementFacade.updateContactForUser(any(), any())).thenReturn(responseEntity);
+
+        mockMvc.perform(put("/front-user/contact").contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(contactDtoJson))
+                .andDo(result -> LOGGER.info(result.getResponse().getContentAsString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message", is("Contact with id " + "1" + " was updated")));
     }
 
     @Test
-    public void deleteContact() {
+    @WithUserDetails(userDetailsServiceBeanName = "userDetailsServiceImpl", value = "admin")
+    public void deleteContact() throws Exception {
+        //Given
+        ResponseEntity<ContactManagerResponseMessage> responseEntity = cmResponseEntityProvider.getResponseEntity("Contact with id " + contactDto.getId() + " was deleted"
+                , "/contact/" + contactDto.getId(), HttpStatus.OK);
+        LOGGER.info(responseEntity.getStatusCode().toString());
+        //When & Then
+        when(contactManagementFacade.deleteContactForCurrentUser(any(), any())).thenReturn(responseEntity);
+
+        mockMvc.perform(delete("/front-user/contact").contentType(MediaType.APPLICATION_JSON)
+                .param("id", "1"))
+                .andDo(result -> LOGGER.info(result.getResponse().getContentAsString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message", is("Contact with id " + "1" + " was deleted")));
     }
 }
