@@ -11,7 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import pl.somehost.contactmanager.config.TestingBeanConfig;
+import pl.somehost.contactmanager.config.test.TestingBeanConfig;
 import pl.somehost.contactmanager.domain.AdressBook;
 import pl.somehost.contactmanager.domain.User;
 import pl.somehost.contactmanager.domain.dto.UserDto;

@@ -15,7 +15,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import pl.somehost.contactmanager.config.TestingBeanConfig;
+import pl.somehost.contactmanager.config.test.TestingBeanConfig;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
 import pl.somehost.contactmanager.domain.response.ContactManagerResponseMessage;

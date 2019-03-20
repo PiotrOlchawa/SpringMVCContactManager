@@ -1,9 +1,10 @@
-package pl.somehost.contactmanager.config;
+package pl.somehost.contactmanager.config.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -26,6 +27,12 @@ public class TestingBeanConfig {
     @Primary
     public ContactManagementFacade mockContactManagementFacade() {
         return mock(ContactManagementFacade.class);
+    }
+
+    @Bean
+    @Primary
+    public UserDetailsService testUserDetailsServiceImpl(){
+        return new TestUserDetailsServiceImpl();
     }
 
 }

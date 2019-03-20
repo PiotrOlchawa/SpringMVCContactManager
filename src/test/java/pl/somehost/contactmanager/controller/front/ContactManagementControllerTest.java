@@ -16,7 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.somehost.contactmanager.config.TestingBeanConfig;
+import pl.somehost.contactmanager.config.test.TestingBeanConfig;
 import pl.somehost.contactmanager.domain.Contact;
 import pl.somehost.contactmanager.domain.dto.ContactDto;
 import pl.somehost.contactmanager.domain.response.CMResponseEntityProvider;
@@ -74,10 +74,7 @@ public class ContactManagementControllerTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "userDetailsServiceImpl", value = "admin")
-    //This is needed because controller have @AuthenticationPrincipal; (applContext) userDetailsServiceImpl need real database with specified user because depends on it
-    // ToDo: The problem is that database must exist with specified user while test is executed . Need change ex. inMemoryUserDetailsServiceImpl service bean or somthing like that
-    // ToDo: injected through TestConfig.class as @Primary or with AOP /How ?/
+    @WithUserDetails(userDetailsServiceBeanName = "testUserDetailsServiceImpl", value = "test")
     public void shouldReturnAllContacts() throws Exception {
 
         // Given
@@ -106,7 +103,7 @@ public class ContactManagementControllerTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "userDetailsServiceImpl", value = "admin")
+    @WithUserDetails(userDetailsServiceBeanName = "testUserDetailsServiceImpl", value = "test")
     public void shouldCreateContact() throws Exception {
 
         //Given
@@ -131,7 +128,7 @@ public class ContactManagementControllerTest {
 
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "userDetailsServiceImpl", value = "admin")
+    @WithUserDetails(userDetailsServiceBeanName = "testUserDetailsServiceImpl", value = "test")
     public void shouldUpdateContact() throws Exception {
 
         //Given
@@ -155,7 +152,7 @@ public class ContactManagementControllerTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "userDetailsServiceImpl", value = "admin")
+    @WithUserDetails(userDetailsServiceBeanName = "testUserDetailsServiceImpl", value = "test")
     public void deleteContact() throws Exception {
         //Given
         ResponseEntity<ContactManagerResponseMessage> responseEntity = cmResponseEntityProvider.getResponseEntity("Contact with id " + contactDto.getId() + " was deleted"
