@@ -3,6 +3,7 @@
 /build/
 /gradle/
 /target/
+.trace.db
 
 ### IntelliJ IDEA ###
 .idea
