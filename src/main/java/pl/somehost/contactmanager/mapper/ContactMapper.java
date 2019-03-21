@@ -69,7 +69,7 @@ public class ContactMapper {
         return mailMessage;
     }
 
-    public SmsMessage mapContactToSms(Contact contact, SmsMessage smsMessage){
+    public SmsMessage mapContactToSms(Contact contact, SmsMessage smsMessage) {
         smsMessage.setPhoneNumber(contact.getTelephone());
         return smsMessage;
     }

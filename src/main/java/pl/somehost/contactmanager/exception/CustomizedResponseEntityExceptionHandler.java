@@ -29,15 +29,16 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ExceptionHandler(Exception.class)
     ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
-    ExceptionReponse exceptionReponse =
-            new ExceptionReponse(new Date(),ex.getMessage(),request.getDescription(false));
-    return new ResponseEntity<>(exceptionReponse, HttpStatus.BAD_REQUEST);
+        ExceptionReponse exceptionReponse =
+                new ExceptionReponse(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionReponse, HttpStatus.BAD_REQUEST);
     }
-   // Handling incorrect id value
+
+    // Handling incorrect id value
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     ResponseEntity<Object> handleIllegalArgumentException(MethodArgumentTypeMismatchException ex, WebRequest request) {
         ExceptionReponse exceptionReponse =
-                new ExceptionReponse(new Date(),"Incorrect Id value !",request.getDescription(false));
+                new ExceptionReponse(new Date(), "Incorrect Id value !", request.getDescription(false));
         return new ResponseEntity<>(exceptionReponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -46,20 +47,21 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     protected ResponseEntity<Object> handleHttpMessageNotReadable(
             HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         ExceptionReponse exceptionReponse =
-                new ExceptionReponse(new Date(),"JSON data error !",ex.getMessage());
+                new ExceptionReponse(new Date(), "JSON data error !", ex.getMessage());
         return new ResponseEntity<>(exceptionReponse, HttpStatus.BAD_REQUEST);
     }
+
     // Overriding this method handle exception for Validation constraints.
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex,HttpHeaders headers, HttpStatus status, WebRequest request) {
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         BindingResult result = ex.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
         String error = fieldErrors.stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.joining(roleJoiningCharacter));
         ExceptionReponse exceptionReponse =
-                new ExceptionReponse(new Date(),"Validation Failed !",error);
+                new ExceptionReponse(new Date(), "Validation Failed !", error);
         return new ResponseEntity<>(exceptionReponse, HttpStatus.BAD_REQUEST);
     }
 

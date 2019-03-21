@@ -23,8 +23,6 @@ public class MailClientController {
     @PostMapping(value = "/mail/{contactId}")
     public ResponseEntity<ContactManagerResponseMessage> sendMailToContact(@PathVariable Integer contactId, @RequestBody Message message) {
         return mailIMessageFacade.sendPersistedMessage(contactId, message);
-        //contactManagerResponseMessage.setMessage("Massage was send");
-        //return contactManagerResponseMessage;
     }
 
 }

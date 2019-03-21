@@ -43,15 +43,15 @@ public class UserManagementFacade {
         User user = userMapper.mapUserDtoToUser(userDto);
         User persistedUser = userService.save(user);
         contactManagerResponseMessage.setMessage("User was created: user id: " + persistedUser.getId());
-        return cmResponseEntityProvider.getResponseEntity("User with id " + persistedUser.getId() +" was created"
-                , "/user/" + persistedUser.getId(),HttpStatus.CREATED);
+        return cmResponseEntityProvider.getResponseEntity("User with id " + persistedUser.getId() + " was created"
+                , "/user/" + persistedUser.getId(), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<ContactManagerResponseMessage> deleteUser(Integer userId,User authenticatedUser) {
+    public ResponseEntity<ContactManagerResponseMessage> deleteUser(Integer userId, User authenticatedUser) {
 
         userService.deleteUser(userId);
         contactManagerResponseMessage.setMessage("User was deleted: user id: " + userId);
-        return cmResponseEntityProvider.getResponseEntity("User with id " + userId +" was deleted",HttpStatus.OK);
+        return cmResponseEntityProvider.getResponseEntity("User with id " + userId + " was deleted", HttpStatus.OK);
     }
 
     public ResponseEntity<ContactManagerResponseMessage> modifyUser(UserDto userDto) {
@@ -69,7 +69,7 @@ public class UserManagementFacade {
                 + user.getAuthorities().stream().map(Authorities::getAuthority).collect(Collectors.joining(roleJoiningCharacter)));
         userService.save(user);
 
-        return cmResponseEntityProvider.getResponseEntity("User with id " + userDto.getId() +" was modified"
-                , "/user/" + userDto.getId(),HttpStatus.OK);
+        return cmResponseEntityProvider.getResponseEntity("User with id " + userDto.getId() + " was modified"
+                , "/user/" + userDto.getId(), HttpStatus.OK);
     }
 }

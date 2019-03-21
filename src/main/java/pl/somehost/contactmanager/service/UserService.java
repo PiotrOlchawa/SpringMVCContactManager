@@ -37,20 +37,20 @@ public class UserService {
         return userDao.save(user);
     }
 
-    @Secured({"ROLE_ADMIN","ROLE_USER"})
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public User getcurrentUser() {
         return loggedUserGetter.getLoggedUser();
     }
 
     @Secured({"ROLE_USER"})
     public void saveUser(User user) {
-        if(!checkForUserRightsToAccessOrModyfing(user)){
+        if (!checkForUserRightsToAccessOrModyfing(user)) {
             throw new RuntimeException("Access is denied !");
         }
         userDao.save(user);
     }
 
-    private boolean checkForUserRightsToAccessOrModyfing(User user){
+    private boolean checkForUserRightsToAccessOrModyfing(User user) {
         Integer authennticatedUserId = loggedUserGetter.getLoggedUser().getId(); //get id logged in username
         return user.getId() == authennticatedUserId;
     }
@@ -59,8 +59,8 @@ public class UserService {
     public void deleteUser(Integer userId) {
         try {
             userDao.deleteById(userId);
-        } catch (EmptyResultDataAccessException ex){
-            throw new UserNotFoundException("User with id: " +userId+ " was not found");
+        } catch (EmptyResultDataAccessException ex) {
+            throw new UserNotFoundException("User with id: " + userId + " was not found");
         }
     }
 }

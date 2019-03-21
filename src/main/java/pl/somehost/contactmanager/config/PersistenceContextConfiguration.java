@@ -16,18 +16,20 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement  //Enabling Annotation-Driven Transaction Management
-@EnableJpaRepositories(basePackages = {"pl.somehost.contactmanager.repository"}) //Configure the base packages that are scanned with Spring Data JPA
+@EnableJpaRepositories(basePackages = {"pl.somehost.contactmanager.repository"})
+//Configure the base packages that are scanned with Spring Data JPA
 public class PersistenceContextConfiguration /*implements TransactionManagementConfigurer*/ {
 
     @Autowired // Autowiring defined "@PropertySource"
-    Environment env;
+            Environment env;
 
 /*    @Override
     public PlatformTransactionManager annotationDrivenTransactionManager() {
         return new DataSourceTransactionManager(dataSource(env));
     }*/
 
-    @Bean  // Datasource configuration
+    @Bean
+        // Datasource configuration
     DriverManagerDataSource dataSource(Environment env) {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getRequiredProperty("db.driver"));
@@ -40,7 +42,7 @@ public class PersistenceContextConfiguration /*implements TransactionManagementC
     @Bean // Entity manager configuration
     @Autowired
     LocalContainerEntityManagerFactoryBean entityManagerFactory
-    (DriverManagerDataSource driverManagerDataSource, Environment env) {
+            (DriverManagerDataSource driverManagerDataSource, Environment env) {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(driverManagerDataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());

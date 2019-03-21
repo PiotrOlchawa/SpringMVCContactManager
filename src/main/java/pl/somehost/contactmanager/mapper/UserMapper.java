@@ -23,18 +23,18 @@ public class UserMapper {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserMapper.class);
 
     public User mapUserDtoToUser(UserDto userDto) {
-        if(userDto.getAdresBook() == null){
+        if (userDto.getAdresBook() == null) {
             userDto.setAdresBook(new AdressBook());
         }
-        User user = new User(userDto.getId(),userDto.getUsername()
+        User user = new User(userDto.getId(), userDto.getUsername()
                 , passwordsEncoder.encode(userDto.getPassword())
                 , userDto.getAuthorities()
                 , userDto.getAdresBook());
 
-        user.getAuthorities().stream().forEach(l->l.setUser(user));
-        LOGGER.info( userDto.getAuthorities() == null ? "Authorities are null"
-                : "Authorities while returning user to persist for userId= " +userDto.getId()+ " "
-                + userDto.getAuthorities().stream().map(l->l.getAuthority()).collect(Collectors.joining(roleJoiningCharacter)));
+        user.getAuthorities().stream().forEach(l -> l.setUser(user));
+        LOGGER.info(userDto.getAuthorities() == null ? "Authorities are null"
+                : "Authorities while returning user to persist for userId= " + userDto.getId() + " "
+                + userDto.getAuthorities().stream().map(l -> l.getAuthority()).collect(Collectors.joining(roleJoiningCharacter)));
         return user;
     }
 }

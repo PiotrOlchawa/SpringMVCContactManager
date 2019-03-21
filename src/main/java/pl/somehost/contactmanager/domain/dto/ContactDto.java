@@ -79,7 +79,7 @@ public class ContactDto {
         }
 
         public ContactDto build() {
-            return new ContactDto(id,firstName,lastName,streetAdress,zipCode,aptNumber,telephone,email);
+            return new ContactDto(id, firstName, lastName, streetAdress, zipCode, aptNumber, telephone, email);
         }
     }
 

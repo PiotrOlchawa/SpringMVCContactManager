@@ -26,22 +26,22 @@ public class UsersManagementController {
     UserManagementFacade userManagementFacade;
 
     @GetMapping(value = "/user")
-    public RedirectView getUsers(){
+    public RedirectView getUsers() {
         return new RedirectView("/user");
     }
 
     @PostMapping(value = "/user")
-    public ResponseEntity<ContactManagerResponseMessage>  createUser(@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<ContactManagerResponseMessage> createUser(@Valid @RequestBody UserDto userDto) {
         return userManagementFacade.createUser(userDto);
     }
 
     @DeleteMapping(value = "/user")
-    public ResponseEntity<ContactManagerResponseMessage> deleteUser(@RequestParam(required = true, value = "id" ,defaultValue = "0") Integer userId,@AuthenticationPrincipal User user) {
-       return userManagementFacade.deleteUser(userId,user);
+    public ResponseEntity<ContactManagerResponseMessage> deleteUser(@RequestParam(required = true, value = "id", defaultValue = "0") Integer userId, @AuthenticationPrincipal User user) {
+        return userManagementFacade.deleteUser(userId, user);
     }
 
-    @PutMapping (value = "/user")
-    public ResponseEntity<ContactManagerResponseMessage> modifyUser(@Valid @RequestBody UserDto userDto){
+    @PutMapping(value = "/user")
+    public ResponseEntity<ContactManagerResponseMessage> modifyUser(@Valid @RequestBody UserDto userDto) {
         return userManagementFacade.modifyUser(userDto);
     }
 }

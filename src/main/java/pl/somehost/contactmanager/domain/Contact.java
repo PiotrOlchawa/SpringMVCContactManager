@@ -42,7 +42,7 @@ public class Contact {
     )
     private List<Message> messageList;
 
-    public Contact(){
+    public Contact() {
     }
 
     public static class Builder {
@@ -57,7 +57,7 @@ public class Contact {
         private AdressBook adressBook;
         private List<Message> messageList;
 
-        public Builder(){
+        public Builder() {
         }
 
         public Builder id(int id) {
@@ -110,22 +110,22 @@ public class Contact {
             return this;
         }
 
-        public Contact build(){
-            return new Contact(id,firstName,lastName,streetAdress,zipCode,aptNumber,telephone,email,adressBook,messageList);
+        public Contact build() {
+            return new Contact(id, firstName, lastName, streetAdress, zipCode, aptNumber, telephone, email, adressBook, messageList);
         }
     }
 
     private Contact(int id, String firstName, String lastName, String streetAdress,
-                   String zipCode, String aptNumber, String telephone, String email,AdressBook adressBook,List<Message> messageList) {
-        this.id=id;
-        this.firstName=firstName;
+                    String zipCode, String aptNumber, String telephone, String email, AdressBook adressBook, List<Message> messageList) {
+        this.id = id;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.streetAdress = streetAdress;
-        this.zipCode=zipCode;
-        this.aptNumber=aptNumber;
-        this.telephone=telephone;
-        this.email=email;
-        this.adressBook=adressBook;
+        this.zipCode = zipCode;
+        this.aptNumber = aptNumber;
+        this.telephone = telephone;
+        this.email = email;
+        this.adressBook = adressBook;
         this.messageList = messageList;
     }
 

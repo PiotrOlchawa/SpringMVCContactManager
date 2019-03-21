@@ -19,7 +19,7 @@ public class TestingBeanConfig {
     private WebApplicationContext webApplicationContext;
 
     @Bean
-    public MockMvc mockMvc(){
+    public MockMvc mockMvc() {
         return MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
@@ -30,7 +30,7 @@ public class TestingBeanConfig {
     }
 
     @Bean
-    public UserDetailsService testUserDetailsServiceImpl(){
+    public UserDetailsService testUserDetailsServiceImpl() {
         return new TestUserDetailsServiceImpl();
     }
 

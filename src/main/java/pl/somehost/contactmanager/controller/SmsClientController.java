@@ -24,8 +24,6 @@ public class SmsClientController {
     @PostMapping(value = "/sms/{contactId}")
     public ResponseEntity<ContactManagerResponseMessage> sendMailToContact(@PathVariable Integer contactId, @RequestBody Message message) {
         return smsIMessageFacade.sendPersistedMessage(contactId, message);
-        //contactManagerResponseMessage.setMessage("Massage was send");
-        // contactManagerResponseMessage;
     }
 
 }

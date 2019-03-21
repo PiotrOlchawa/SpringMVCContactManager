@@ -25,7 +25,7 @@ public class WebInitializer implements WebApplicationInitializer {
             String log4jConfigFile = properties.getProperty("log4j.configFile");
 
             LoggerContext context = (LoggerContext) LogManager.getContext(false);
-            context.setConfigLocation(URI.create("classpath:"+log4jConfigFile));
+            context.setConfigLocation(URI.create("classpath:" + log4jConfigFile));
             context.reconfigure();
 
         } catch (IOException e) {

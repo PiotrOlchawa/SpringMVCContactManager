@@ -59,6 +59,6 @@ public class SmsIMessageFacade implements IMessageFacade {
             throw new MessageSendException("Can't send sms");
         }
         return cmResponseEntityProvider.getResponseEntity("Sms Message to: " + contact.getTelephone() + " was send "
-                ,"/message/" + persistedMessage.getId(), HttpStatus.OK);
+                , "/message/" + persistedMessage.getId(), HttpStatus.OK);
     }
 }

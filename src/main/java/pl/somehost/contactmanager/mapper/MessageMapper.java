@@ -6,7 +6,7 @@ import pl.somehost.contactmanager.domain.message.SmsMessage;
 
 @Component
 public class MessageMapper {
-    public SmsMessage mapMessageToSmsMessage(Message message){
+    public SmsMessage mapMessageToSmsMessage(Message message) {
         return new SmsMessage(message, message.getContact().getTelephone());
     }
 }

@@ -25,13 +25,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LOGGER.info(" User Name " + username);
         LOGGER.info(" All Users ");
-        userDao.findAll().stream().forEach(l->LOGGER.info("Username " + l.getUsername()));
+        userDao.findAll().stream().forEach(l -> LOGGER.info("Username " + l.getUsername()));
         Optional<User> user = Optional.ofNullable(userDao.findByUsername(username));
-        if(!user.isPresent()){
+        if (!user.isPresent()) {
             LOGGER.info("User was NOT FOUND ");
             throw new UsernameNotFoundException("User was NOT FOUND");
-        } else
-        {
+        } else {
             LOGGER.info(" User was FOUND " + user.get().toString());
         }
         return new SecurityUser(user.get());

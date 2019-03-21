@@ -12,7 +12,7 @@ public class PasswordsEncoder {
     private ApplicationContext appContext;
 
     public String encode(String password) {
-        PasswordEncoder passwordEncoder = (PasswordEncoder)appContext.getBean("passwordEncoder");
+        PasswordEncoder passwordEncoder = (PasswordEncoder) appContext.getBean("passwordEncoder");
         return passwordEncoder.encode(password);
     }
 }

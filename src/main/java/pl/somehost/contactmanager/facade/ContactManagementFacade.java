@@ -68,7 +68,7 @@ public class ContactManagementFacade {
         LOGGER.info("updateContactForUser : Update contact to be persisted "
                 + contactToPersist.getId() + "," + contactToPersist.getFirstName());
         return cmResponseEntityProvider.getResponseEntity("Contact with id " + contact.get().getId()
-                        + " was updated", "/contact/" + contact.get().getId(), HttpStatus.OK);
+                + " was updated", "/contact/" + contact.get().getId(), HttpStatus.OK);
     }
 
     public ResponseEntity<ContactManagerResponseMessage> deleteContactForCurrentUser(Integer id, User user) {

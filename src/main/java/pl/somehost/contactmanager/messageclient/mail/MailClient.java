@@ -39,7 +39,7 @@ public class MailClient implements IMessageClient<MailMessage> {
             javaMailSender.send(createMimeMessage(mailMessage));
             LOGGER.info("Mail Message was send");
             return MessageStatus.SEND;
-        } catch (MailException e){
+        } catch (MailException e) {
             return MessageStatus.NOT_SEND;
         }
     }

@@ -17,7 +17,7 @@ import pl.somehost.contactmanager.service.UserDetailsServiceImpl;
 
 @EnableWebSecurity(debug = false)
 @Configuration
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     PasswordEncoder passwordEncoder;

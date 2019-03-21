@@ -25,11 +25,11 @@ public class MessageService {
     }
 
     public Optional<List<Message>> getMessageWithStatusAndNumberOfTrysGreater(MessageStatus messageStatus, Integer messageTrysCount) {
-        return messageDao.findByMessageStatusAndAndSendTraysIsGreaterThan(messageStatus,messageTrysCount);
+        return messageDao.findByMessageStatusAndAndSendTraysIsGreaterThan(messageStatus, messageTrysCount);
     }
 
     public Optional<List<Message>> getStatusAndMessageSendMethodAndSendTraysGreater
-            (MessageStatus messageStatus, MessageSendMethod messageSendMethod,Integer messageTrysCount) {
-        return messageDao.findByMessageStatusAndMessageSendMethodAndSendTraysGreaterThan(messageStatus,messageSendMethod,messageTrysCount);
+            (MessageStatus messageStatus, MessageSendMethod messageSendMethod, Integer messageTrysCount) {
+        return messageDao.findByMessageStatusAndMessageSendMethodAndSendTraysGreaterThan(messageStatus, messageSendMethod, messageTrysCount);
     }
 }

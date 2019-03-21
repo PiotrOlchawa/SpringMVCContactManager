@@ -20,18 +20,22 @@ import pl.somehost.contactmanager.service.MessageService;
 @Component
 public class MailIMessageFacade implements IMessageFacade {
 
+    private final IMessageClient mailClient;
+    private final ContactMapper contactMapper;
+    private final ContactService contactService;
+    private final MessageService messageService;
+    private final MessageSchedulerConfigurator messageSchedulerConfigurator;
+    private final CMResponseEntityProvider cmResponseEntityProvider;
+
     @Autowired
-    private IMessageClient mailClient;
-    @Autowired
-    private ContactMapper contactMapper;
-    @Autowired
-    private ContactService contactService;
-    @Autowired
-    private MessageService messageService;
-    @Autowired
-    private MessageSchedulerConfigurator messageSchedulerConfigurator;
-    @Autowired
-    private CMResponseEntityProvider cmResponseEntityProvider;
+    public MailIMessageFacade(IMessageClient mailClient, ContactMapper contactMapper, ContactService contactService, MessageService messageService, MessageSchedulerConfigurator messageSchedulerConfigurator, CMResponseEntityProvider cmResponseEntityProvider) {
+        this.mailClient = mailClient;
+        this.contactMapper = contactMapper;
+        this.contactService = contactService;
+        this.messageService = messageService;
+        this.messageSchedulerConfigurator = messageSchedulerConfigurator;
+        this.cmResponseEntityProvider = cmResponseEntityProvider;
+    }
 
     @Override
     public ResponseEntity<ContactManagerResponseMessage> sendPersistedMessage(Integer contactId, Message message) {

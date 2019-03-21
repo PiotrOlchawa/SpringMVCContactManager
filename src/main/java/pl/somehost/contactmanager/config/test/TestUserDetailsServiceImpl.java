@@ -18,7 +18,7 @@ public class TestUserDetailsServiceImpl implements UserDetailsService {
         User user = new User();
         user.setUsername("test");
         user.setPassword("password");
-        Set<Authorities> authorities = new HashSet<>(Arrays.asList(new Authorities(Roles.ROLE_ADMIN),new Authorities(Roles.ROLE_USER)));
+        Set<Authorities> authorities = new HashSet<>(Arrays.asList(new Authorities(Roles.ROLE_ADMIN), new Authorities(Roles.ROLE_USER)));
         user.setAuthorities(authorities);
         return new SecurityUser(user);
     }

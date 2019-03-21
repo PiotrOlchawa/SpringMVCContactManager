@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class ApplicationConfiguration {
 
     @Bean
-    JavaMailSender mailSenderImpl(){
+    JavaMailSender mailSenderImpl() {
         return new JavaMailSenderImpl();
     }
 
