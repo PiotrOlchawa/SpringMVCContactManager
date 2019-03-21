@@ -30,7 +30,6 @@ public class TestingBeanConfig {
     }
 
     @Bean
-    @Primary
     public UserDetailsService testUserDetailsServiceImpl(){
         return new TestUserDetailsServiceImpl();
     }
