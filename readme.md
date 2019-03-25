@@ -6,7 +6,7 @@ As a standard, we have two options to send a notification:
 
 1. By email
  
-  2. Cellular SMS. In order to send an SMS, the application uses the REST SMS gateway running on a mobile phone.
+2. Cellular SMS. In order to send an SMS, the application uses the REST SMS gateway running on a mobile phone.
 
 If application can't send an SMS or email then it 
 goes into standby mode and retransmits the message after a specified 
@@ -14,7 +14,8 @@ time until it has not exhausted the maximum number of attempts it can perform.
 
 All configuration parameters are available in the contactmanager.properties file.
 
-One of the goals of the application was to see and practice how the Spring 5 Framework works without using springboot in the basic configuration with SpringSecurity and JPA.
+One of the goals of the application was to see and practice how the Spring 5 Framework 
+works without using springboot in the basic configuration with SpringSecurity and JPA (H2 file).
 
 ## Getting Started
 
