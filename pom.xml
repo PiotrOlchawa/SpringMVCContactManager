@@ -218,6 +218,13 @@
             <version>2.8.2</version>
         </dependency>
 
+        <!--JASYPT PROPERTIES ENCRYPTION-->
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt-spring3</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>

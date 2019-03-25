@@ -22,17 +22,21 @@ import java.util.Optional;
 @Component
 public class ScheduledByMail {
 
-    @Autowired
-    private MessageService messageService;
-    @Autowired
-    private IMessageClient mailClient;
-    @Autowired
-    private ContactMapper contactMapper;
-    @Autowired
-    private SchedulerMessageStatus schedulerMessageStatus;
+    private final MessageService messageService;
+    private final IMessageClient mailClient;
+    private final ContactMapper contactMapper;
+    private final SchedulerMessageStatus schedulerMessageStatus;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledByMail.class);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+    @Autowired
+    public ScheduledByMail(MessageService messageService, IMessageClient mailClient, ContactMapper contactMapper, SchedulerMessageStatus schedulerMessageStatus) {
+        this.messageService = messageService;
+        this.mailClient = mailClient;
+        this.contactMapper = contactMapper;
+        this.schedulerMessageStatus = schedulerMessageStatus;
+    }
 
     @Scheduled(fixedRateString = "${scheduling.period}")
     public void reportCurrentTime() {

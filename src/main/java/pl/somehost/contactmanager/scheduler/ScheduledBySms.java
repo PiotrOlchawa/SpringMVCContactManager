@@ -20,17 +20,20 @@ import java.util.Optional;
 @Component
 public class ScheduledBySms {
 
-    @Autowired
-    private MessageService messageService;
-    @Autowired
-    private IMessageClient smsGatewayClient;
-    @Autowired
-    private MessageMapper messageMapper;
-    @Autowired
-    private SchedulerMessageStatus schedulerMessageStatus;
+    private final MessageService messageService;
+    private final IMessageClient smsGatewayClient;
+    private final MessageMapper messageMapper;
+    private final SchedulerMessageStatus schedulerMessageStatus;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledBySms.class);
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+    @Autowired
+    public ScheduledBySms(MessageService messageService, IMessageClient smsGatewayClient, MessageMapper messageMapper, SchedulerMessageStatus schedulerMessageStatus) {
+        this.messageService = messageService;
+        this.smsGatewayClient = smsGatewayClient;
+        this.messageMapper = messageMapper;
+        this.schedulerMessageStatus = schedulerMessageStatus;
+    }
 
     @Scheduled(fixedRateString = "${scheduling.period}")
     public void reportCurrentTime() {

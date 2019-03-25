@@ -13,10 +13,14 @@ import pl.somehost.contactmanager.service.MessageService;
 @Scope("prototype")
 public class SchedulerMessageStatus {
 
-    @Autowired
-    private MessageService messageService;
+    private final MessageService messageService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerMessageStatus.class);
+
+    @Autowired
+    public SchedulerMessageStatus(MessageService messageService) {
+        this.messageService = messageService;
+    }
 
     public void setMessageStatus(MessageStatus messageStatus, Message message) {
 
